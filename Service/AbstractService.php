@@ -1,24 +1,24 @@
 <?php
 /**
- * @package   WalktheChat\Walkthechat
+ * @package   Walkthechat\Walkthechat
  *
  * @author    Alex Yeremenko <madonzy13@gmail.com>
- * @copyright 2019 WalktheChat
+ * @copyright 2019 Walkthechat
  *
  * @license   See LICENSE.txt for license details.
  */
 
-namespace WalktheChat\Walkthechat\Service;
+namespace Walkthechat\Walkthechat\Service;
 
 /**
  * Class AbstractService
  *
- * @package WalktheChat\Walkthechat\Service
+ * @package Walkthechat\Walkthechat\Service
  */
 abstract class AbstractService
 {
     /**
-     * @var \WalktheChat\Walkthechat\Service\Client
+     * @var \Walkthechat\Walkthechat\Service\Client
      */
     protected $serviceClient;
 
@@ -28,28 +28,28 @@ abstract class AbstractService
     protected $jsonHelper;
 
     /**
-     * @var \WalktheChat\Walkthechat\Helper\Data
+     * @var \Walkthechat\Walkthechat\Helper\Data
      */
     protected $helper;
 
     /**
-     * @var \WalktheChat\Walkthechat\Log\ApiLogger
+     * @var \Walkthechat\Walkthechat\Log\ApiLogger
      */
     protected $logger;
 
     /**
      * AbstractService constructor.
      *
-     * @param \WalktheChat\Walkthechat\Service\Client $serviceClient
+     * @param \Walkthechat\Walkthechat\Service\Client $serviceClient
      * @param \Magento\Framework\Json\Helper\Data $jsonHelper
-     * @param \WalktheChat\Walkthechat\Helper\Data    $helper
-     * @param \WalktheChat\Walkthechat\Log\ApiLogger  $logger
+     * @param \Walkthechat\Walkthechat\Helper\Data    $helper
+     * @param \Walkthechat\Walkthechat\Log\ApiLogger  $logger
      */
     public function __construct(
-        \WalktheChat\Walkthechat\Service\Client $serviceClient,
+        \Walkthechat\Walkthechat\Service\Client $serviceClient,
         \Magento\Framework\Json\Helper\Data $jsonHelper,
-        \WalktheChat\Walkthechat\Helper\Data $helper,
-        \WalktheChat\Walkthechat\Log\ApiLogger $logger
+        \Walkthechat\Walkthechat\Helper\Data $helper,
+        \Walkthechat\Walkthechat\Log\ApiLogger $logger
     ) {
         $this->serviceClient = $serviceClient;
         $this->jsonHelper    = $jsonHelper;
@@ -60,7 +60,7 @@ abstract class AbstractService
     /**
      * Send request to API
      *
-     * @param \WalktheChat\Walkthechat\Service\Resource\AbstractResource $resource
+     * @param \Walkthechat\Walkthechat\Service\Resource\AbstractResource $resource
      * @param array                                                  $params
      * @param bool                                                   $isImageUpload
      *
@@ -68,7 +68,7 @@ abstract class AbstractService
      * @throws \Zend_Http_Client_Exception
      */
     public function request(
-        \WalktheChat\Walkthechat\Service\Resource\AbstractResource $resource, 
+        \Walkthechat\Walkthechat\Service\Resource\AbstractResource $resource, 
         $params = [], 
         $isImageUpload = false
     ) {

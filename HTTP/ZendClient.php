@@ -1,19 +1,19 @@
 <?php
 /**
- * @package   WalktheChat\Walkthechat
+ * @package   Walkthechat\Walkthechat
  *
  * @author    Alex Yeremenko <madonzy13@gmail.com>
- * @copyright 2019 WalktheChat
+ * @copyright 2019 Walkthechat
  *
  * @license   See LICENSE.txt for license details.
  */
 
-namespace WalktheChat\Walkthechat\HTTP;
+namespace Walkthechat\Walkthechat\HTTP;
 
 /**
  * Class ZendClient
  *
- * @package WalktheChat\Walkthechat\HTTP
+ * @package Walkthechat\Walkthechat\HTTP
  */
 class ZendClient extends \Magento\Framework\HTTP\ZendClient
 {
@@ -26,7 +26,7 @@ class ZendClient extends \Magento\Framework\HTTP\ZendClient
     protected function _trySetCurlAdapter()
     {
         if (extension_loaded('curl')) {
-            $this->setAdapter(new \WalktheChat\Walkthechat\HTTP\Adapter\Curl());
+            $this->setAdapter(new \Walkthechat\Walkthechat\HTTP\Adapter\Curl());
         }
 
         return $this;

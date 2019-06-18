@@ -1,19 +1,19 @@
 <?php
 /**
- * @package   WalktheChat\Walkthechat
+ * @package   Walkthechat\Walkthechat
  *
  * @author    Alex Yeremenko <madonzy13@gmail.com>
- * @copyright 2019 WalktheChat
+ * @copyright 2019 Walkthechat
  *
  * @license   See LICENSE.txt for license details.
  */
 
-namespace WalktheChat\Walkthechat\Setup;
+namespace Walkthechat\Walkthechat\Setup;
 
 /**
  * Class InstallSchema
  *
- * @package WalktheChat\Walkthechat\Setup
+ * @package Walkthechat\Walkthechat\Setup
  */
 class InstallSchema implements \Magento\Framework\Setup\InstallSchemaInterface
 {
@@ -46,12 +46,12 @@ class InstallSchema implements \Magento\Framework\Setup\InstallSchemaInterface
      */
     protected function createLogsTable(\Magento\Framework\Setup\SchemaSetupInterface $installer)
     {
-        if (!$installer->tableExists(\WalktheChat\Walkthechat\Model\ResourceModel\ApiLog::TABLE_NAME)) {
+        if (!$installer->tableExists(\Walkthechat\Walkthechat\Model\ResourceModel\ApiLog::TABLE_NAME)) {
             $table = $installer
                 ->getConnection()
-                ->newTable($installer->getTable(\WalktheChat\Walkthechat\Model\ResourceModel\ApiLog::TABLE_NAME))
+                ->newTable($installer->getTable(\Walkthechat\Walkthechat\Model\ResourceModel\ApiLog::TABLE_NAME))
                 ->addColumn(
-                    \WalktheChat\Walkthechat\Api\Data\ApiLogInterface::ENTITY_ID_FIELD,
+                    \Walkthechat\Walkthechat\Api\Data\ApiLogInterface::ENTITY_ID_FIELD,
                     \Magento\Framework\DB\Ddl\Table::TYPE_INTEGER,
                     null,
                     [
@@ -63,7 +63,7 @@ class InstallSchema implements \Magento\Framework\Setup\InstallSchemaInterface
                     'Entity ID'
                 )
                 ->addColumn(
-                    \WalktheChat\Walkthechat\Api\Data\ApiLogInterface::REQUEST_PATH_FIELD,
+                    \Walkthechat\Walkthechat\Api\Data\ApiLogInterface::REQUEST_PATH_FIELD,
                     \Magento\Framework\DB\Ddl\Table::TYPE_TEXT,
                     255,
                     [
@@ -72,7 +72,7 @@ class InstallSchema implements \Magento\Framework\Setup\InstallSchemaInterface
                     'Request Path'
                 )
                 ->addColumn(
-                    \WalktheChat\Walkthechat\Api\Data\ApiLogInterface::REQUEST_METHOD_FIELD,
+                    \Walkthechat\Walkthechat\Api\Data\ApiLogInterface::REQUEST_METHOD_FIELD,
                     \Magento\Framework\DB\Ddl\Table::TYPE_TEXT,
                     10,
                     [
@@ -81,7 +81,7 @@ class InstallSchema implements \Magento\Framework\Setup\InstallSchemaInterface
                     'Response Method'
                 )
                 ->addColumn(
-                    \WalktheChat\Walkthechat\Api\Data\ApiLogInterface::REQUEST_PARAMS_FIELD,
+                    \Walkthechat\Walkthechat\Api\Data\ApiLogInterface::REQUEST_PARAMS_FIELD,
                     \Magento\Framework\DB\Ddl\Table::TYPE_TEXT,
                     null,
                     [
@@ -90,7 +90,7 @@ class InstallSchema implements \Magento\Framework\Setup\InstallSchemaInterface
                     'Request Params'
                 )
                 ->addColumn(
-                    \WalktheChat\Walkthechat\Api\Data\ApiLogInterface::RESPONSE_CODE_FIELD,
+                    \Walkthechat\Walkthechat\Api\Data\ApiLogInterface::RESPONSE_CODE_FIELD,
                     \Magento\Framework\DB\Ddl\Table::TYPE_SMALLINT,
                     null,
                     [
@@ -100,7 +100,7 @@ class InstallSchema implements \Magento\Framework\Setup\InstallSchemaInterface
                     'Params'
                 )
                 ->addColumn(
-                    \WalktheChat\Walkthechat\Api\Data\ApiLogInterface::RESPONSE_DATA_FIELD,
+                    \Walkthechat\Walkthechat\Api\Data\ApiLogInterface::RESPONSE_DATA_FIELD,
                     \Magento\Framework\DB\Ddl\Table::TYPE_TEXT,
                     null,
                     [
@@ -109,7 +109,7 @@ class InstallSchema implements \Magento\Framework\Setup\InstallSchemaInterface
                     'Params'
                 )
                 ->addColumn(
-                    \WalktheChat\Walkthechat\Api\Data\ApiLogInterface::IS_SUCCESS_RESPONSE_FIELD,
+                    \Walkthechat\Walkthechat\Api\Data\ApiLogInterface::IS_SUCCESS_RESPONSE_FIELD,
                     \Magento\Framework\DB\Ddl\Table::TYPE_BOOLEAN,
                     null,
                     [
@@ -118,7 +118,7 @@ class InstallSchema implements \Magento\Framework\Setup\InstallSchemaInterface
                     'Is response successful'
                 )
                 ->addColumn(
-                    \WalktheChat\Walkthechat\Api\Data\ApiLogInterface::CREATED_AT_FIELD,
+                    \Walkthechat\Walkthechat\Api\Data\ApiLogInterface::CREATED_AT_FIELD,
                     \Magento\Framework\DB\Ddl\Table::TYPE_TIMESTAMP,
                     null,
                     [
@@ -142,12 +142,12 @@ class InstallSchema implements \Magento\Framework\Setup\InstallSchemaInterface
      */
     public function createQueueTable(\Magento\Framework\Setup\SchemaSetupInterface $installer)
     {
-        if (!$installer->tableExists(\WalktheChat\Walkthechat\Model\ResourceModel\Queue::TABLE_NAME)) {
+        if (!$installer->tableExists(\Walkthechat\Walkthechat\Model\ResourceModel\Queue::TABLE_NAME)) {
             $table = $installer
                 ->getConnection()
-                ->newTable($installer->getTable(\WalktheChat\Walkthechat\Model\ResourceModel\Queue::TABLE_NAME))
+                ->newTable($installer->getTable(\Walkthechat\Walkthechat\Model\ResourceModel\Queue::TABLE_NAME))
                 ->addColumn(
-                    \WalktheChat\Walkthechat\Api\Data\QueueInterface::ID,
+                    \Walkthechat\Walkthechat\Api\Data\QueueInterface::ID,
                     \Magento\Framework\DB\Ddl\Table::TYPE_INTEGER,
                     null,
                     [
@@ -159,7 +159,7 @@ class InstallSchema implements \Magento\Framework\Setup\InstallSchemaInterface
                     'Entity Id'
                 )
                 ->addColumn(
-                    \WalktheChat\Walkthechat\Api\Data\QueueInterface::PRODUCT_ID,
+                    \Walkthechat\Walkthechat\Api\Data\QueueInterface::PRODUCT_ID,
                     \Magento\Framework\DB\Ddl\Table::TYPE_INTEGER,
                     null,
                     [
@@ -170,7 +170,7 @@ class InstallSchema implements \Magento\Framework\Setup\InstallSchemaInterface
                     'Magento Product Id'
                 )
                 ->addColumn(
-                    \WalktheChat\Walkthechat\Api\Data\QueueInterface::ORDER_ID,
+                    \Walkthechat\Walkthechat\Api\Data\QueueInterface::ORDER_ID,
                     \Magento\Framework\DB\Ddl\Table::TYPE_INTEGER,
                     null,
                     [
@@ -181,7 +181,7 @@ class InstallSchema implements \Magento\Framework\Setup\InstallSchemaInterface
                     'Magento Order Id'
                 )
                 ->addColumn(
-                    \WalktheChat\Walkthechat\Api\Data\QueueInterface::WALKTHECHAT_ID,
+                    \Walkthechat\Walkthechat\Api\Data\QueueInterface::WALKTHECHAT_ID,
                     \Magento\Framework\DB\Ddl\Table::TYPE_TEXT,
                     255,
                     [
@@ -191,7 +191,7 @@ class InstallSchema implements \Magento\Framework\Setup\InstallSchemaInterface
                     'WalkTheChat Id'
                 )
                 ->addColumn(
-                    \WalktheChat\Walkthechat\Api\Data\QueueInterface::ACTION,
+                    \Walkthechat\Walkthechat\Api\Data\QueueInterface::ACTION,
                     \Magento\Framework\DB\Ddl\Table::TYPE_TEXT,
                     32,
                     [
@@ -201,7 +201,7 @@ class InstallSchema implements \Magento\Framework\Setup\InstallSchemaInterface
                     'Action'
                 )
                 ->addColumn(
-                    \WalktheChat\Walkthechat\Api\Data\QueueInterface::CREATED_AT,
+                    \Walkthechat\Walkthechat\Api\Data\QueueInterface::CREATED_AT,
                     \Magento\Framework\DB\Ddl\Table::TYPE_TIMESTAMP,
                     null,
                     [
@@ -211,7 +211,7 @@ class InstallSchema implements \Magento\Framework\Setup\InstallSchemaInterface
                     'Created At'
                 )
                 ->addColumn(
-                    \WalktheChat\Walkthechat\Api\Data\QueueInterface::PROCESSED_AT,
+                    \Walkthechat\Walkthechat\Api\Data\QueueInterface::PROCESSED_AT,
                     \Magento\Framework\DB\Ddl\Table::TYPE_TIMESTAMP,
                     null,
                     [
@@ -222,24 +222,24 @@ class InstallSchema implements \Magento\Framework\Setup\InstallSchemaInterface
                 )
                 ->addForeignKey(
                     $installer->getFkName(
-                        \WalktheChat\Walkthechat\Model\ResourceModel\Queue::TABLE_NAME,
-                        \WalktheChat\Walkthechat\Api\Data\QueueInterface::PRODUCT_ID,
+                        \Walkthechat\Walkthechat\Model\ResourceModel\Queue::TABLE_NAME,
+                        \Walkthechat\Walkthechat\Api\Data\QueueInterface::PRODUCT_ID,
                         'catalog_product_entity',
                         'entity_id'
                     ),
-                    \WalktheChat\Walkthechat\Api\Data\QueueInterface::PRODUCT_ID,
+                    \Walkthechat\Walkthechat\Api\Data\QueueInterface::PRODUCT_ID,
                     $installer->getTable('catalog_product_entity'),
                     'entity_id',
                     \Magento\Framework\DB\Ddl\Table::ACTION_CASCADE
                 )
                 ->addForeignKey(
                     $installer->getFkName(
-                        \WalktheChat\Walkthechat\Model\ResourceModel\Queue::TABLE_NAME,
-                        \WalktheChat\Walkthechat\Api\Data\QueueInterface::ORDER_ID,
+                        \Walkthechat\Walkthechat\Model\ResourceModel\Queue::TABLE_NAME,
+                        \Walkthechat\Walkthechat\Api\Data\QueueInterface::ORDER_ID,
                         'sales_order',
                         'entity_id'
                     ),
-                    \WalktheChat\Walkthechat\Api\Data\QueueInterface::ORDER_ID,
+                    \Walkthechat\Walkthechat\Api\Data\QueueInterface::ORDER_ID,
                     $installer->getTable('sales_order'),
                     'entity_id',
                     \Magento\Framework\DB\Ddl\Table::ACTION_CASCADE
@@ -259,11 +259,11 @@ class InstallSchema implements \Magento\Framework\Setup\InstallSchemaInterface
     {
         $connection = $installer->getConnection();
 
-        if (!$connection->tableColumnExists('sales_order', \WalktheChat\Walkthechat\Helper\Data::ATTRIBUTE_CODE)) {
+        if (!$connection->tableColumnExists('sales_order', \Walkthechat\Walkthechat\Helper\Data::ATTRIBUTE_CODE)) {
             $connection
                 ->addColumn(
                     $connection->getTableName('sales_order'),
-                    \WalktheChat\Walkthechat\Helper\Data::ATTRIBUTE_CODE,
+                    \Walkthechat\Walkthechat\Helper\Data::ATTRIBUTE_CODE,
                     [
                         'type'    => \Magento\Framework\DB\Ddl\Table::TYPE_TEXT,
                         'length'  => 255,

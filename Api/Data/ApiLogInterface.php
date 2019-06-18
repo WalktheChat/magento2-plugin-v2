@@ -1,19 +1,19 @@
 <?php
 /**
- * @package   WalktheChat\Walkthechat
+ * @package   Walkthechat\Walkthechat
  *
  * @author    Alex Yeremenko <madonzy13@gmail.com>
- * @copyright 2019 WalktheChat
+ * @copyright 2019 Walkthechat
  *
  * @license   See LICENSE.txt for license details.
  */
 
-namespace WalktheChat\Walkthechat\Api\Data;
+namespace Walkthechat\Walkthechat\Api\Data;
 
 /**
  * Interface ApiLogInterface
  *
- * @package WalktheChat\Walkthechat\Api\Data
+ * @package Walkthechat\Walkthechat\Api\Data
  */
 interface ApiLogInterface
 {
@@ -44,7 +44,7 @@ interface ApiLogInterface
      *
      * @param int $id
      *
-     * @return \WalktheChat\Walkthechat\Api\Data\ApiLogInterface
+     * @return \Walkthechat\Walkthechat\Api\Data\ApiLogInterface
      */
     public function setId($id);
 
@@ -60,7 +60,7 @@ interface ApiLogInterface
      *
      * @param string $path
      *
-     * @return \WalktheChat\Walkthechat\Api\Data\ApiLogInterface
+     * @return \Walkthechat\Walkthechat\Api\Data\ApiLogInterface
      */
     public function setRequestPath($path);
 
@@ -76,7 +76,7 @@ interface ApiLogInterface
      *
      * @param string $method
      *
-     * @return \WalktheChat\Walkthechat\Api\Data\ApiLogInterface
+     * @return \Walkthechat\Walkthechat\Api\Data\ApiLogInterface
      */
     public function setRequestMethod($method);
 
@@ -92,7 +92,7 @@ interface ApiLogInterface
      *
      * @param array $params
      *
-     * @return \WalktheChat\Walkthechat\Api\Data\ApiLogInterface
+     * @return \Walkthechat\Walkthechat\Api\Data\ApiLogInterface
      */
     public function setRequestParams(array $params);
 
@@ -108,7 +108,7 @@ interface ApiLogInterface
      *
      * @param int $code
      *
-     * @return \WalktheChat\Walkthechat\Api\Data\ApiLogInterface
+     * @return \Walkthechat\Walkthechat\Api\Data\ApiLogInterface
      */
     public function setResponseCode($code);
 
@@ -124,7 +124,7 @@ interface ApiLogInterface
      *
      * @param array $data
      *
-     * @return \WalktheChat\Walkthechat\Api\Data\ApiLogInterface
+     * @return \Walkthechat\Walkthechat\Api\Data\ApiLogInterface
      */
     public function setResponseData(array $data);
 
@@ -140,7 +140,7 @@ interface ApiLogInterface
      *
      * @param bool $isSuccess
      *
-     * @return \WalktheChat\Walkthechat\Api\Data\ApiLogInterface
+     * @return \Walkthechat\Walkthechat\Api\Data\ApiLogInterface
      */
     public function setIsSuccessResponse($isSuccess);
 
@@ -156,7 +156,7 @@ interface ApiLogInterface
      *
      * @param string $timestamp
      *
-     * @return \WalktheChat\Walkthechat\Api\Data\ApiLogInterface
+     * @return \Walkthechat\Walkthechat\Api\Data\ApiLogInterface
      */
     public function setCreatedAt($timestamp);
 
@@ -172,7 +172,7 @@ interface ApiLogInterface
      *
      * @param int $queueItemId
      *
-     * @return \WalktheChat\Walkthechat\Api\Data\ApiLogInterface
+     * @return \Walkthechat\Walkthechat\Api\Data\ApiLogInterface
      */
     public function setQueueItemId($queueItemId);
 }

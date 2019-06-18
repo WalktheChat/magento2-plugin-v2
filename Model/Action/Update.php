@@ -1,19 +1,19 @@
 <?php
 /**
- * @package   WalktheChat\Walkthechat
+ * @package   Walkthechat\Walkthechat
  * @author    Alex Yeremenko <madonzy13@gmail.com>
- * @copyright 2019 WalktheChat
+ * @copyright 2019 Walkthechat
  * @license   See LICENSE.txt for license details.
  */
 
-namespace WalktheChat\Walkthechat\Model\Action;
+namespace Walkthechat\Walkthechat\Model\Action;
 
 /**
  * Class Update
  *
- * @package WalktheChat\Walkthechat\Model\Action
+ * @package Walkthechat\Walkthechat\Model\Action
  */
-class Update extends \WalktheChat\Walkthechat\Model\Action\AbstractAction
+class Update extends \Walkthechat\Walkthechat\Model\Action\AbstractAction
 {
     /**
      * Action name
@@ -33,32 +33,32 @@ class Update extends \WalktheChat\Walkthechat\Model\Action\AbstractAction
     protected $orderRepository;
 
     /**
-     * @var \WalktheChat\Walkthechat\Service\ProductsRepository
+     * @var \Walkthechat\Walkthechat\Service\ProductsRepository
      */
     protected $queueProductRepository;
 
     /**
-     * @var \WalktheChat\Walkthechat\Service\OrdersRepository
+     * @var \Walkthechat\Walkthechat\Service\OrdersRepository
      */
     protected $queueOrderRepository;
 
     /**
-     * @var \WalktheChat\Walkthechat\Model\ImageService
+     * @var \Walkthechat\Walkthechat\Model\ImageService
      */
     protected $imageService;
 
     /**
-     * @var \WalktheChat\Walkthechat\Model\OrderService
+     * @var \Walkthechat\Walkthechat\Model\OrderService
      */
     protected $orderService;
 
     /**
-     * @var \WalktheChat\Walkthechat\Model\ProductService
+     * @var \Walkthechat\Walkthechat\Model\ProductService
      */
     protected $productService;
 
     /**
-     * @var \WalktheChat\Walkthechat\Helper\Data
+     * @var \Walkthechat\Walkthechat\Helper\Data
      */
     protected $helper;
 
@@ -67,24 +67,24 @@ class Update extends \WalktheChat\Walkthechat\Model\Action\AbstractAction
      *
      * @param \Magento\Catalog\Model\ProductRepository        $productRepository
      * @param \Magento\Sales\Model\OrderRepository            $orderRepository
-     * @param \WalktheChat\Walkthechat\Service\ProductsRepository $queueProductRepository
-     * @param \WalktheChat\Walkthechat\Service\OrdersRepository   $queueOrderRepository
-     * @param \WalktheChat\Walkthechat\Model\ImageService         $imageService
-     * @param \WalktheChat\Walkthechat\Model\OrderService         $orderService
-     * @param \WalktheChat\Walkthechat\Model\ProductService       $productService
-     * @param \WalktheChat\Walkthechat\Helper\Data                $helper
+     * @param \Walkthechat\Walkthechat\Service\ProductsRepository $queueProductRepository
+     * @param \Walkthechat\Walkthechat\Service\OrdersRepository   $queueOrderRepository
+     * @param \Walkthechat\Walkthechat\Model\ImageService         $imageService
+     * @param \Walkthechat\Walkthechat\Model\OrderService         $orderService
+     * @param \Walkthechat\Walkthechat\Model\ProductService       $productService
+     * @param \Walkthechat\Walkthechat\Helper\Data                $helper
      */
     public function __construct(
-        \WalktheChat\Walkthechat\Api\Data\ImageSyncInterfaceFactory $imageSyncFactory,
-        \WalktheChat\Walkthechat\Api\ImageSyncRepositoryInterface $imageSyncRepository,
+        \Walkthechat\Walkthechat\Api\Data\ImageSyncInterfaceFactory $imageSyncFactory,
+        \Walkthechat\Walkthechat\Api\ImageSyncRepositoryInterface $imageSyncRepository,
         \Magento\Catalog\Model\ProductRepository $productRepository,
         \Magento\Sales\Model\OrderRepository $orderRepository,
-        \WalktheChat\Walkthechat\Service\ProductsRepository $queueProductRepository,
-        \WalktheChat\Walkthechat\Service\OrdersRepository $queueOrderRepository,
-        \WalktheChat\Walkthechat\Model\ImageService $imageService,
-        \WalktheChat\Walkthechat\Model\OrderService $orderService,
-        \WalktheChat\Walkthechat\Model\ProductService $productService,
-        \WalktheChat\Walkthechat\Helper\Data $helper
+        \Walkthechat\Walkthechat\Service\ProductsRepository $queueProductRepository,
+        \Walkthechat\Walkthechat\Service\OrdersRepository $queueOrderRepository,
+        \Walkthechat\Walkthechat\Model\ImageService $imageService,
+        \Walkthechat\Walkthechat\Model\OrderService $orderService,
+        \Walkthechat\Walkthechat\Model\ProductService $productService,
+        \Walkthechat\Walkthechat\Helper\Data $helper
     ) {
         $this->productRepository      = $productRepository;
         $this->orderRepository        = $orderRepository;
@@ -109,7 +109,7 @@ class Update extends \WalktheChat\Walkthechat\Model\Action\AbstractAction
      * @throws \Magento\Framework\Exception\InputException
      * @throws \Magento\Framework\Exception\CouldNotSaveException
      */
-    public function execute(\WalktheChat\Walkthechat\Api\Data\QueueInterface $queueItem)
+    public function execute(\Walkthechat\Walkthechat\Api\Data\QueueInterface $queueItem)
     {
         if ($queueItem->getProductId()) {
             $product    = $this->productRepository->getById($queueItem->getProductId());

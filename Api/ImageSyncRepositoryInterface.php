@@ -1,36 +1,36 @@
 <?php
 /**
- * @package   WalktheChat\Walkthechat
+ * @package   Walkthechat\Walkthechat
  * @author    Alex Yeremenko <madonzy13@gmail.com>
- * @copyright 2019 WalktheChat
+ * @copyright 2019 Walkthechat
  * @license   See LICENSE.txt for license details.
  */
 
-namespace WalktheChat\Walkthechat\Api;
+namespace Walkthechat\Walkthechat\Api;
 
 /**
  * Interface ImageSyncRepositoryInterface
  *
- * @package WalktheChat\Walkthechat\Api
+ * @package Walkthechat\Walkthechat\Api
  */
 interface ImageSyncRepositoryInterface
 {
     /**
      * Save Image Sync entity
      *
-     * @param \WalktheChat\Walkthechat\Api\Data\ImageSyncInterface $imageSync
+     * @param \Walkthechat\Walkthechat\Api\Data\ImageSyncInterface $imageSync
      *
-     * @return \WalktheChat\Walkthechat\Api\Data\ImageSyncInterface
+     * @return \Walkthechat\Walkthechat\Api\Data\ImageSyncInterface
      * @throws \Magento\Framework\Exception\CouldNotSaveException
      */
-    public function save(\WalktheChat\Walkthechat\Api\Data\ImageSyncInterface $imageSync);
+    public function save(\Walkthechat\Walkthechat\Api\Data\ImageSyncInterface $imageSync);
 
     /**
      * Return list of entities
      *
      * @param \Magento\Framework\Api\SearchCriteriaInterface $searchCriteria
      *
-     * @return \WalktheChat\Walkthechat\Api\Data\ImageSyncSearchResultsInterface
+     * @return \Walkthechat\Walkthechat\Api\Data\ImageSyncSearchResultsInterface
      */
     public function getList(\Magento\Framework\Api\SearchCriteriaInterface $searchCriteria);
 

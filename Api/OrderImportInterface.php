@@ -1,17 +1,17 @@
 <?php
 /**
- * @package   WalktheChat\Walkthechat
+ * @package   Walkthechat\Walkthechat
  * @author    Alex Yeremenko <madonzy13@gmail.com>
- * @copyright 2019 WalktheChat
+ * @copyright 2019 Walkthechat
  * @license   See LICENSE.txt for license details.
  */
 
-namespace WalktheChat\Walkthechat\Api;
+namespace Walkthechat\Walkthechat\Api;
 
 /**
  * Interface OrderImportInterface
  *
- * @package WalktheChat\Walkthechat\Api
+ * @package Walkthechat\Walkthechat\Api
  * @api
  */
 interface OrderImportInterface

@@ -1,21 +1,21 @@
 <?php
 /**
- * @package   WalktheChat\Walkthechat
+ * @package   Walkthechat\Walkthechat
  *
  * @author    Alex Yeremenko <madonzy13@gmail.com>
- * @copyright 2019 WalktheChat
+ * @copyright 2019 Walkthechat
  *
  * @license   See LICENSE.txt for license details.
  */
 
-namespace WalktheChat\Walkthechat\Model\ResourceModel\Queue\Grid;
+namespace Walkthechat\Walkthechat\Model\ResourceModel\Queue\Grid;
 
 /**
  * Class Collection
  *
- * @package WalktheChat\Walkthechat\Model\ResourceModel\Queue\Grid
+ * @package Walkthechat\Walkthechat\Model\ResourceModel\Queue\Grid
  */
-class Collection extends \WalktheChat\Walkthechat\Model\ResourceModel\Queue\Collection
+class Collection extends \Walkthechat\Walkthechat\Model\ResourceModel\Queue\Collection
     implements \Magento\Framework\Api\Search\SearchResultInterface
 {
     /**

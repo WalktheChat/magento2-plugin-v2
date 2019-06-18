@@ -12,12 +12,12 @@
         </item>
         <item name="template" xsi:type="string">templates/form/collapsible</item>
         <item name="buttons" xsi:type="array">
-            <item name="back" xsi:type="string">WalktheChat\Walkthechat\Block\Adminhtml\Log\Details\BackButton</item>
+            <item name="back" xsi:type="string">Walkthechat\Walkthechat\Block\Adminhtml\Log\Details\BackButton</item>
         </item>
     </argument>
     <dataSource name="wtc_walkthechat_api_log_details_data_source">
         <argument name="dataProvider" xsi:type="configurableObject">
-            <argument name="class" xsi:type="string">WalktheChat\Walkthechat\Model\DataProvider</argument>
+            <argument name="class" xsi:type="string">Walkthechat\Walkthechat\Model\DataProvider</argument>
             <argument name="name" xsi:type="string">wtc_walkthechat_api_log_details_data_source</argument>
             <argument name="primaryFieldName" xsi:type="string">entity_id</argument>
             <argument name="requestFieldName" xsi:type="string">entity_id</argument>

@@ -1,40 +1,40 @@
 <?php
 /**
- * @package   WalktheChat\Walkthechat
+ * @package   Walkthechat\Walkthechat
  *
  * @author    Alex Yeremenko <madonzy13@gmail.com>
- * @copyright 2019 WalktheChat
+ * @copyright 2019 Walkthechat
  *
  * @license   See LICENSE.txt for license details.
  */
 
-namespace WalktheChat\Walkthechat\Block\Adminhtml\System\Config;
+namespace Walkthechat\Walkthechat\Block\Adminhtml\System\Config;
 
 /**
  * Class Action
  *
- * @package WalktheChat\Walkthechat\Block\Adminhtml\System\Config
+ * @package Walkthechat\Walkthechat\Block\Adminhtml\System\Config
  */
 class Action extends \Magento\Config\Block\System\Config\Form\Field
 {
     /**
      * @var string
      */
-    protected $_template = 'WalktheChat_Walkthechat::system/config/action.phtml';
+    protected $_template = 'Walkthechat_Walkthechat::system/config/action.phtml';
 
     /**
-     * @var \WalktheChat\Walkthechat\Helper\Data
+     * @var \Walkthechat\Walkthechat\Helper\Data
      */
     protected $helper;
 
     /**
      * {@inheritdoc}
      *
-     * @param \WalktheChat\Walkthechat\Helper\Data $helper
+     * @param \Walkthechat\Walkthechat\Helper\Data $helper
      */
     public function __construct(
         \Magento\Backend\Block\Template\Context $context,
-        \WalktheChat\Walkthechat\Helper\Data $helper,
+        \Walkthechat\Walkthechat\Helper\Data $helper,
         array $data = []
     ) {
         parent::__construct($context, $data);

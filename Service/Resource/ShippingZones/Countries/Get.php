@@ -1,21 +1,21 @@
 <?php
 /**
- * @package   WalktheChat\Walkthechat
+ * @package   Walkthechat\Walkthechat
  *
  * @author    Alex Yeremenko <madonzy13@gmail.com>
- * @copyright 2019 WalktheChat
+ * @copyright 2019 Walkthechat
  *
  * @license   See LICENSE.txt for license details.
  */
 
-namespace WalktheChat\Walkthechat\Service\Resource\ShippingZones\Countries;
+namespace Walkthechat\Walkthechat\Service\Resource\ShippingZones\Countries;
 
 /**
  * Class Get
  *
- * @package WalktheChat\Walkthechat\Service\Resource\ShippingZones\Countries
+ * @package Walkthechat\Walkthechat\Service\Resource\ShippingZones\Countries
  */
-class Get extends \WalktheChat\Walkthechat\Service\Resource\AbstractResource
+class Get extends \Walkthechat\Walkthechat\Service\Resource\AbstractResource
 {
     /**
      * @var string

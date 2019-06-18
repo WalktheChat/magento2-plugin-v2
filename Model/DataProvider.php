@@ -1,24 +1,24 @@
 <?php
 /**
- * @package   WalktheChat\Walkthechat
+ * @package   Walkthechat\Walkthechat
  *
  * @author    Alex Yeremenko <madonzy13@gmail.com>
- * @copyright 2019 WalktheChat
+ * @copyright 2019 Walkthechat
  *
  * @license   See LICENSE.txt for license details.
  */
 
-namespace WalktheChat\Walkthechat\Model;
+namespace Walkthechat\Walkthechat\Model;
 
 /**
  * Class DataProvider
  *
- * @package WalktheChat\Walkthechat\Model
+ * @package Walkthechat\Walkthechat\Model
  */
 class DataProvider extends \Magento\Ui\DataProvider\AbstractDataProvider
 {
     /**
-     * @var \WalktheChat\Walkthechat\Api\ApiLogRepositoryInterface
+     * @var \Walkthechat\Walkthechat\Api\ApiLogRepositoryInterface
      */
     protected $apiLogRepository;
 
@@ -30,14 +30,14 @@ class DataProvider extends \Magento\Ui\DataProvider\AbstractDataProvider
     /**
      * {@inheritdoc}
      *
-     * @param \WalktheChat\Walkthechat\Api\ApiLogRepositoryInterface $apiLogRepository
+     * @param \Walkthechat\Walkthechat\Api\ApiLogRepositoryInterface $apiLogRepository
      * @param \Magento\Framework\App\RequestInterface            $request
      */
     public function __construct(
         string $name,
         string $primaryFieldName,
         string $requestFieldName,
-        \WalktheChat\Walkthechat\Api\ApiLogRepositoryInterface $apiLogRepository,
+        \Walkthechat\Walkthechat\Api\ApiLogRepositoryInterface $apiLogRepository,
         \Magento\Framework\App\RequestInterface $request,
         array $meta = [],
         array $data = []

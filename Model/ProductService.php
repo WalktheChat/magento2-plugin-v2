@@ -1,19 +1,19 @@
 <?php
 /**
- * @package   WalktheChat\Walkthechat
+ * @package   Walkthechat\Walkthechat
  *
  * @author    Alex Yeremenko <madonzy13@gmail.com>
- * @copyright 2019 WalktheChat
+ * @copyright 2019 Walkthechat
  *
  * @license   See LICENSE.txt for license details.
  */
 
-namespace WalktheChat\Walkthechat\Model;
+namespace Walkthechat\Walkthechat\Model;
 
 /**
  * Class ProductService
  *
- * @package WalktheChat\Walkthechat\Model
+ * @package Walkthechat\Walkthechat\Model
  */
 class ProductService
 {
@@ -33,15 +33,15 @@ class ProductService
     protected $stockItemRepository;
 
     /**
-     * @var \WalktheChat\Walkthechat\Helper\Data
+     * @var \Walkthechat\Walkthechat\Helper\Data
      */
     protected $helper;
     /**
-     * @var \WalktheChat\Walkthechat\Model\QueueService
+     * @var \Walkthechat\Walkthechat\Model\QueueService
      */
     private $queueService;
     /**
-     * @var \WalktheChat\Walkthechat\Api\QueueRepositoryInterface
+     * @var \Walkthechat\Walkthechat\Api\QueueRepositoryInterface
      */
     private $queueRepository;
 
@@ -50,18 +50,18 @@ class ProductService
      *
      * @param \Magento\Catalog\Model\ProductRepository                  $productRepository
      * @param \Magento\Framework\Api\SearchCriteriaBuilder              $searchCriteriaBuilder
-     * @param \WalktheChat\Walkthechat\Helper\Data                          $helper
+     * @param \Walkthechat\Walkthechat\Helper\Data                          $helper
      * @param \Magento\CatalogInventory\Model\Stock\StockItemRepository $stockItemRepository
-     * @param \WalktheChat\Walkthechat\Model\QueueService                   $queueService
-     * @param \WalktheChat\Walkthechat\Api\QueueRepositoryInterface         $queueRepository
+     * @param \Walkthechat\Walkthechat\Model\QueueService                   $queueService
+     * @param \Walkthechat\Walkthechat\Api\QueueRepositoryInterface         $queueRepository
      */
     public function __construct(
         \Magento\Catalog\Model\ProductRepository $productRepository,
         \Magento\Framework\Api\SearchCriteriaBuilder $searchCriteriaBuilder,
-        \WalktheChat\Walkthechat\Helper\Data $helper,
+        \Walkthechat\Walkthechat\Helper\Data $helper,
         \Magento\CatalogInventory\Model\Stock\StockItemRepository $stockItemRepository,
-        \WalktheChat\Walkthechat\Model\QueueService $queueService,
-        \WalktheChat\Walkthechat\Api\QueueRepositoryInterface $queueRepository
+        \Walkthechat\Walkthechat\Model\QueueService $queueService,
+        \Walkthechat\Walkthechat\Api\QueueRepositoryInterface $queueRepository
     ) {
         $this->productRepository     = $productRepository;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
@@ -148,12 +148,12 @@ class ProductService
                 // don't add to queue twice when exporting
                 if (!$this->queueService->isDuplicate(
                     $product->getId(),
-                    \WalktheChat\Walkthechat\Model\Action\Add::ACTION,
+                    \Walkthechat\Walkthechat\Model\Action\Add::ACTION,
                     'product_id'
                 )) {
                     $bulkData[] = [
                         'product_id' => $product->getId(),
-                        'action'     => \WalktheChat\Walkthechat\Model\Action\Add::ACTION,
+                        'action'     => \Walkthechat\Walkthechat\Model\Action\Add::ACTION,
                     ];
                 }
             }
@@ -201,13 +201,13 @@ class ProductService
             if ($walkTheChatAttributeValue
                 && !$this->queueService->isDuplicate(
                     $product->getId(),
-                    \WalktheChat\Walkthechat\Model\Action\Delete::ACTION,
+                    \Walkthechat\Walkthechat\Model\Action\Delete::ACTION,
                     'product_id'
                 )) {
                 $bulkData[] = [
                     'product_id'     => $product->getId(),
                     'walkthechat_id' => $walkTheChatAttributeValue,
-                    'action'         => \WalktheChat\Walkthechat\Model\Action\Delete::ACTION,
+                    'action'         => \Walkthechat\Walkthechat\Model\Action\Delete::ACTION,
                 ];
             }
         }

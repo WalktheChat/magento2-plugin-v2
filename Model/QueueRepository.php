@@ -1,34 +1,34 @@
 <?php
 /**
- * @package   WalktheChat\Walkthechat
+ * @package   Walkthechat\Walkthechat
  *
  * @author    Alex Yeremenko <madonzy13@gmail.com>
- * @copyright 2019 WalktheChat
+ * @copyright 2019 Walkthechat
  *
  * @license   See LICENSE.txt for license details.
  */
 
-namespace WalktheChat\Walkthechat\Model;
+namespace Walkthechat\Walkthechat\Model;
 
 /**
  * Class QueueRepository
  *
- * @package WalktheChat\Walkthechat\Model
+ * @package Walkthechat\Walkthechat\Model
  */
-class QueueRepository implements \WalktheChat\Walkthechat\Api\QueueRepositoryInterface
+class QueueRepository implements \Walkthechat\Walkthechat\Api\QueueRepositoryInterface
 {
     /**
-     * @var \WalktheChat\Walkthechat\Model\ResourceModel\Queue
+     * @var \Walkthechat\Walkthechat\Model\ResourceModel\Queue
      */
     protected $resource;
 
     /**
-     * @var \WalktheChat\Walkthechat\Model\ResourceModel\Queue\CollectionFactory
+     * @var \Walkthechat\Walkthechat\Model\ResourceModel\Queue\CollectionFactory
      */
     protected $queueCollectionFactory;
 
     /**
-     * @var \WalktheChat\Walkthechat\Api\Data\QueueSearchResultsInterfaceFactory
+     * @var \Walkthechat\Walkthechat\Api\Data\QueueSearchResultsInterfaceFactory
      */
     protected $searchResultsFactory;
 
@@ -38,25 +38,25 @@ class QueueRepository implements \WalktheChat\Walkthechat\Api\QueueRepositoryInt
     protected $collectionProcessor;
 
     /**
-     * @var \WalktheChat\Walkthechat\Api\Data\QueueInterfaceFactory
+     * @var \Walkthechat\Walkthechat\Api\Data\QueueInterfaceFactory
      */
     protected $queueFactory;
 
     /**
      * QueueRepository constructor.
      *
-     * @param \WalktheChat\Walkthechat\Model\ResourceModel\Queue                     $resource
-     * @param \WalktheChat\Walkthechat\Model\ResourceModel\Queue\CollectionFactory   $queueCollectionFactory
-     * @param \WalktheChat\Walkthechat\Api\Data\QueueSearchResultsInterfaceFactory   $searchResultsFactory
+     * @param \Walkthechat\Walkthechat\Model\ResourceModel\Queue                     $resource
+     * @param \Walkthechat\Walkthechat\Model\ResourceModel\Queue\CollectionFactory   $queueCollectionFactory
+     * @param \Walkthechat\Walkthechat\Api\Data\QueueSearchResultsInterfaceFactory   $searchResultsFactory
      * @param \Magento\Framework\Api\SearchCriteria\CollectionProcessorInterface $collectionProcessor
-     * @param \WalktheChat\Walkthechat\Api\Data\QueueInterfaceFactory                $queueFactory
+     * @param \Walkthechat\Walkthechat\Api\Data\QueueInterfaceFactory                $queueFactory
      */
     public function __construct(
-        \WalktheChat\Walkthechat\Model\ResourceModel\Queue $resource,
-        \WalktheChat\Walkthechat\Model\ResourceModel\Queue\CollectionFactory $queueCollectionFactory,
-        \WalktheChat\Walkthechat\Api\Data\QueueSearchResultsInterfaceFactory $searchResultsFactory,
+        \Walkthechat\Walkthechat\Model\ResourceModel\Queue $resource,
+        \Walkthechat\Walkthechat\Model\ResourceModel\Queue\CollectionFactory $queueCollectionFactory,
+        \Walkthechat\Walkthechat\Api\Data\QueueSearchResultsInterfaceFactory $searchResultsFactory,
         \Magento\Framework\Api\SearchCriteria\CollectionProcessorInterface $collectionProcessor,
-        \WalktheChat\Walkthechat\Api\Data\QueueInterfaceFactory $queueFactory
+        \Walkthechat\Walkthechat\Api\Data\QueueInterfaceFactory $queueFactory
     ) {
         $this->resource               = $resource;
         $this->queueCollectionFactory = $queueCollectionFactory;
@@ -68,15 +68,15 @@ class QueueRepository implements \WalktheChat\Walkthechat\Api\QueueRepositoryInt
     /**
      * @param int $id
      *
-     * @return \WalktheChat\Walkthechat\Api\Data\QueueInterface
+     * @return \Walkthechat\Walkthechat\Api\Data\QueueInterface
      * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
     public function getById($id)
     {
-        /** @var \WalktheChat\Walkthechat\Api\Data\QueueInterface $emptyModel */
+        /** @var \Walkthechat\Walkthechat\Api\Data\QueueInterface $emptyModel */
         $emptyModel = $this->queueFactory->create();
 
-        /** @var \WalktheChat\Walkthechat\Api\Data\QueueInterface $queue */
+        /** @var \Walkthechat\Walkthechat\Api\Data\QueueInterface $queue */
         $queue = $this->resource->load($emptyModel, $id);
 
         if (!$queue->getId()) {
@@ -87,12 +87,12 @@ class QueueRepository implements \WalktheChat\Walkthechat\Api\QueueRepositoryInt
     }
 
     /**
-     * @param \WalktheChat\Walkthechat\Api\Data\QueueInterface $queue
+     * @param \Walkthechat\Walkthechat\Api\Data\QueueInterface $queue
      *
-     * @return \WalktheChat\Walkthechat\Api\Data\QueueInterface
+     * @return \Walkthechat\Walkthechat\Api\Data\QueueInterface
      * @throws \Magento\Framework\Exception\CouldNotSaveException
      */
-    public function save(\WalktheChat\Walkthechat\Api\Data\QueueInterface $queue)
+    public function save(\Walkthechat\Walkthechat\Api\Data\QueueInterface $queue)
     {
         try {
             $this->resource->save($queue);
@@ -107,12 +107,12 @@ class QueueRepository implements \WalktheChat\Walkthechat\Api\QueueRepositoryInt
     }
 
     /**
-     * @param \WalktheChat\Walkthechat\Api\Data\QueueInterface $queue
+     * @param \Walkthechat\Walkthechat\Api\Data\QueueInterface $queue
      *
      * @return bool
      * @throws \Magento\Framework\Exception\CouldNotDeleteException
      */
-    public function delete(\WalktheChat\Walkthechat\Api\Data\QueueInterface $queue)
+    public function delete(\Walkthechat\Walkthechat\Api\Data\QueueInterface $queue)
     {
         try {
             $this->resource->delete($queue);
@@ -127,16 +127,16 @@ class QueueRepository implements \WalktheChat\Walkthechat\Api\QueueRepositoryInt
     /**
      * @param \Magento\Framework\Api\SearchCriteriaInterface $criteria
      *
-     * @return \WalktheChat\Walkthechat\Api\Data\QueueSearchResultsInterface
+     * @return \Walkthechat\Walkthechat\Api\Data\QueueSearchResultsInterface
      */
     public function getList(\Magento\Framework\Api\SearchCriteriaInterface $criteria)
     {
-        /** @var \WalktheChat\Walkthechat\Model\ResourceModel\Queue\Collection $collection */
+        /** @var \Walkthechat\Walkthechat\Model\ResourceModel\Queue\Collection $collection */
         $collection = $this->queueCollectionFactory->create();
 
         $this->collectionProcessor->process($criteria, $collection);
 
-        /** @var \WalktheChat\Walkthechat\Api\Data\QueueSearchResultsInterface $searchResults */
+        /** @var \Walkthechat\Walkthechat\Api\Data\QueueSearchResultsInterface $searchResults */
         $searchResults = $this->searchResultsFactory->create();
 
         $searchResults->setSearchCriteria($criteria);
@@ -156,7 +156,7 @@ class QueueRepository implements \WalktheChat\Walkthechat\Api\QueueRepositoryInt
                 return [];
             }
 
-            $tableName = $this->resource->getTable(\WalktheChat\Walkthechat\Model\ResourceModel\Queue::TABLE_NAME);
+            $tableName = $this->resource->getTable(\Walkthechat\Walkthechat\Model\ResourceModel\Queue::TABLE_NAME);
 
             return $this->resource->getConnection()->insertMultiple($tableName, $data);
         } catch (\Exception $exception) {

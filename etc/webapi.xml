@@ -7,7 +7,7 @@
 <routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Webapi:etc/webapi.xsd">
     <!-- Cms Page -->
     <route url="/V1/walkthechat/import/order" method="POST">
-        <service class="WalktheChat\Walkthechat\Api\OrderImportInterface" method="import" />
+        <service class="Walkthechat\Walkthechat\Api\OrderImportInterface" method="import" />
         <resources>
             <resource ref="anonymous" />
         </resources>

@@ -1,17 +1,17 @@
 <?php
 /**
- * @package   WalktheChat\Walkthechat
+ * @package   Walkthechat\Walkthechat
  * @author    Alex Yeremenko <madonzy13@gmail.com>
- * @copyright 2019 WalktheChat
+ * @copyright 2019 Walkthechat
  * @license   See LICENSE.txt for license details.
  */
 
-namespace WalktheChat\Walkthechat\Model\Carrier;
+namespace Walkthechat\Walkthechat\Model\Carrier;
 
 /**
  * Class WTCShipping
  *
- * @package WalktheChat\Walkthechat\Model\Carrier
+ * @package Walkthechat\Walkthechat\Model\Carrier
  */
 class WTCShipping extends \Magento\Shipping\Model\Carrier\AbstractCarrier implements
     \Magento\Shipping\Model\Carrier\CarrierInterface

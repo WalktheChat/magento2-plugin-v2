@@ -1,19 +1,19 @@
 <?php
 /**
- * @package   WalktheChat\Walkthechat
+ * @package   Walkthechat\Walkthechat
  *
  * @author    Alex Yeremenko <madonzy13@gmail.com>
- * @copyright 2019 WalktheChat
+ * @copyright 2019 Walkthechat
  *
  * @license   See LICENSE.txt for license details.
  */
 
-namespace WalktheChat\Walkthechat\Api;
+namespace Walkthechat\Walkthechat\Api;
 
 /**
  * Interface QueueRepositoryInterface
  *
- * @package WalktheChat\Walkthechat\Api
+ * @package Walkthechat\Walkthechat\Api
  */
 interface QueueRepositoryInterface
 {
@@ -22,7 +22,7 @@ interface QueueRepositoryInterface
      *
      * @param int $id
      *
-     * @return \WalktheChat\Walkthechat\Api\Data\QueueInterface
+     * @return \Walkthechat\Walkthechat\Api\Data\QueueInterface
      * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
     public function getById($id);
@@ -30,27 +30,27 @@ interface QueueRepositoryInterface
     /**
      * Saves entity
      *
-     * @param \WalktheChat\Walkthechat\Api\Data\QueueInterface $queue
+     * @param \Walkthechat\Walkthechat\Api\Data\QueueInterface $queue
      *
-     * @return \WalktheChat\Walkthechat\Api\Data\QueueInterface
+     * @return \Walkthechat\Walkthechat\Api\Data\QueueInterface
      */
-    public function save(\WalktheChat\Walkthechat\Api\Data\QueueInterface $queue);
+    public function save(\Walkthechat\Walkthechat\Api\Data\QueueInterface $queue);
 
     /**
      * Remove entity
      *
-     * @param \WalktheChat\Walkthechat\Api\Data\QueueInterface $queue
+     * @param \Walkthechat\Walkthechat\Api\Data\QueueInterface $queue
      *
      * @return void
      */
-    public function delete(\WalktheChat\Walkthechat\Api\Data\QueueInterface $queue);
+    public function delete(\Walkthechat\Walkthechat\Api\Data\QueueInterface $queue);
 
     /**
      * Return list of entities
      *
      * @param \Magento\Framework\Api\SearchCriteriaInterface $searchCriteria
      *
-     * @return \WalktheChat\Walkthechat\Api\Data\QueueSearchResultsInterface
+     * @return \Walkthechat\Walkthechat\Api\Data\QueueSearchResultsInterface
      */
     public function getList(\Magento\Framework\Api\SearchCriteriaInterface $searchCriteria);
 
@@ -59,7 +59,7 @@ interface QueueRepositoryInterface
      *
      * @param array $data
      *
-     * @return \WalktheChat\Walkthechat\Api\Data\QueueSearchResultsInterface
+     * @return \Walkthechat\Walkthechat\Api\Data\QueueSearchResultsInterface
      * @throws \Magento\Framework\Exception\CouldNotSaveException
      */
     public function bulkSave(array $data);

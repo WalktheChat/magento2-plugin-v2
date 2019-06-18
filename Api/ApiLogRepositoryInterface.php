@@ -1,38 +1,38 @@
 <?php
 /**
- * @package   WalktheChat\Walkthechat
+ * @package   Walkthechat\Walkthechat
  *
  * @author    Alex Yeremenko <madonzy13@gmail.com>
- * @copyright 2019 WalktheChat
+ * @copyright 2019 Walkthechat
  *
  * @license   See LICENSE.txt for license details.
  */
 
-namespace WalktheChat\Walkthechat\Api;
+namespace Walkthechat\Walkthechat\Api;
 
 /**
  * Interface ApiLogRepositoryInterface
  *
- * @package WalktheChat\Walkthechat\Api
+ * @package Walkthechat\Walkthechat\Api
  */
 interface ApiLogRepositoryInterface
 {
     /**
      * Save ApiLog entity
      *
-     * @param \WalktheChat\Walkthechat\Api\Data\ApiLogInterface $log
+     * @param \Walkthechat\Walkthechat\Api\Data\ApiLogInterface $log
      *
-     * @return \WalktheChat\Walkthechat\Api\Data\ApiLogInterface
+     * @return \Walkthechat\Walkthechat\Api\Data\ApiLogInterface
      * @throws \Magento\Framework\Exception\CouldNotSaveException(
      */
-    public function save(\WalktheChat\Walkthechat\Api\Data\ApiLogInterface $log);
+    public function save(\Walkthechat\Walkthechat\Api\Data\ApiLogInterface $log);
 
     /**
      * Return entity instance by ID
      *
      * @param int $id
      *
-     * @return \WalktheChat\Walkthechat\Api\Data\ApiLogInterface
+     * @return \Walkthechat\Walkthechat\Api\Data\ApiLogInterface
      * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
     public function getById($id);
@@ -42,7 +42,7 @@ interface ApiLogRepositoryInterface
      *
      * @param int $id
      *
-     * @return \WalktheChat\Walkthechat\Api\Data\ApiLogInterface
+     * @return \Walkthechat\Walkthechat\Api\Data\ApiLogInterface
      */
     public function getLastByQuoteItemId($id);
 }

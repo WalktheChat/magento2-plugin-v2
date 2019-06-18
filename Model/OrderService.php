@@ -1,19 +1,19 @@
 <?php
 /**
- * @package   WalktheChat\Walkthechat
+ * @package   Walkthechat\Walkthechat
  *
  * @author    Alex Yeremenko <madonzy13@gmail.com>
- * @copyright 2019 WalktheChat
+ * @copyright 2019 Walkthechat
  *
  * @license   See LICENSE.txt for license details.
  */
 
-namespace WalktheChat\Walkthechat\Model;
+namespace Walkthechat\Walkthechat\Model;
 
 /**
  * Class OrderService
  *
- * @package WalktheChat\Walkthechat\Model
+ * @package Walkthechat\Walkthechat\Model
  */
 class OrderService
 {
@@ -48,7 +48,7 @@ class OrderService
     protected $registry;
 
     /**
-     * @var \WalktheChat\Walkthechat\Helper\Data
+     * @var \Walkthechat\Walkthechat\Helper\Data
      */
     protected $helper;
 
@@ -86,7 +86,7 @@ class OrderService
      * @param \Magento\Sales\Model\OrderRepository            $orderRepository
      * @param \Magento\Catalog\Model\ProductRepository        $productRepository
      * @param \Magento\Framework\Registry                     $registry
-     * @param \WalktheChat\Walkthechat\Helper\Data                $helper
+     * @param \Walkthechat\Walkthechat\Helper\Data                $helper
      * @param \Magento\Sales\Api\OrderItemRepositoryInterface $orderItemRepository
      * @param \Magento\Quote\Api\CartRepositoryInterface      $cartRepository
      */
@@ -97,7 +97,7 @@ class OrderService
         \Magento\Sales\Model\OrderRepository $orderRepository,
         \Magento\Catalog\Model\ProductRepository $productRepository,
         \Magento\Framework\Registry $registry,
-        \WalktheChat\Walkthechat\Helper\Data $helper,
+        \Walkthechat\Walkthechat\Helper\Data $helper,
         \Magento\Sales\Api\OrderItemRepositoryInterface $orderItemRepository,
         \Magento\Quote\Api\CartRepositoryInterface $cartRepository
     ) {
@@ -118,7 +118,7 @@ class OrderService
      * @param $data
      *
      * @return \Magento\Sales\Api\Data\OrderInterface
-     * @throws \WalktheChat\Walkthechat\Exception\NotSynchronizedProductException
+     * @throws \Walkthechat\Walkthechat\Exception\NotSynchronizedProductException
      * @throws \Magento\Framework\Exception\LocalizedException
      */
     public function processImport($data)
@@ -302,7 +302,7 @@ class OrderService
 
         // set shipping price in the shipping career
         $this->registry->register(
-            \WalktheChat\Walkthechat\Model\Carrier\WTCShipping::WALKTHECHAT_SHIPPING_PRICE_KEY,
+            \Walkthechat\Walkthechat\Model\Carrier\WTCShipping::WALKTHECHAT_SHIPPING_PRICE_KEY,
             (float)$data['shippingRate']['rate']
         );
 
@@ -318,7 +318,7 @@ class OrderService
      * @param \Magento\Quote\Api\Data\CartInterface $quote
      * @param array                                 $data
      *
-     * @throws \WalktheChat\Walkthechat\Exception\NotSynchronizedProductException
+     * @throws \Walkthechat\Walkthechat\Exception\NotSynchronizedProductException
      * @throws \Magento\Framework\Exception\LocalizedException
      */
     protected function addProductsIntoQuote(\Magento\Quote\Api\Data\CartInterface $quote, array $data)
@@ -389,7 +389,7 @@ class OrderService
 
                 $this->preparedQuoteItems[$product->getSku()] = clone $quoteItem;
             } catch (\Magento\Framework\Exception\NoSuchEntityException $exception) {
-                throw new \WalktheChat\Walkthechat\Exception\NotSynchronizedProductException(
+                throw new \Walkthechat\Walkthechat\Exception\NotSynchronizedProductException(
                     __(
                         'Not synchronized product was sent. Product with WalkTheChat ID: %1, wasn\'t exported from current Magento instance.',
                         $item['product']['id']

@@ -1,24 +1,24 @@
 <?php
 /**
- * @package   WalktheChat\Walkthechat
+ * @package   Walkthechat\Walkthechat
  *
  * @author    Alex Yeremenko <madonzy13@gmail.com>
- * @copyright 2019 WalktheChat
+ * @copyright 2019 Walkthechat
  *
  * @license   See LICENSE.txt for license details.
  */
 
-namespace WalktheChat\Walkthechat\Controller\Adminhtml\Product;
+namespace Walkthechat\Walkthechat\Controller\Adminhtml\Product;
 
 /**
  * Class ExportAll
  *
- * @package WalktheChat\Walkthechat\Controller\Adminhtml\Product
+ * @package Walkthechat\Walkthechat\Controller\Adminhtml\Product
  */
 class ExportAll extends \Magento\Backend\App\Action
 {
     /**
-     * @var \WalktheChat\Walkthechat\Model\ProductService
+     * @var \Walkthechat\Walkthechat\Model\ProductService
      */
     protected $productService;
 
@@ -30,12 +30,12 @@ class ExportAll extends \Magento\Backend\App\Action
     /**
      * {@inheritdoc}
      *
-     * @param \WalktheChat\Walkthechat\Model\ProductService $productService
+     * @param \Walkthechat\Walkthechat\Model\ProductService $productService
      * @param \Psr\Log\LoggerInterface                  $logger
      */
     public function __construct(
         \Magento\Backend\App\Action\Context $context,
-        \WalktheChat\Walkthechat\Model\ProductService $productService,
+        \Walkthechat\Walkthechat\Model\ProductService $productService,
         \Psr\Log\LoggerInterface $logger
     ) {
         $this->productService = $productService;

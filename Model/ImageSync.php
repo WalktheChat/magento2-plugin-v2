@@ -1,20 +1,20 @@
 <?php
 /**
- * @package   WalktheChat\Walkthechat
+ * @package   Walkthechat\Walkthechat
  * @author    Alex Yeremenko <madonzy13@gmail.com>
- * @copyright 2019 WalktheChat
+ * @copyright 2019 Walkthechat
  * @license   See LICENSE.txt for license details.
  */
 
-namespace WalktheChat\Walkthechat\Model;
+namespace Walkthechat\Walkthechat\Model;
 
 /**
  * Class ImageSync
  *
- * @package WalktheChat\Walkthechat\Model
+ * @package Walkthechat\Walkthechat\Model
  */
 class ImageSync extends \Magento\Framework\Model\AbstractModel
-    implements \WalktheChat\Walkthechat\Api\Data\ImageSyncInterface
+    implements \Walkthechat\Walkthechat\Api\Data\ImageSyncInterface
 {
     /**
      * Initialize resource model
@@ -23,7 +23,7 @@ class ImageSync extends \Magento\Framework\Model\AbstractModel
      */
     protected function _construct()
     {
-        $this->_init(\WalktheChat\Walkthechat\Model\ResourceModel\ImageSync::class);
+        $this->_init(\Walkthechat\Walkthechat\Model\ResourceModel\ImageSync::class);
     }
 
     /**

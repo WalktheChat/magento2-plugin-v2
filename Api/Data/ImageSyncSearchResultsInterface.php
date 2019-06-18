@@ -1,29 +1,29 @@
 <?php
 /**
- * @package   WalktheChat\Walkthechat
+ * @package   Walkthechat\Walkthechat
  *
  * @author    Alex Yeremenko <madonzy13@gmail.com>
- * @copyright 2019 WalktheChat
+ * @copyright 2019 Walkthechat
  *
  * @license   See LICENSE.txt for license details.
  */
 
-namespace WalktheChat\Walkthechat\Api\Data;
+namespace Walkthechat\Walkthechat\Api\Data;
 
 /**
  * Interface ImageSyncSearchResultsInterface
  *
- * @package WalktheChat\Walkthechat\Api\Data
+ * @package Walkthechat\Walkthechat\Api\Data
  */
 interface ImageSyncSearchResultsInterface extends \Magento\Framework\Api\SearchResultsInterface
 {
     /**
-     * @return \WalktheChat\Walkthechat\Api\Data\ImageSyncInterface[]
+     * @return \Walkthechat\Walkthechat\Api\Data\ImageSyncInterface[]
      */
     public function getItems();
 
     /**
-     * @param \WalktheChat\Walkthechat\Api\Data\ImageSyncInterface[] $items
+     * @param \Walkthechat\Walkthechat\Api\Data\ImageSyncInterface[] $items
      *
      * @return void
      */

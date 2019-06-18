@@ -138,7 +138,7 @@
                 </item>
             </argument>
         </column>
-        <actionsColumn name="actions" class="WalktheChat\Walkthechat\Ui\Component\Listing\Column\Actions">
+        <actionsColumn name="actions" class="Walkthechat\Walkthechat\Ui\Component\Listing\Column\Actions">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="indexField" xsi:type="string">entity_id</item>

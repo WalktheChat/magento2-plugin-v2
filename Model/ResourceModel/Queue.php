@@ -1,19 +1,19 @@
 <?php
 /**
- * @package   WalktheChat\Walkthechat
+ * @package   Walkthechat\Walkthechat
  *
  * @author    Alex Yeremenko <madonzy13@gmail.com>
- * @copyright 2019 WalktheChat
+ * @copyright 2019 Walkthechat
  *
  * @license   See LICENSE.txt for license details.
  */
 
-namespace WalktheChat\Walkthechat\Model\ResourceModel;
+namespace Walkthechat\Walkthechat\Model\ResourceModel;
 
 /**
  * Class Queue
  *
- * @package WalktheChat\Walkthechat\Model\ResourceModel
+ * @package Walkthechat\Walkthechat\Model\ResourceModel
  */
 class Queue extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
 {
@@ -29,6 +29,6 @@ class Queue extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
      */
     protected function _construct()
     {
-        $this->_init(self::TABLE_NAME, \WalktheChat\Walkthechat\Api\Data\QueueInterface::ID);
+        $this->_init(self::TABLE_NAME, \Walkthechat\Walkthechat\Api\Data\QueueInterface::ID);
     }
 }

@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
     <menu>
-        <add id="WalktheChat_Walkthechat::walkthechat" title="WalkTheChat" module="WalktheChat_Walkthechat" sortOrder="51" resource="WalktheChat_Walkthechat::walkthechat" />
-        <add id="WalktheChat_Walkthechat::index" title="Dashboard" module="WalktheChat_Walkthechat" sortOrder="10" action="walkthechat/dashboard" resource="WalktheChat_Walkthechat::index" parent="WalktheChat_Walkthechat::walkthechat" />
-        <add id="WalktheChat_Walkthechat::configuration" title="Configuration" module="WalktheChat_Walkthechat" sortOrder="20" action="adminhtml/system_config/edit/section/walkthechat_settings" resource="WalktheChat_Walkthechat::configuration" parent="WalktheChat_Walkthechat::walkthechat" />
-        <add id="WalktheChat_Walkthechat::logs" title="Logs" module="WalktheChat_Walkthechat" sortOrder="30" action="walkthechat/logs" resource="WalktheChat_Walkthechat::logs" parent="WalktheChat_Walkthechat::walkthechat" />
+        <add id="Walkthechat_Walkthechat::walkthechat" title="WalkTheChat" module="Walkthechat_Walkthechat" sortOrder="51" resource="Walkthechat_Walkthechat::walkthechat" />
+        <add id="Walkthechat_Walkthechat::index" title="Dashboard" module="Walkthechat_Walkthechat" sortOrder="10" action="walkthechat/dashboard" resource="Walkthechat_Walkthechat::index" parent="Walkthechat_Walkthechat::walkthechat" />
+        <add id="Walkthechat_Walkthechat::configuration" title="Configuration" module="Walkthechat_Walkthechat" sortOrder="20" action="adminhtml/system_config/edit/section/walkthechat_settings" resource="Walkthechat_Walkthechat::configuration" parent="Walkthechat_Walkthechat::walkthechat" />
+        <add id="Walkthechat_Walkthechat::logs" title="Logs" module="Walkthechat_Walkthechat" sortOrder="30" action="walkthechat/logs" resource="Walkthechat_Walkthechat::logs" parent="Walkthechat_Walkthechat::walkthechat" />
     </menu>
 </config>

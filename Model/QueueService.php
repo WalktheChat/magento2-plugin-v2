@@ -1,19 +1,19 @@
 <?php
 /**
- * @package   WalktheChat\Walkthechat
+ * @package   Walkthechat\Walkthechat
  *
  * @author    Alex Yeremenko <madonzy13@gmail.com>
- * @copyright 2019 WalktheChat
+ * @copyright 2019 Walkthechat
  *
  * @license   See LICENSE.txt for license details.
  */
 
-namespace WalktheChat\Walkthechat\Model;
+namespace Walkthechat\Walkthechat\Model;
 
 /**
  * Class QueueService
  *
- * @package WalktheChat\Walkthechat\Model
+ * @package Walkthechat\Walkthechat\Model
  */
 class QueueService
 {
@@ -23,12 +23,12 @@ class QueueService
     protected $date;
 
     /**
-     * @var \WalktheChat\Walkthechat\Api\QueueRepositoryInterface
+     * @var \Walkthechat\Walkthechat\Api\QueueRepositoryInterface
      */
     protected $queueRepository;
 
     /**
-     * @var \WalktheChat\Walkthechat\Model\ActionFactory
+     * @var \Walkthechat\Walkthechat\Model\ActionFactory
      */
     protected $actionFactory;
 
@@ -46,15 +46,15 @@ class QueueService
      * QueueService constructor.
      *
      * @param \Magento\Framework\Stdlib\DateTime\DateTime       $date
-     * @param \WalktheChat\Walkthechat\Api\QueueRepositoryInterface $queueRepository
-     * @param \WalktheChat\Walkthechat\Model\ActionFactory          $actionFactory
+     * @param \Walkthechat\Walkthechat\Api\QueueRepositoryInterface $queueRepository
+     * @param \Walkthechat\Walkthechat\Model\ActionFactory          $actionFactory
      * @param \Magento\Framework\Api\SearchCriteriaBuilder      $searchCriteriaBuilder
      * @param \Psr\Log\LoggerInterface                          $logger
      */
     public function __construct(
         \Magento\Framework\Stdlib\DateTime\DateTime $date,
-        \WalktheChat\Walkthechat\Api\QueueRepositoryInterface $queueRepository,
-        \WalktheChat\Walkthechat\Model\ActionFactory $actionFactory,
+        \Walkthechat\Walkthechat\Api\QueueRepositoryInterface $queueRepository,
+        \Walkthechat\Walkthechat\Model\ActionFactory $actionFactory,
         \Magento\Framework\Api\SearchCriteriaBuilder $searchCriteriaBuilder,
         \Psr\Log\LoggerInterface $logger
     ) {
@@ -68,7 +68,7 @@ class QueueService
     /**
      * Get all not processed rows
      *
-     * @return \WalktheChat\Walkthechat\Api\Data\QueueInterface[]
+     * @return \Walkthechat\Walkthechat\Api\Data\QueueInterface[]
      */
     public function getAllNotProcessed()
     {
@@ -108,11 +108,11 @@ class QueueService
     /**
      * Sync item with Walkthechat
      *
-     * @param \WalktheChat\Walkthechat\Api\Data\QueueInterface $item
+     * @param \Walkthechat\Walkthechat\Api\Data\QueueInterface $item
      *
      * @throws \Exception
      */
-    public function sync(\WalktheChat\Walkthechat\Api\Data\QueueInterface $item)
+    public function sync(\Walkthechat\Walkthechat\Api\Data\QueueInterface $item)
     {
         $action = $this->actionFactory->create($item->getAction());
 
@@ -121,16 +121,16 @@ class QueueService
 
             if ($isSuccess) {
                 $item->setProcessedAt($this->date->gmtDate());
-                $item->setStatus(\WalktheChat\Walkthechat\Api\Data\QueueInterface::COMPLETE_STATUS);
+                $item->setStatus(\Walkthechat\Walkthechat\Api\Data\QueueInterface::COMPLETE_STATUS);
             }
         } catch (\Zend\Http\Client\Exception\RuntimeException $runtimeException) {
-            $item->setStatus(\WalktheChat\Walkthechat\Api\Data\QueueInterface::API_ERROR_STATUS);
+            $item->setStatus(\Walkthechat\Walkthechat\Api\Data\QueueInterface::API_ERROR_STATUS);
 
             $this->logger->error(
                 "WalkTheChat | Bad response when trying to proceed the queue item with ID: #{$item->getId()}. Please check logs in admin panel (WalkTheChat -> Logs) for more details."
             );
         } catch (\Exception $exception) {
-            $item->setStatus(\WalktheChat\Walkthechat\Api\Data\QueueInterface::INTERNAL_ERROR_STATUS);
+            $item->setStatus(\Walkthechat\Walkthechat\Api\Data\QueueInterface::INTERNAL_ERROR_STATUS);
 
             $this->logger->critical(
                 "WalkTheChat | Internal error occurred: {$exception->getMessage()}",

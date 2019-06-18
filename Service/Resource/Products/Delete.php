@@ -1,21 +1,21 @@
 <?php
 /**
- * @package   WalktheChat\Walkthechat
+ * @package   Walkthechat\Walkthechat
  *
  * @author    Alex Yeremenko <madonzy13@gmail.com>
- * @copyright 2019 WalktheChat
+ * @copyright 2019 Walkthechat
  *
  * @license   See LICENSE.txt for license details.
  */
 
-namespace WalktheChat\Walkthechat\Service\Resource\Products;
+namespace Walkthechat\Walkthechat\Service\Resource\Products;
 
 /**
  * Class Delete
  *
- * @package WalktheChat\Walkthechat\Service\Resource\Products
+ * @package Walkthechat\Walkthechat\Service\Resource\Products
  */
-class Delete extends \WalktheChat\Walkthechat\Service\Resource\AbstractResource
+class Delete extends \Walkthechat\Walkthechat\Service\Resource\AbstractResource
 {
     /**
      * @var string

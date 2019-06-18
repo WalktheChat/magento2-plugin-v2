@@ -7,12 +7,12 @@
         <section id="walkthechat_settings" translate="label" type="text" sortOrder="110" showInDefault="1">
             <label>Settings</label>
             <tab>walkthechat</tab>
-            <resource>WalktheChat_Walkthechat::config_settings</resource>
+            <resource>Walkthechat_Walkthechat::config_settings</resource>
             <group id="general" translate="label" sortOrder="10" showInDefault="1">
                 <label>General Configuration</label>
                 <field id="token" translate="label" sortOrder="1" showInDefault="1">
                     <label>Status</label>
-                    <frontend_model>WalktheChat\Walkthechat\Block\Adminhtml\System\Config\Status</frontend_model>
+                    <frontend_model>Walkthechat\Walkthechat\Block\Adminhtml\System\Config\Status</frontend_model>
                 </field>
                 <field id="project_id" type="hidden" />
                 <field id="shop_name" translate="label" type="text" sortOrder="5" showInDefault="1">
@@ -31,7 +31,7 @@
                     <label>App Secret Key</label>
                 </field>
                 <field id="action" sortOrder="50" showInDefault="1">
-                    <frontend_model>WalktheChat\Walkthechat\Block\Adminhtml\System\Config\Action</frontend_model>
+                    <frontend_model>Walkthechat\Walkthechat\Block\Adminhtml\System\Config\Action</frontend_model>
                 </field>
             </group>
             <group id="sync" translate="label" sortOrder="20" showInDefault="1">
@@ -60,7 +60,7 @@
                 </field>
                 <field id="round_method" translate="label" type="select" sortOrder="30" showInDefault="1">
                     <label>Round Method</label>
-                    <source_model>WalktheChat\Walkthechat\Model\Config\Source\RoundMethod</source_model>
+                    <source_model>Walkthechat\Walkthechat\Model\Config\Source\RoundMethod</source_model>
                     <depends>
                         <field id="walkthechat_settings/currency/conversion_active">1</field>
                     </depends>

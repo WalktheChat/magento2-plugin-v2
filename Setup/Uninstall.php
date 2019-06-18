@@ -1,19 +1,19 @@
 <?php
 /**
- * @package   WalktheChat\Walkthechat
+ * @package   Walkthechat\Walkthechat
  *
  * @author    Alex Yeremenko <madonzy13@gmail.com>
- * @copyright 2018 WalktheChat
+ * @copyright 2018 Walkthechat
  *
  * @license   See LICENSE.txt for license details.
  */
 
-namespace WalktheChat\Walkthechat\Setup;
+namespace Walkthechat\Walkthechat\Setup;
 
 /**
  * Class Uninstall
  *
- * @package WalktheChat\Walkthechat\Setup
+ * @package Walkthechat\Walkthechat\Setup
  */
 class Uninstall implements \Magento\Framework\Setup\UninstallInterface
 {
@@ -57,12 +57,12 @@ class Uninstall implements \Magento\Framework\Setup\UninstallInterface
         $connection = $setup->getConnection();
 
         // drop module tables
-        $connection->dropTable(\WalktheChat\Walkthechat\Model\ResourceModel\ApiLog::TABLE_NAME);
-        $connection->dropTable(\WalktheChat\Walkthechat\Model\ResourceModel\Queue::TABLE_NAME);
-        $connection->dropTable(\WalktheChat\Walkthechat\Model\ResourceModel\ImageSync::TABLE_NAME);
+        $connection->dropTable(\Walkthechat\Walkthechat\Model\ResourceModel\ApiLog::TABLE_NAME);
+        $connection->dropTable(\Walkthechat\Walkthechat\Model\ResourceModel\Queue::TABLE_NAME);
+        $connection->dropTable(\Walkthechat\Walkthechat\Model\ResourceModel\ImageSync::TABLE_NAME);
 
         // drop module integrated columns
-        $connection->dropColumn('sales_order', \WalktheChat\Walkthechat\Helper\Data::ATTRIBUTE_CODE);
+        $connection->dropColumn('sales_order', \Walkthechat\Walkthechat\Helper\Data::ATTRIBUTE_CODE);
         $connection->dropColumn('sales_order_item', 'walkthechat_item_data');
         $connection->dropColumn('sales_shipment', 'is_sent_to_walk_the_chat');
         $connection->dropColumn('sales_creditmemo', 'is_sent_to_walk_the_chat');
@@ -73,7 +73,7 @@ class Uninstall implements \Magento\Framework\Setup\UninstallInterface
         // remove walkthechat_id attribute from product eav entity
         $eavSetup->removeAttribute(
             \Magento\Catalog\Model\Product::ENTITY,
-            \WalktheChat\Walkthechat\Helper\Data::ATTRIBUTE_CODE
+            \Walkthechat\Walkthechat\Helper\Data::ATTRIBUTE_CODE
         );
 
         $setup->endSetup();

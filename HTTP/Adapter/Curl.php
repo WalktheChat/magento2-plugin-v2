@@ -1,19 +1,19 @@
 <?php
 /**
- * @package   WalktheChat\Walkthechat
+ * @package   Walkthechat\Walkthechat
  *
  * @author    Alex Yeremenko <madonzy13@gmail.com>
- * @copyright 2019 WalktheChat
+ * @copyright 2019 Walkthechat
  *
  * @license   See LICENSE.txt for license details.
  */
 
-namespace WalktheChat\Walkthechat\HTTP\Adapter;
+namespace Walkthechat\Walkthechat\HTTP\Adapter;
 
 /**
  * Class Curl
  *
- * @package WalktheChat\Walkthechat\HTTP\Adapter
+ * @package Walkthechat\Walkthechat\HTTP\Adapter
  */
 class Curl extends \Magento\Framework\HTTP\Adapter\Curl
 {

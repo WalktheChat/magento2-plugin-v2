@@ -1,41 +1,41 @@
 <?php
 /**
- * @package   WalktheChat\Walkthechat
+ * @package   Walkthechat\Walkthechat
  *
  * @author    Alex Yeremenko <madonzy13@gmail.com>
- * @copyright 2019 WalktheChat
+ * @copyright 2019 Walkthechat
  *
  * @license   See LICENSE.txt for license details.
  */
 
-namespace WalktheChat\Walkthechat\Service;
+namespace Walkthechat\Walkthechat\Service;
 
 /**
  * Class Client
  *
- * @package WalktheChat\Walkthechat\Service
+ * @package Walkthechat\Walkthechat\Service
  */
 class Client
 {
     /**
-     * @var \WalktheChat\Walkthechat\HTTP\ZendClientFactory
+     * @var \Walkthechat\Walkthechat\HTTP\ZendClientFactory
      */
     protected $httpClientFactory;
 
     /**
-     * @var \WalktheChat\Walkthechat\Helper\Data
+     * @var \Walkthechat\Walkthechat\Helper\Data
      */
     protected $helper;
 
     /**
      * Client constructor.
      *
-     * @param \WalktheChat\Walkthechat\HTTP\ZendClientFactory $httpClientFactory
-     * @param \WalktheChat\Walkthechat\Helper\Data            $helper
+     * @param \Walkthechat\Walkthechat\HTTP\ZendClientFactory $httpClientFactory
+     * @param \Walkthechat\Walkthechat\Helper\Data            $helper
      */
     public function __construct(
-        \WalktheChat\Walkthechat\HTTP\ZendClientFactory $httpClientFactory,
-        \WalktheChat\Walkthechat\Helper\Data $helper
+        \Walkthechat\Walkthechat\HTTP\ZendClientFactory $httpClientFactory,
+        \Walkthechat\Walkthechat\Helper\Data $helper
     ) {
         $this->httpClientFactory = $httpClientFactory;
         $this->helper            = $helper;
@@ -63,7 +63,7 @@ class Client
      */
     public function request($type, $path, $data, $headers, $isImageUpload = false)
     {
-        /** @var \WalktheChat\Walkthechat\HTTP\ZendClient $httpClient */
+        /** @var \Walkthechat\Walkthechat\HTTP\ZendClient $httpClient */
         $httpClient = $this->httpClientFactory->create();
 
         $httpClient

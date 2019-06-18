@@ -1,19 +1,19 @@
 <?php
 /**
- * @package   WalktheChat\Walkthechat
+ * @package   Walkthechat\Walkthechat
  *
  * @author    Alex Yeremenko <madonzy13@gmail.com>
- * @copyright 2019 WalktheChat
+ * @copyright 2019 Walkthechat
  *
  * @license   See LICENSE.txt for license details.
  */
 
-namespace WalktheChat\Walkthechat\Ui\Component\Listing\Column;
+namespace Walkthechat\Walkthechat\Ui\Component\Listing\Column;
 
 /**
  * Class Actions
  *
- * @package WalktheChat\Walkthechat\Ui\Component\Listing\Column
+ * @package Walkthechat\Walkthechat\Ui\Component\Listing\Column
  */
 class Actions extends \Magento\Ui\Component\Listing\Columns\Column
 {

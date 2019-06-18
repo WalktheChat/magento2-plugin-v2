@@ -1,59 +1,59 @@
 <?php
 /**
- * @package   WalktheChat\Walkthechat
+ * @package   Walkthechat\Walkthechat
  *
  * @author    Alex Yeremenko <madonzy13@gmail.com>
- * @copyright 2019 WalktheChat
+ * @copyright 2019 Walkthechat
  *
  * @license   See LICENSE.txt for license details.
  */
 
-namespace WalktheChat\Walkthechat\Service;
+namespace Walkthechat\Walkthechat\Service;
 
 /**
  * Class ProductsRepository
  *
- * @package WalktheChat\Walkthechat\Service
+ * @package Walkthechat\Walkthechat\Service
  */
 class ProductsRepository extends AbstractService
 {
     /**
-     * @var \WalktheChat\Walkthechat\Service\Resource\Products\Create
+     * @var \Walkthechat\Walkthechat\Service\Resource\Products\Create
      */
     protected $productCreateResource;
 
     /**
-     * @var \WalktheChat\Walkthechat\Service\Resource\Products\Delete
+     * @var \Walkthechat\Walkthechat\Service\Resource\Products\Delete
      */
     protected $productDeleteResource;
 
     /**
-     * @var \WalktheChat\Walkthechat\Service\Resource\Products\Find
+     * @var \Walkthechat\Walkthechat\Service\Resource\Products\Find
      */
     protected $productFindResource;
 
     /**
-     * @var \WalktheChat\Walkthechat\Service\Resource\Products\Update
+     * @var \Walkthechat\Walkthechat\Service\Resource\Products\Update
      */
     protected $productUpdateResource;
 
     /**
      * {@inheritdoc}
      *
-     * @param \WalktheChat\Walkthechat\Service\Resource\Products\Create $productCreateResource
-     * @param \WalktheChat\Walkthechat\Service\Resource\Products\Delete $productDeleteResource
-     * @param \WalktheChat\Walkthechat\Service\Resource\Products\Find   $productFindResource
-     * @param \WalktheChat\Walkthechat\Service\Resource\Products\Update $productUpdateResource
+     * @param \Walkthechat\Walkthechat\Service\Resource\Products\Create $productCreateResource
+     * @param \Walkthechat\Walkthechat\Service\Resource\Products\Delete $productDeleteResource
+     * @param \Walkthechat\Walkthechat\Service\Resource\Products\Find   $productFindResource
+     * @param \Walkthechat\Walkthechat\Service\Resource\Products\Update $productUpdateResource
      */
     public function __construct(
-        \WalktheChat\Walkthechat\Service\Client $serviceClient,
+        \Walkthechat\Walkthechat\Service\Client $serviceClient,
         \Magento\Framework\Json\Helper\Data $jsonHelper,
-        \WalktheChat\Walkthechat\Helper\Data $helper,
-        \WalktheChat\Walkthechat\Log\ApiLogger $logger,
-        \WalktheChat\Walkthechat\Service\Resource\Products\Create $productCreateResource,
-        \WalktheChat\Walkthechat\Service\Resource\Products\Delete $productDeleteResource,
-        \WalktheChat\Walkthechat\Service\Resource\Products\Find $productFindResource,
-        \WalktheChat\Walkthechat\Service\Resource\Products\Update $productUpdateResource
+        \Walkthechat\Walkthechat\Helper\Data $helper,
+        \Walkthechat\Walkthechat\Log\ApiLogger $logger,
+        \Walkthechat\Walkthechat\Service\Resource\Products\Create $productCreateResource,
+        \Walkthechat\Walkthechat\Service\Resource\Products\Delete $productDeleteResource,
+        \Walkthechat\Walkthechat\Service\Resource\Products\Find $productFindResource,
+        \Walkthechat\Walkthechat\Service\Resource\Products\Update $productUpdateResource
     ) {
         $this->productCreateResource = $productCreateResource;
         $this->productDeleteResource = $productDeleteResource;

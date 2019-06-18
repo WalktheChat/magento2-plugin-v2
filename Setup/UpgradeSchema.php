@@ -1,19 +1,19 @@
 <?php
 /**
- * @package   WalktheChat\Walkthechat
+ * @package   Walkthechat\Walkthechat
  *
  * @author    Alex Yeremenko <madonzy13@gmail.com>
- * @copyright 2019 WalktheChat
+ * @copyright 2019 Walkthechat
  *
  * @license   See LICENSE.txt for license details.
  */
 
-namespace WalktheChat\Walkthechat\Setup;
+namespace Walkthechat\Walkthechat\Setup;
 
 /**
  * Class UpgradeSchema
  *
- * @package WalktheChat\Walkthechat\Setup
+ * @package Walkthechat\Walkthechat\Setup
  */
 class UpgradeSchema implements \Magento\Framework\Setup\UpgradeSchemaInterface
 {
@@ -57,12 +57,12 @@ class UpgradeSchema implements \Magento\Framework\Setup\UpgradeSchemaInterface
      */
     protected function createImageSyncTable(\Magento\Framework\Setup\SchemaSetupInterface $installer)
     {
-        if (!$installer->tableExists(\WalktheChat\Walkthechat\Model\ResourceModel\ImageSync::TABLE_NAME)) {
+        if (!$installer->tableExists(\Walkthechat\Walkthechat\Model\ResourceModel\ImageSync::TABLE_NAME)) {
             $table = $installer
                 ->getConnection()
-                ->newTable($installer->getTable(\WalktheChat\Walkthechat\Model\ResourceModel\ImageSync::TABLE_NAME))
+                ->newTable($installer->getTable(\Walkthechat\Walkthechat\Model\ResourceModel\ImageSync::TABLE_NAME))
                 ->addColumn(
-                    \WalktheChat\Walkthechat\Api\Data\ImageSyncInterface::ID,
+                    \Walkthechat\Walkthechat\Api\Data\ImageSyncInterface::ID,
                     \Magento\Framework\DB\Ddl\Table::TYPE_INTEGER,
                     null,
                     [
@@ -74,7 +74,7 @@ class UpgradeSchema implements \Magento\Framework\Setup\UpgradeSchemaInterface
                     'Entity ID'
                 )
                 ->addColumn(
-                    \WalktheChat\Walkthechat\Api\Data\ImageSyncInterface::PRODUCT_ID,
+                    \Walkthechat\Walkthechat\Api\Data\ImageSyncInterface::PRODUCT_ID,
                     \Magento\Framework\DB\Ddl\Table::TYPE_INTEGER,
                     null,
                     [
@@ -85,7 +85,7 @@ class UpgradeSchema implements \Magento\Framework\Setup\UpgradeSchemaInterface
                     'Magento Product Id'
                 )
                 ->addColumn(
-                    \WalktheChat\Walkthechat\Api\Data\ImageSyncInterface::IMAGE_ID,
+                    \Walkthechat\Walkthechat\Api\Data\ImageSyncInterface::IMAGE_ID,
                     \Magento\Framework\DB\Ddl\Table::TYPE_INTEGER,
                     null,
                     [
@@ -96,7 +96,7 @@ class UpgradeSchema implements \Magento\Framework\Setup\UpgradeSchemaInterface
                     'Image Product Id'
                 )
                 ->addColumn(
-                    \WalktheChat\Walkthechat\Api\Data\ImageSyncInterface::IMAGE_DATA,
+                    \Walkthechat\Walkthechat\Api\Data\ImageSyncInterface::IMAGE_DATA,
                     \Magento\Framework\DB\Ddl\Table::TYPE_TEXT,
                     null,
                     [
@@ -106,40 +106,40 @@ class UpgradeSchema implements \Magento\Framework\Setup\UpgradeSchemaInterface
                 )
                 ->addForeignKey(
                     $installer->getFkName(
-                        \WalktheChat\Walkthechat\Model\ResourceModel\ImageSync::TABLE_NAME,
-                        \WalktheChat\Walkthechat\Api\Data\ImageSyncInterface::PRODUCT_ID,
+                        \Walkthechat\Walkthechat\Model\ResourceModel\ImageSync::TABLE_NAME,
+                        \Walkthechat\Walkthechat\Api\Data\ImageSyncInterface::PRODUCT_ID,
                         'catalog_product_entity',
                         'entity_id'
                     ),
-                    \WalktheChat\Walkthechat\Api\Data\ImageSyncInterface::PRODUCT_ID,
+                    \Walkthechat\Walkthechat\Api\Data\ImageSyncInterface::PRODUCT_ID,
                     $installer->getTable('catalog_product_entity'),
                     'entity_id',
                     \Magento\Framework\DB\Ddl\Table::ACTION_CASCADE
                 )
                 ->addForeignKey(
                     $installer->getFkName(
-                        \WalktheChat\Walkthechat\Model\ResourceModel\ImageSync::TABLE_NAME,
-                        \WalktheChat\Walkthechat\Api\Data\ImageSyncInterface::IMAGE_ID,
+                        \Walkthechat\Walkthechat\Model\ResourceModel\ImageSync::TABLE_NAME,
+                        \Walkthechat\Walkthechat\Api\Data\ImageSyncInterface::IMAGE_ID,
                         'catalog_product_entity_media_gallery',
                         'value_id'
                     ),
-                    \WalktheChat\Walkthechat\Api\Data\ImageSyncInterface::IMAGE_ID,
+                    \Walkthechat\Walkthechat\Api\Data\ImageSyncInterface::IMAGE_ID,
                     $installer->getTable('catalog_product_entity_media_gallery'),
                     'value_id',
                     \Magento\Framework\DB\Ddl\Table::ACTION_CASCADE
                 )
                 ->addIndex(
                     $installer->getIdxName(
-                        \WalktheChat\Walkthechat\Model\ResourceModel\ImageSync::TABLE_NAME,
+                        \Walkthechat\Walkthechat\Model\ResourceModel\ImageSync::TABLE_NAME,
                         [
-                            \WalktheChat\Walkthechat\Api\Data\ImageSyncInterface::PRODUCT_ID,
-                            \WalktheChat\Walkthechat\Api\Data\ImageSyncInterface::IMAGE_ID,
+                            \Walkthechat\Walkthechat\Api\Data\ImageSyncInterface::PRODUCT_ID,
+                            \Walkthechat\Walkthechat\Api\Data\ImageSyncInterface::IMAGE_ID,
                         ],
                         \Magento\Framework\DB\Adapter\AdapterInterface::INDEX_TYPE_UNIQUE
                     ),
                     [
-                        \WalktheChat\Walkthechat\Api\Data\ImageSyncInterface::PRODUCT_ID,
-                        \WalktheChat\Walkthechat\Api\Data\ImageSyncInterface::IMAGE_ID,
+                        \Walkthechat\Walkthechat\Api\Data\ImageSyncInterface::PRODUCT_ID,
+                        \Walkthechat\Walkthechat\Api\Data\ImageSyncInterface::IMAGE_ID,
                     ],
                     ['type' => \Magento\Framework\DB\Adapter\AdapterInterface::INDEX_TYPE_UNIQUE]
                 )
@@ -185,17 +185,17 @@ class UpgradeSchema implements \Magento\Framework\Setup\UpgradeSchemaInterface
         $connection = $installer->getConnection();
 
         if (!$connection->tableColumnExists(
-            \WalktheChat\Walkthechat\Model\ResourceModel\Queue::TABLE_NAME,
-            \WalktheChat\Walkthechat\Api\Data\QueueInterface::STATUS
+            \Walkthechat\Walkthechat\Model\ResourceModel\Queue::TABLE_NAME,
+            \Walkthechat\Walkthechat\Api\Data\QueueInterface::STATUS
         )) {
             $connection
                 ->addColumn(
-                    $installer->getTable(\WalktheChat\Walkthechat\Model\ResourceModel\Queue::TABLE_NAME),
-                    \WalktheChat\Walkthechat\Api\Data\QueueInterface::STATUS,
+                    $installer->getTable(\Walkthechat\Walkthechat\Model\ResourceModel\Queue::TABLE_NAME),
+                    \Walkthechat\Walkthechat\Api\Data\QueueInterface::STATUS,
                     [
                         'type'     => \Magento\Framework\DB\Ddl\Table::TYPE_SMALLINT,
                         'nullable' => false,
-                        'default'  => \WalktheChat\Walkthechat\Api\Data\QueueInterface::WAITING_IN_QUEUE_STATUS,
+                        'default'  => \Walkthechat\Walkthechat\Api\Data\QueueInterface::WAITING_IN_QUEUE_STATUS,
                         'unsigned' => true,
                         'length'   => null,
                         'comment'  => 'Queue item status',
@@ -213,18 +213,18 @@ class UpgradeSchema implements \Magento\Framework\Setup\UpgradeSchemaInterface
     {
         $connection = $installer->getConnection();
 
-        if ($connection->isTableExists(\WalktheChat\Walkthechat\Model\ResourceModel\ApiLog::TABLE_NAME)) {
-            $connection->truncateTable(\WalktheChat\Walkthechat\Model\ResourceModel\ApiLog::TABLE_NAME);
+        if ($connection->isTableExists(\Walkthechat\Walkthechat\Model\ResourceModel\ApiLog::TABLE_NAME)) {
+            $connection->truncateTable(\Walkthechat\Walkthechat\Model\ResourceModel\ApiLog::TABLE_NAME);
         }
 
         if (!$connection->tableColumnExists(
-            \WalktheChat\Walkthechat\Model\ResourceModel\ApiLog::TABLE_NAME,
-            \WalktheChat\Walkthechat\Api\Data\ApiLogInterface::QUEUE_ITEM_ID_FIELD
+            \Walkthechat\Walkthechat\Model\ResourceModel\ApiLog::TABLE_NAME,
+            \Walkthechat\Walkthechat\Api\Data\ApiLogInterface::QUEUE_ITEM_ID_FIELD
         )) {
             $connection
                 ->addColumn(
-                    $installer->getTable(\WalktheChat\Walkthechat\Model\ResourceModel\ApiLog::TABLE_NAME),
-                    \WalktheChat\Walkthechat\Api\Data\ApiLogInterface::QUEUE_ITEM_ID_FIELD,
+                    $installer->getTable(\Walkthechat\Walkthechat\Model\ResourceModel\ApiLog::TABLE_NAME),
+                    \Walkthechat\Walkthechat\Api\Data\ApiLogInterface::QUEUE_ITEM_ID_FIELD,
                     [
                         'type'     => \Magento\Framework\DB\Ddl\Table::TYPE_INTEGER,
                         'nullable' => false,
@@ -237,15 +237,15 @@ class UpgradeSchema implements \Magento\Framework\Setup\UpgradeSchemaInterface
             $connection
                 ->addForeignKey(
                     $connection->getForeignKeyName(
-                        \WalktheChat\Walkthechat\Model\ResourceModel\ApiLog::TABLE_NAME,
-                        \WalktheChat\Walkthechat\Api\Data\ApiLogInterface::QUEUE_ITEM_ID_FIELD,
-                        \WalktheChat\Walkthechat\Model\ResourceModel\Queue::TABLE_NAME,
-                        \WalktheChat\Walkthechat\Api\Data\QueueInterface::ID
+                        \Walkthechat\Walkthechat\Model\ResourceModel\ApiLog::TABLE_NAME,
+                        \Walkthechat\Walkthechat\Api\Data\ApiLogInterface::QUEUE_ITEM_ID_FIELD,
+                        \Walkthechat\Walkthechat\Model\ResourceModel\Queue::TABLE_NAME,
+                        \Walkthechat\Walkthechat\Api\Data\QueueInterface::ID
                     ),
-                    \WalktheChat\Walkthechat\Model\ResourceModel\ApiLog::TABLE_NAME,
-                    \WalktheChat\Walkthechat\Api\Data\ApiLogInterface::QUEUE_ITEM_ID_FIELD,
-                    \WalktheChat\Walkthechat\Model\ResourceModel\Queue::TABLE_NAME,
-                    \WalktheChat\Walkthechat\Api\Data\QueueInterface::ID
+                    \Walkthechat\Walkthechat\Model\ResourceModel\ApiLog::TABLE_NAME,
+                    \Walkthechat\Walkthechat\Api\Data\ApiLogInterface::QUEUE_ITEM_ID_FIELD,
+                    \Walkthechat\Walkthechat\Model\ResourceModel\Queue::TABLE_NAME,
+                    \Walkthechat\Walkthechat\Api\Data\QueueInterface::ID
                 );
         }
     }

@@ -1,17 +1,17 @@
 <?php
 /**
- * @package   WalktheChat\Walkthechat
+ * @package   Walkthechat\Walkthechat
  * @author    Alex Yeremenko <madonzy13@gmail.com>
- * @copyright 2019 WalktheChat
+ * @copyright 2019 Walkthechat
  * @license   See LICENSE_DIVANTE.txt for license details.
  */
 
-namespace WalktheChat\Walkthechat\Exception;
+namespace Walkthechat\Walkthechat\Exception;
 
 /**
  * Class InvalidMagentoInstanceException
  *
- * @package WalktheChat\Walkthechat\Exception
+ * @package Walkthechat\Walkthechat\Exception
  */
 class InvalidMagentoInstanceException extends \Magento\Framework\Exception\LocalizedException
 {

@@ -1,17 +1,17 @@
 <?php
 /**
- * @package   WalktheChat\Walkthechat
+ * @package   Walkthechat\Walkthechat
  * @author    Alex Yeremenko <madonzy13@gmail.com>
- * @copyright 2019 WalktheChat
+ * @copyright 2019 Walkthechat
  * @license   See LICENSE.txt for license details.
  */
 
-namespace WalktheChat\Walkthechat\Api\Data;
+namespace Walkthechat\Walkthechat\Api\Data;
 
 /**
  * Interface ImageSyncInterface
  *
- * @package WalktheChat\Walkthechat\Api\Data
+ * @package Walkthechat\Walkthechat\Api\Data
  */
 interface ImageSyncInterface
 {
@@ -36,7 +36,7 @@ interface ImageSyncInterface
      *
      * @param int $id
      *
-     * @return \WalktheChat\Walkthechat\Api\Data\ImageSyncInterface
+     * @return \Walkthechat\Walkthechat\Api\Data\ImageSyncInterface
      */
     public function setId($id);
 
@@ -52,7 +52,7 @@ interface ImageSyncInterface
      *
      * @param int $id
      *
-     * @return \WalktheChat\Walkthechat\Api\Data\ImageSyncInterface
+     * @return \Walkthechat\Walkthechat\Api\Data\ImageSyncInterface
      */
     public function setProductId($id);
 
@@ -68,7 +68,7 @@ interface ImageSyncInterface
      *
      * @param int $id
      *
-     * @return \WalktheChat\Walkthechat\Api\Data\ImageSyncInterface
+     * @return \Walkthechat\Walkthechat\Api\Data\ImageSyncInterface
      */
     public function setImageId($id);
 
@@ -84,7 +84,7 @@ interface ImageSyncInterface
      *
      * @param string $imageData
      *
-     * @return \WalktheChat\Walkthechat\Api\Data\ImageSyncInterface
+     * @return \Walkthechat\Walkthechat\Api\Data\ImageSyncInterface
      */
     public function setImageData($imageData);
 }

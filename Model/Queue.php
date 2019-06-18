@@ -1,28 +1,28 @@
 <?php
 /**
- * @package   WalktheChat\Walkthechat
+ * @package   Walkthechat\Walkthechat
  *
  * @author    Alex Yeremenko <madonzy13@gmail.com>
- * @copyright 2019 WalktheChat
+ * @copyright 2019 Walkthechat
  *
  * @license   See LICENSE.txt for license details.
  */
 
-namespace WalktheChat\Walkthechat\Model;
+namespace Walkthechat\Walkthechat\Model;
 
 /**
  * Class Queue
  *
- * @package WalktheChat\Walkthechat\Model
+ * @package Walkthechat\Walkthechat\Model
  */
-class Queue extends \Magento\Framework\Model\AbstractModel implements \WalktheChat\Walkthechat\Api\Data\QueueInterface
+class Queue extends \Magento\Framework\Model\AbstractModel implements \Walkthechat\Walkthechat\Api\Data\QueueInterface
 {
     /**
      * {@inheritdoc}
      */
     protected function _construct()
     {
-        $this->_init(\WalktheChat\Walkthechat\Model\ResourceModel\Queue::class);
+        $this->_init(\Walkthechat\Walkthechat\Model\ResourceModel\Queue::class);
     }
 
     /**

@@ -1,19 +1,19 @@
 <?php
 /**
- * @package   WalktheChat\Walkthechat
+ * @package   Walkthechat\Walkthechat
  * @author    Alex Yeremenko <madonzy13@gmail.com>
- * @copyright 2019 WalktheChat
+ * @copyright 2019 Walkthechat
  * @license   See LICENSE.txt for license details.
  */
 
-namespace WalktheChat\Walkthechat\Model\Action;
+namespace Walkthechat\Walkthechat\Model\Action;
 
 /**
  * Class Delete
  *
- * @package WalktheChat\Walkthechat\Model\Action
+ * @package Walkthechat\Walkthechat\Model\Action
  */
-class Delete extends \WalktheChat\Walkthechat\Model\Action\AbstractAction
+class Delete extends \Walkthechat\Walkthechat\Model\Action\AbstractAction
 {
     /**
      * Action name
@@ -28,7 +28,7 @@ class Delete extends \WalktheChat\Walkthechat\Model\Action\AbstractAction
     protected $productRepository;
 
     /**
-     * @var \WalktheChat\Walkthechat\Service\ProductsRepository
+     * @var \Walkthechat\Walkthechat\Service\ProductsRepository
      */
     protected $queueProductRepository;
 
@@ -41,14 +41,14 @@ class Delete extends \WalktheChat\Walkthechat\Model\Action\AbstractAction
      * {@inheritdoc}
      *
      * @param \Magento\Catalog\Model\ProductRepository                       $productRepository
-     * @param \WalktheChat\Walkthechat\Service\ProductsRepository                $queueProductRepository
+     * @param \Walkthechat\Walkthechat\Service\ProductsRepository                $queueProductRepository
      * @param \Magento\Catalog\Model\ResourceModel\Product\CollectionFactory $productCollectionFactory
      */
     public function __construct(
-        \WalktheChat\Walkthechat\Api\Data\ImageSyncInterfaceFactory $imageSyncFactory,
-        \WalktheChat\Walkthechat\Api\ImageSyncRepositoryInterface $imageSyncRepository,
+        \Walkthechat\Walkthechat\Api\Data\ImageSyncInterfaceFactory $imageSyncFactory,
+        \Walkthechat\Walkthechat\Api\ImageSyncRepositoryInterface $imageSyncRepository,
         \Magento\Catalog\Model\ProductRepository $productRepository,
-        \WalktheChat\Walkthechat\Service\ProductsRepository $queueProductRepository,
+        \Walkthechat\Walkthechat\Service\ProductsRepository $queueProductRepository,
         \Magento\Catalog\Model\ResourceModel\Product\CollectionFactory $productCollectionFactory
     ) {
         $this->productRepository        = $productRepository;
@@ -70,7 +70,7 @@ class Delete extends \WalktheChat\Walkthechat\Model\Action\AbstractAction
      * @throws \Zend_Http_Client_Exception
      * @throws \Exception
      */
-    public function execute(\WalktheChat\Walkthechat\Api\Data\QueueInterface $queueItem)
+    public function execute(\Walkthechat\Walkthechat\Api\Data\QueueInterface $queueItem)
     {
         $this->queueProductRepository->delete(['id' => $queueItem->getWalkthechatId()]);
 
@@ -78,7 +78,7 @@ class Delete extends \WalktheChat\Walkthechat\Model\Action\AbstractAction
         $deleteProductCollection = $this->productCollectionFactory->create();
 
         $deleteProductCollection->addAttributeToFilter(
-            \WalktheChat\Walkthechat\Helper\Data::ATTRIBUTE_CODE,
+            \Walkthechat\Walkthechat\Helper\Data::ATTRIBUTE_CODE,
             $queueItem->getWalkthechatId()
         );
 
@@ -86,7 +86,7 @@ class Delete extends \WalktheChat\Walkthechat\Model\Action\AbstractAction
 
         /** @var \Magento\Catalog\Api\Data\ProductInterface $product */
         foreach ($deleteProductCollection as $product) {
-            $product->setCustomAttribute(\WalktheChat\Walkthechat\Helper\Data::ATTRIBUTE_CODE, null);
+            $product->setCustomAttribute(\Walkthechat\Walkthechat\Helper\Data::ATTRIBUTE_CODE, null);
 
             $this->productRepository->save($product);
 

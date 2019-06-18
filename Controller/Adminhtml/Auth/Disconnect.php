@@ -1,19 +1,19 @@
 <?php
 /**
- * @package   WalktheChat\Walkthechat
+ * @package   Walkthechat\Walkthechat
  *
  * @author    Alex Yeremenko <madonzy13@gmail.com>
- * @copyright 2019 WalktheChat
+ * @copyright 2019 Walkthechat
  *
  * @license   See LICENSE.txt for license details.
  */
 
-namespace WalktheChat\Walkthechat\Controller\Adminhtml\Auth;
+namespace Walkthechat\Walkthechat\Controller\Adminhtml\Auth;
 
 /**
  * Class Disconnect
  *
- * @package WalktheChat\Walkthechat\Controller\Adminhtml\Auth
+ * @package Walkthechat\Walkthechat\Controller\Adminhtml\Auth
  */
 class Disconnect extends \Magento\Backend\App\Action
 {

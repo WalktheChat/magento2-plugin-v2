@@ -1,24 +1,24 @@
 <?php
 /**
- * @package   WalktheChat\Walkthechat
+ * @package   Walkthechat\Walkthechat
  *
  * @author    Alex Yeremenko <madonzy13@gmail.com>
- * @copyright 2019 WalktheChat
+ * @copyright 2019 Walkthechat
  *
  * @license   See LICENSE.txt for license details.
  */
 
-namespace WalktheChat\Walkthechat\Controller\Adminhtml\Auth;
+namespace Walkthechat\Walkthechat\Controller\Adminhtml\Auth;
 
 /**
  * Class Confirm
  *
- * @package WalktheChat\Walkthechat\Controller\Adminhtml\Auth
+ * @package Walkthechat\Walkthechat\Controller\Adminhtml\Auth
  */
 class Confirm extends \Magento\Backend\App\Action
 {
     /**
-     * @var \WalktheChat\Walkthechat\Service\AuthorizeRepository
+     * @var \Walkthechat\Walkthechat\Service\AuthorizeRepository
      */
     protected $authorizeRepository;
 
@@ -31,12 +31,12 @@ class Confirm extends \Magento\Backend\App\Action
      * {@inheritdoc}
      *
      * @param \Magento\Framework\App\RequestInterface          $request
-     * @param \WalktheChat\Walkthechat\Service\AuthorizeRepository $authorizeRepository
+     * @param \Walkthechat\Walkthechat\Service\AuthorizeRepository $authorizeRepository
      */
     public function __construct(
         \Magento\Backend\App\Action\Context $context,
         \Magento\Framework\App\RequestInterface $request,
-        \WalktheChat\Walkthechat\Service\AuthorizeRepository $authorizeRepository
+        \Walkthechat\Walkthechat\Service\AuthorizeRepository $authorizeRepository
     ) {
         $this->request             = $request;
         $this->authorizeRepository = $authorizeRepository;

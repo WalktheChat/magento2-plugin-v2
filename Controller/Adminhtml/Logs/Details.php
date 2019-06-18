@@ -1,19 +1,19 @@
 <?php
 /**
- * @package   WalktheChat\Walkthechat
+ * @package   Walkthechat\Walkthechat
  *
  * @author    Alex Yeremenko <madonzy13@gmail.com>
- * @copyright 2019 WalktheChat
+ * @copyright 2019 Walkthechat
  *
  * @license   See LICENSE.txt for license details.
  */
 
-namespace WalktheChat\Walkthechat\Controller\Adminhtml\Logs;
+namespace Walkthechat\Walkthechat\Controller\Adminhtml\Logs;
 
 /**
  * Class Details
  *
- * @package WalktheChat\Walkthechat\Controller\Adminhtml\Logs
+ * @package Walkthechat\Walkthechat\Controller\Adminhtml\Logs
  */
 class Details extends \Magento\Backend\App\Action
 {

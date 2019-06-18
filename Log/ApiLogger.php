@@ -1,29 +1,29 @@
 <?php
 /**
- * @package   WalktheChat\Walkthechat
+ * @package   Walkthechat\Walkthechat
  *
  * @author    Alex Yeremenko <madonzy13@gmail.com>
- * @copyright 2019 WalktheChat
+ * @copyright 2019 Walkthechat
  *
  * @license   See LICENSE.txt for license details.
  */
 
-namespace WalktheChat\Walkthechat\Log;
+namespace Walkthechat\Walkthechat\Log;
 
 /**
  * Class ApiLogger
  *
- * @package WalktheChat\Walkthechat\Log
+ * @package Walkthechat\Walkthechat\Log
  */
 class ApiLogger
 {
     /**
-     * @var \WalktheChat\Walkthechat\Model\ApiLogFactory
+     * @var \Walkthechat\Walkthechat\Model\ApiLogFactory
      */
     protected $apiLogFactory;
 
     /**
-     * @var \WalktheChat\Walkthechat\Model\ApiLogRepository
+     * @var \Walkthechat\Walkthechat\Model\ApiLogRepository
      */
     protected $apiLogRepository;
 
@@ -40,14 +40,14 @@ class ApiLogger
     /**
      * ApiLogger constructor.
      *
-     * @param \WalktheChat\Walkthechat\Model\ApiLogFactory    $apiLogFactory
-     * @param \WalktheChat\Walkthechat\Model\ApiLogRepository $apiLogRepository
+     * @param \Walkthechat\Walkthechat\Model\ApiLogFactory    $apiLogFactory
+     * @param \Walkthechat\Walkthechat\Model\ApiLogRepository $apiLogRepository
      * @param \Psr\Log\LoggerInterface                    $logger
      * @param \Magento\Framework\Registry                 $registry
      */
     public function __construct(
-        \WalktheChat\Walkthechat\Model\ApiLogFactory $apiLogFactory,
-        \WalktheChat\Walkthechat\Model\ApiLogRepository $apiLogRepository,
+        \Walkthechat\Walkthechat\Model\ApiLogFactory $apiLogFactory,
+        \Walkthechat\Walkthechat\Model\ApiLogRepository $apiLogRepository,
         \Psr\Log\LoggerInterface $logger,
         \Magento\Framework\Registry $registry
     ) {
@@ -60,18 +60,18 @@ class ApiLogger
     /**
      * Log API into database
      *
-     * @param \WalktheChat\Walkthechat\Service\Resource\AbstractResource $requestResource
+     * @param \Walkthechat\Walkthechat\Service\Resource\AbstractResource $requestResource
      * @param array|string                                           $params
      * @param \Zend_Http_Response                                    $response
      * @param null|bool                                              $placeholderId
      */
     public function log(
-        \WalktheChat\Walkthechat\Service\Resource\AbstractResource $requestResource,
+        \Walkthechat\Walkthechat\Service\Resource\AbstractResource $requestResource,
         $params,
         \Zend_Http_Response $response,
         $placeholderId
     ) {
-        /** @var \WalktheChat\Walkthechat\Api\Data\ApiLogInterface $apiLog */
+        /** @var \Walkthechat\Walkthechat\Api\Data\ApiLogInterface $apiLog */
         $apiLog = $this->apiLogFactory->create();
 
         $responseText = $response->asString();

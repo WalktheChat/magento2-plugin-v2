@@ -1,19 +1,19 @@
 <?php
 /**
- * @package   WalktheChat\Walkthechat
+ * @package   Walkthechat\Walkthechat
  *
  * @author    Alex Yeremenko <madonzy13@gmail.com>
- * @copyright 2019 WalktheChat
+ * @copyright 2019 Walkthechat
  *
  * @license   See LICENSE.txt for license details.
  */
 
-namespace WalktheChat\Walkthechat\Controller\Adminhtml\Dashboard;
+namespace Walkthechat\Walkthechat\Controller\Adminhtml\Dashboard;
 
 /**
  * Class MassDelete
  *
- * @package WalktheChat\Walkthechat\Controller\Adminhtml\Dashboard
+ * @package Walkthechat\Walkthechat\Controller\Adminhtml\Dashboard
  */
 class MassDelete extends \Magento\Backend\App\Action
 {
@@ -23,12 +23,12 @@ class MassDelete extends \Magento\Backend\App\Action
     protected $filter;
 
     /**
-     * @var \WalktheChat\Walkthechat\Model\ResourceModel\Queue\CollectionFactory
+     * @var \Walkthechat\Walkthechat\Model\ResourceModel\Queue\CollectionFactory
      */
     protected $collectionFactory;
 
     /**
-     * @var \WalktheChat\Walkthechat\Model\QueueRepository
+     * @var \Walkthechat\Walkthechat\Model\QueueRepository
      */
     protected $queueRepository;
 
@@ -36,14 +36,14 @@ class MassDelete extends \Magento\Backend\App\Action
      * {@inheritdoc}
      *
      * @param \Magento\Ui\Component\MassAction\Filter                          $filter
-     * @param \WalktheChat\Walkthechat\Model\ResourceModel\Queue\CollectionFactory $collectionFactory
-     * @param \WalktheChat\Walkthechat\Model\QueueRepository                       $queueRepository
+     * @param \Walkthechat\Walkthechat\Model\ResourceModel\Queue\CollectionFactory $collectionFactory
+     * @param \Walkthechat\Walkthechat\Model\QueueRepository                       $queueRepository
      */
     public function __construct(
         \Magento\Backend\App\Action\Context $context,
         \Magento\Ui\Component\MassAction\Filter $filter,
-        \WalktheChat\Walkthechat\Model\ResourceModel\Queue\CollectionFactory $collectionFactory,
-        \WalktheChat\Walkthechat\Model\QueueRepository $queueRepository
+        \Walkthechat\Walkthechat\Model\ResourceModel\Queue\CollectionFactory $collectionFactory,
+        \Walkthechat\Walkthechat\Model\QueueRepository $queueRepository
     ) {
         $this->filter            = $filter;
         $this->collectionFactory = $collectionFactory;
@@ -61,7 +61,7 @@ class MassDelete extends \Magento\Backend\App\Action
      */
     public function execute()
     {
-        /** @var \WalktheChat\Walkthechat\Model\ResourceModel\Queue\Collection $collection */
+        /** @var \Walkthechat\Walkthechat\Model\ResourceModel\Queue\Collection $collection */
         $collection = $this->filter->getCollection($this->collectionFactory->create());
 
         $count = 0;

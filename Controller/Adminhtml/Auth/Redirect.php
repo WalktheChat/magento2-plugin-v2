@@ -1,19 +1,19 @@
 <?php
 /**
- * @package   WalktheChat\Walkthechat
+ * @package   Walkthechat\Walkthechat
  *
  * @author    Alex Yeremenko <madonzy13@gmail.com>
- * @copyright 2019 WalktheChat
+ * @copyright 2019 Walkthechat
  *
  * @license   See LICENSE.txt for license details.
  */
 
-namespace WalktheChat\Walkthechat\Controller\Adminhtml\Auth;
+namespace Walkthechat\Walkthechat\Controller\Adminhtml\Auth;
 
 /**
  * Class Redirect
  *
- * @package WalktheChat\Walkthechat\Controller\Adminhtml\Auth
+ * @package Walkthechat\Walkthechat\Controller\Adminhtml\Auth
  */
 class Redirect extends \Magento\Backend\App\Action
 {
@@ -23,7 +23,7 @@ class Redirect extends \Magento\Backend\App\Action
     protected $resultFactory;
 
     /**
-     * @var \WalktheChat\Walkthechat\Helper\Data
+     * @var \Walkthechat\Walkthechat\Helper\Data
      */
     protected $helper;
 
@@ -31,12 +31,12 @@ class Redirect extends \Magento\Backend\App\Action
      * {@inheritdoc}
      *
      * @param \Magento\Framework\Controller\ResultFactory $resultFactory
-     * @param \WalktheChat\Walkthechat\Helper\Data            $helper
+     * @param \Walkthechat\Walkthechat\Helper\Data            $helper
      */
     public function __construct(
         \Magento\Backend\App\Action\Context $context,
         \Magento\Framework\Controller\ResultFactory $resultFactory,
-        \WalktheChat\Walkthechat\Helper\Data $helper
+        \Walkthechat\Walkthechat\Helper\Data $helper
     ) {
         $this->resultFactory = $resultFactory;
         $this->helper        = $helper;

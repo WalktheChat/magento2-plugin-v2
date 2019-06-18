@@ -1,19 +1,19 @@
 <?php
 /**
- * @package   WalktheChat\Walkthechat
+ * @package   Walkthechat\Walkthechat
  *
  * @author    Alex Yeremenko <madonzy13@gmail.com>
- * @copyright 2019 WalktheChat
+ * @copyright 2019 Walkthechat
  *
  * @license   See LICENSE.txt for license details.
  */
 
-namespace WalktheChat\Walkthechat\Block\Adminhtml\Log\Details;
+namespace Walkthechat\Walkthechat\Block\Adminhtml\Log\Details;
 
 /**
  * Class BackButton
  *
- * @package WalktheChat\Walkthechat\Block\Adminhtml\Log\Details
+ * @package Walkthechat\Walkthechat\Block\Adminhtml\Log\Details
  */
 class BackButton implements \Magento\Framework\View\Element\UiComponent\Control\ButtonProviderInterface
 {

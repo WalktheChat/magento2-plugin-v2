@@ -1,19 +1,19 @@
 <?php
 /**
- * @package   WalktheChat\Walkthechat
+ * @package   Walkthechat\Walkthechat
  *
  * @author    Alex Yeremenko <madonzy13@gmail.com>
- * @copyright 2019 WalktheChat
+ * @copyright 2019 Walkthechat
  *
  * @license   See LICENSE.txt for license details.
  */
 
-namespace WalktheChat\Walkthechat\Api\Data;
+namespace Walkthechat\Walkthechat\Api\Data;
 
 /**
  * Interface QueueInterface
  *
- * @package WalktheChat\Walkthechat\Api\Data
+ * @package Walkthechat\Walkthechat\Api\Data
  */
 interface QueueInterface
 {
@@ -51,7 +51,7 @@ interface QueueInterface
      *
      * @param int $id
      *
-     * @return \WalktheChat\Walkthechat\Api\Data\QueueInterface
+     * @return \Walkthechat\Walkthechat\Api\Data\QueueInterface
      */
     public function setId($id);
 
@@ -67,7 +67,7 @@ interface QueueInterface
      *
      * @param int $id
      *
-     * @return \WalktheChat\Walkthechat\Api\Data\QueueInterface
+     * @return \Walkthechat\Walkthechat\Api\Data\QueueInterface
      */
     public function setProductId($id);
 
@@ -83,7 +83,7 @@ interface QueueInterface
      *
      * @param int $id
      *
-     * @return \WalktheChat\Walkthechat\Api\Data\QueueInterface
+     * @return \Walkthechat\Walkthechat\Api\Data\QueueInterface
      */
     public function setOrderId($id);
 
@@ -99,7 +99,7 @@ interface QueueInterface
      *
      * @param int $id
      *
-     * @return \WalktheChat\Walkthechat\Api\Data\QueueInterface
+     * @return \Walkthechat\Walkthechat\Api\Data\QueueInterface
      */
     public function setWalkthechatId($id);
 
@@ -115,7 +115,7 @@ interface QueueInterface
      *
      * @param string $action
      *
-     * @return \WalktheChat\Walkthechat\Api\Data\QueueInterface
+     * @return \Walkthechat\Walkthechat\Api\Data\QueueInterface
      */
     public function setAction($action);
 
@@ -131,7 +131,7 @@ interface QueueInterface
      *
      * @param string $gsmDate
      *
-     * @return \WalktheChat\Walkthechat\Api\Data\QueueInterface
+     * @return \Walkthechat\Walkthechat\Api\Data\QueueInterface
      */
     public function setCreatedAt($gsmDate);
 
@@ -147,7 +147,7 @@ interface QueueInterface
      *
      * @param string $gsmDate
      *
-     * @return \WalktheChat\Walkthechat\Api\Data\QueueInterface
+     * @return \Walkthechat\Walkthechat\Api\Data\QueueInterface
      */
     public function setProcessedAt($gsmDate);
 
@@ -163,7 +163,7 @@ interface QueueInterface
      *
      * @param int $status
      *
-     * @return \WalktheChat\Walkthechat\Api\Data\QueueInterface
+     * @return \Walkthechat\Walkthechat\Api\Data\QueueInterface
      */
     public function setStatus($status);
 }

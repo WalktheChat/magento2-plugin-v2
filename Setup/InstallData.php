@@ -1,19 +1,19 @@
 <?php
 /**
- * @package   WalktheChat\Walkthechat
+ * @package   Walkthechat\Walkthechat
  *
  * @author    Alex Yeremenko <madonzy13@gmail.com>
- * @copyright 2019 WalktheChat
+ * @copyright 2019 Walkthechat
  *
  * @license   See LICENSE.txt for license details.
  */
 
-namespace WalktheChat\Walkthechat\Setup;
+namespace Walkthechat\Walkthechat\Setup;
 
 /**
  * Class InstallData
  *
- * @package WalktheChat\Walkthechat\Setup
+ * @package Walkthechat\Walkthechat\Setup
  */
 class InstallData implements \Magento\Framework\Setup\InstallDataInterface
 {
@@ -51,7 +51,7 @@ class InstallData implements \Magento\Framework\Setup\InstallDataInterface
 
         $eavSetup->addAttribute(
             \Magento\Catalog\Model\Product::ENTITY,
-            \WalktheChat\Walkthechat\Helper\Data::ATTRIBUTE_CODE,
+            \Walkthechat\Walkthechat\Helper\Data::ATTRIBUTE_CODE,
             [
                 'type'                    => 'varchar',
                 'label'                   => 'WalkTheChat ID',

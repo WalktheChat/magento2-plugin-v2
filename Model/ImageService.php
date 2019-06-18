@@ -1,27 +1,27 @@
 <?php
 /**
- * @package   WalktheChat\Walkthechat
+ * @package   Walkthechat\Walkthechat
  * @author    Alex Yeremenko <madonzy13@gmail.com>
- * @copyright 2019 WalktheChat
+ * @copyright 2019 Walkthechat
  * @license   See LICENSE.txt for license details.
  */
 
-namespace WalktheChat\Walkthechat\Model;
+namespace Walkthechat\Walkthechat\Model;
 
 /**
  * Class ImageService
  *
- * @package WalktheChat\Walkthechat\Model
+ * @package Walkthechat\Walkthechat\Model
  */
 class ImageService
 {
     /**
-     * @var \WalktheChat\Walkthechat\Service\ImagesRepository
+     * @var \Walkthechat\Walkthechat\Service\ImagesRepository
      */
     protected $requestImagesRepository;
 
     /**
-     * @var \WalktheChat\Walkthechat\Api\ImageSyncRepositoryInterface
+     * @var \Walkthechat\Walkthechat\Api\ImageSyncRepositoryInterface
      */
     protected $imageSyncRepository;
 
@@ -43,15 +43,15 @@ class ImageService
     /**
      * ImageService constructor.
      *
-     * @param \WalktheChat\Walkthechat\Service\ImagesRepository           $requestImagesRepository
-     * @param \WalktheChat\Walkthechat\Api\ImageSyncRepositoryInterface   $imageSyncRepository
+     * @param \Walkthechat\Walkthechat\Service\ImagesRepository           $requestImagesRepository
+     * @param \Walkthechat\Walkthechat\Api\ImageSyncRepositoryInterface   $imageSyncRepository
      * @param \Magento\Framework\Api\SearchCriteriaInterface          $searchCriteria
      * @param \Magento\Framework\Api\Search\FilterGroup               $filterGroup
      * @param \Magento\Framework\Api\FilterBuilder                    $filterBuilder
      */
     public function __construct(
-        \WalktheChat\Walkthechat\Service\ImagesRepository $requestImagesRepository,
-        \WalktheChat\Walkthechat\Api\ImageSyncRepositoryInterface $imageSyncRepository,
+        \Walkthechat\Walkthechat\Service\ImagesRepository $requestImagesRepository,
+        \Walkthechat\Walkthechat\Api\ImageSyncRepositoryInterface $imageSyncRepository,
         \Magento\Framework\Api\SearchCriteriaInterface $searchCriteria,
         \Magento\Framework\Api\Search\FilterGroup $filterGroup,
         \Magento\Framework\Api\FilterBuilder $filterBuilder

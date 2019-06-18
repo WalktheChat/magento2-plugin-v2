@@ -1,19 +1,19 @@
 <?php
 /**
- * @package   WalktheChat\Walkthechat
+ * @package   Walkthechat\Walkthechat
  * @author    Alex Yeremenko <madonzy13@gmail.com>
- * @copyright 2019 WalktheChat
+ * @copyright 2019 Walkthechat
  * @license   See LICENSE.txt for license details.
  */
 
-namespace WalktheChat\Walkthechat\Model\Action;
+namespace Walkthechat\Walkthechat\Model\Action;
 
 /**
  * Class Add
  *
- * @package WalktheChat\Walkthechat\Model\Action
+ * @package Walkthechat\Walkthechat\Model\Action
  */
-class Add extends \WalktheChat\Walkthechat\Model\Action\AbstractAction
+class Add extends \Walkthechat\Walkthechat\Model\Action\AbstractAction
 {
     /**
      * Action name
@@ -23,7 +23,7 @@ class Add extends \WalktheChat\Walkthechat\Model\Action\AbstractAction
     const ACTION = 'add';
 
     /**
-     * @var \WalktheChat\Walkthechat\Helper\Data
+     * @var \Walkthechat\Walkthechat\Helper\Data
      */
     protected $helper;
 
@@ -33,43 +33,43 @@ class Add extends \WalktheChat\Walkthechat\Model\Action\AbstractAction
     protected $productRepository;
 
     /**
-     * @var \WalktheChat\Walkthechat\Service\ProductsRepository
+     * @var \Walkthechat\Walkthechat\Service\ProductsRepository
      */
     protected $queueProductRepository;
 
     /**
-     * @var \WalktheChat\Walkthechat\Service\ImagesRepository
+     * @var \Walkthechat\Walkthechat\Service\ImagesRepository
      */
     protected $requestImagesRepository;
 
     /**
-     * @var \WalktheChat\Walkthechat\Model\ImageService
+     * @var \Walkthechat\Walkthechat\Model\ImageService
      */
     protected $imageService;
 
     /**
-     * @var \WalktheChat\Walkthechat\Model\ProductService
+     * @var \Walkthechat\Walkthechat\Model\ProductService
      */
     protected $productService;
 
     /**
      * {@inheritdoc}
      *
-     * @param \WalktheChat\Walkthechat\Helper\Data                $helper
+     * @param \Walkthechat\Walkthechat\Helper\Data                $helper
      * @param \Magento\Catalog\Model\ProductRepository        $productRepository
-     * @param \WalktheChat\Walkthechat\Service\ProductsRepository $queueProductRepositoryFactory
-     * @param \WalktheChat\Walkthechat\Service\ImagesRepository   $requestImagesRepository
-     * @param \WalktheChat\Walkthechat\Model\ImageService         $imageService
-     * @param \WalktheChat\Walkthechat\Model\ProductService       $productService
+     * @param \Walkthechat\Walkthechat\Service\ProductsRepository $queueProductRepositoryFactory
+     * @param \Walkthechat\Walkthechat\Service\ImagesRepository   $requestImagesRepository
+     * @param \Walkthechat\Walkthechat\Model\ImageService         $imageService
+     * @param \Walkthechat\Walkthechat\Model\ProductService       $productService
      */
     public function __construct(
-        \WalktheChat\Walkthechat\Api\Data\ImageSyncInterfaceFactory $imageSyncFactory,
-        \WalktheChat\Walkthechat\Api\ImageSyncRepositoryInterface $imageSyncRepository,
+        \Walkthechat\Walkthechat\Api\Data\ImageSyncInterfaceFactory $imageSyncFactory,
+        \Walkthechat\Walkthechat\Api\ImageSyncRepositoryInterface $imageSyncRepository,
         \Magento\Catalog\Model\ProductRepository $productRepository,
-        \WalktheChat\Walkthechat\Service\ProductsRepository $queueProductRepositoryFactory,
-        \WalktheChat\Walkthechat\Service\ImagesRepository $requestImagesRepository,
-        \WalktheChat\Walkthechat\Model\ImageService $imageService,
-        \WalktheChat\Walkthechat\Model\ProductService $productService
+        \Walkthechat\Walkthechat\Service\ProductsRepository $queueProductRepositoryFactory,
+        \Walkthechat\Walkthechat\Service\ImagesRepository $requestImagesRepository,
+        \Walkthechat\Walkthechat\Model\ImageService $imageService,
+        \Walkthechat\Walkthechat\Model\ProductService $productService
     ) {
         $this->productRepository       = $productRepository;
         $this->queueProductRepository  = $queueProductRepositoryFactory;
@@ -92,7 +92,7 @@ class Add extends \WalktheChat\Walkthechat\Model\Action\AbstractAction
      * @throws \Magento\Framework\Exception\StateException
      * @throws \Zend_Http_Client_Exception
      */
-    public function execute(\WalktheChat\Walkthechat\Api\Data\QueueInterface $queueItem)
+    public function execute(\Walkthechat\Walkthechat\Api\Data\QueueInterface $queueItem)
     {
         $product    = $this->productRepository->getById($queueItem->getProductId());
         $imagesData = $this->imageService->addImages($product);

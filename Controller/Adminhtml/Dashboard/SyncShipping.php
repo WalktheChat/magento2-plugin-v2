@@ -1,42 +1,42 @@
 <?php
 /**
- * @package   WalktheChat\Walkthechat
+ * @package   Walkthechat\Walkthechat
  *
  * @author    Alex Yeremenko <madonzy13@gmail.com>
- * @copyright 2019 WalktheChat
+ * @copyright 2019 Walkthechat
  *
  * @license   See LICENSE.txt for license details.
  */
 
-namespace WalktheChat\Walkthechat\Controller\Adminhtml\Dashboard;
+namespace Walkthechat\Walkthechat\Controller\Adminhtml\Dashboard;
 
 /**
  * Class SyncShipping
  *
- * @package WalktheChat\Walkthechat\Controller\Adminhtml\Dashboard
+ * @package Walkthechat\Walkthechat\Controller\Adminhtml\Dashboard
  */
 class SyncShipping extends \Magento\Backend\App\Action
 {
     /**
-     * @var \WalktheChat\Walkthechat\Helper\Data
+     * @var \Walkthechat\Walkthechat\Helper\Data
      */
     protected $helper;
 
     /**
-     * @var \WalktheChat\Walkthechat\Model\ShippingService
+     * @var \Walkthechat\Walkthechat\Model\ShippingService
      */
     protected $shippingService;
 
     /**
      * {@inheritdoc}
      *
-     * @param \WalktheChat\Walkthechat\Helper\Data           $helper
-     * @param \WalktheChat\Walkthechat\Model\ShippingService $shippingService
+     * @param \Walkthechat\Walkthechat\Helper\Data           $helper
+     * @param \Walkthechat\Walkthechat\Model\ShippingService $shippingService
      */
     public function __construct(
         \Magento\Backend\App\Action\Context $context,
-        \WalktheChat\Walkthechat\Helper\Data $helper,
-        \WalktheChat\Walkthechat\Model\ShippingService $shippingService
+        \Walkthechat\Walkthechat\Helper\Data $helper,
+        \Walkthechat\Walkthechat\Model\ShippingService $shippingService
     ) {
         $this->helper          = $helper;
         $this->shippingService = $shippingService;

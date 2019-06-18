@@ -1,19 +1,19 @@
 <?php
 /**
- * @package   WalktheChat\Walkthechat
+ * @package   Walkthechat\Walkthechat
  *
  * @author    Alex Yeremenko <madonzy13@gmail.com>
- * @copyright 2019 WalktheChat
+ * @copyright 2019 Walkthechat
  *
  * @license   See LICENSE.txt for license details.
  */
 
-namespace WalktheChat\Walkthechat\Cron;
+namespace Walkthechat\Walkthechat\Cron;
 
 /**
  * Class ProcessQueue
  *
- * @package WalktheChat\Walkthechat\Cron
+ * @package Walkthechat\Walkthechat\Cron
  */
 class ProcessQueue
 {
@@ -23,7 +23,7 @@ class ProcessQueue
     protected $state;
 
     /**
-     * @var \WalktheChat\Walkthechat\Model\QueueService
+     * @var \Walkthechat\Walkthechat\Model\QueueService
      */
     protected $queueService;
 
@@ -82,7 +82,7 @@ class ProcessQueue
      * ProcessQueue constructor.
      *
      * @param \Magento\Framework\App\State                    $state
-     * @param \WalktheChat\Walkthechat\Model\QueueService         $queueService
+     * @param \Walkthechat\Walkthechat\Model\QueueService         $queueService
      * @param \Magento\Framework\Registry                     $registry
      * @param \Magento\Framework\Filesystem                   $filesystem
      * @param \Magento\Framework\App\Filesystem\DirectoryList $directoryList
@@ -90,7 +90,7 @@ class ProcessQueue
      */
     public function __construct(
         \Magento\Framework\App\State $state,
-        \WalktheChat\Walkthechat\Model\QueueService $queueService,
+        \Walkthechat\Walkthechat\Model\QueueService $queueService,
         \Magento\Framework\Registry $registry,
         \Magento\Framework\Filesystem $filesystem,
         \Magento\Framework\App\Filesystem\DirectoryList $directoryList,

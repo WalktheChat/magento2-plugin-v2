@@ -1,17 +1,17 @@
 <?php
 /**
- * @package   WalktheChat\Walkthechat
+ * @package   Walkthechat\Walkthechat
  * @author    Alex Yeremenko <madonzy13@gmail.com>
- * @copyright 2019 WalktheChat
+ * @copyright 2019 Walkthechat
  * @license   See LICENSE.txt for license details.
  */
 
-namespace WalktheChat\Walkthechat\Model\Import;
+namespace Walkthechat\Walkthechat\Model\Import;
 
 /**
  * Class RequestValidator
  *
- * @package WalktheChat\Walkthechat\Model\Import
+ * @package Walkthechat\Walkthechat\Model\Import
  */
 class RequestValidator
 {

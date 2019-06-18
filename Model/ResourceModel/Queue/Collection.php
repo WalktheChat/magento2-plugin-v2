@@ -1,19 +1,19 @@
 <?php
 /**
- * @package   WalktheChat\Walkthechat
+ * @package   Walkthechat\Walkthechat
  *
  * @author    Alex Yeremenko <madonzy13@gmail.com>
- * @copyright 2019 WalktheChat
+ * @copyright 2019 Walkthechat
  *
  * @license   See LICENSE.txt for license details.
  */
 
-namespace WalktheChat\Walkthechat\Model\ResourceModel\Queue;
+namespace Walkthechat\Walkthechat\Model\ResourceModel\Queue;
 
 /**
  * Class Collection
  *
- * @package WalktheChat\Walkthechat\Model\ResourceModel\Queue
+ * @package Walkthechat\Walkthechat\Model\ResourceModel\Queue
  */
 class Collection extends \Magento\Framework\Model\ResourceModel\Db\Collection\AbstractCollection
 {
@@ -29,6 +29,6 @@ class Collection extends \Magento\Framework\Model\ResourceModel\Db\Collection\Ab
      */
     protected function _construct()
     {
-        $this->_init(\WalktheChat\Walkthechat\Model\Queue::class, \WalktheChat\Walkthechat\Model\ResourceModel\Queue::class);
+        $this->_init(\Walkthechat\Walkthechat\Model\Queue::class, \Walkthechat\Walkthechat\Model\ResourceModel\Queue::class);
     }
 }

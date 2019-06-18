@@ -1,41 +1,41 @@
 <?php
 /**
- * @package   WalktheChat\Walkthechat
+ * @package   Walkthechat\Walkthechat
  *
  * @author    Alex Yeremenko <madonzy13@gmail.com>
- * @copyright 2019 WalktheChat
+ * @copyright 2019 Walkthechat
  *
  * @license   See LICENSE.txt for license details.
  */
 
-namespace WalktheChat\Walkthechat\Model;
+namespace Walkthechat\Walkthechat\Model;
 
 /**
  * Class ApiLogRepository
  *
- * @package WalktheChat\Walkthechat\Model
+ * @package Walkthechat\Walkthechat\Model
  */
-class ApiLogRepository implements \WalktheChat\Walkthechat\Api\ApiLogRepositoryInterface
+class ApiLogRepository implements \Walkthechat\Walkthechat\Api\ApiLogRepositoryInterface
 {
     /**
-     * @var \WalktheChat\Walkthechat\Model\ResourceModel\ApiLog
+     * @var \Walkthechat\Walkthechat\Model\ResourceModel\ApiLog
      */
     protected $logResource;
 
     /**
-     * @var \WalktheChat\Walkthechat\Api\Data\ApiLogInterfaceFactory
+     * @var \Walkthechat\Walkthechat\Api\Data\ApiLogInterfaceFactory
      */
     protected $logFactory;
 
     /**
      * ApiLogRepository constructor.
      *
-     * @param \WalktheChat\Walkthechat\Model\ResourceModel\ApiLog      $logResource
-     * @param \WalktheChat\Walkthechat\Api\Data\ApiLogInterfaceFactory $logFactory
+     * @param \Walkthechat\Walkthechat\Model\ResourceModel\ApiLog      $logResource
+     * @param \Walkthechat\Walkthechat\Api\Data\ApiLogInterfaceFactory $logFactory
      */
     public function __construct(
-        \WalktheChat\Walkthechat\Model\ResourceModel\ApiLog $logResource,
-        \WalktheChat\Walkthechat\Api\Data\ApiLogInterfaceFactory $logFactory
+        \Walkthechat\Walkthechat\Model\ResourceModel\ApiLog $logResource,
+        \Walkthechat\Walkthechat\Api\Data\ApiLogInterfaceFactory $logFactory
     ) {
         $this->logResource = $logResource;
         $this->logFactory  = $logFactory;
@@ -44,7 +44,7 @@ class ApiLogRepository implements \WalktheChat\Walkthechat\Api\ApiLogRepositoryI
     /**
      * {@inheritdoc}
      */
-    public function save(\WalktheChat\Walkthechat\Api\Data\ApiLogInterface $log)
+    public function save(\Walkthechat\Walkthechat\Api\Data\ApiLogInterface $log)
     {
         try {
             $this->logResource->save($log);
@@ -60,7 +60,7 @@ class ApiLogRepository implements \WalktheChat\Walkthechat\Api\ApiLogRepositoryI
      */
     public function getById($id)
     {
-        /** @var \WalktheChat\Walkthechat\Api\Data\ApiLogInterface $log */
+        /** @var \Walkthechat\Walkthechat\Api\Data\ApiLogInterface $log */
         $log = $this->logFactory->create();
 
         $this->logResource->load($log, $id);
@@ -79,11 +79,11 @@ class ApiLogRepository implements \WalktheChat\Walkthechat\Api\ApiLogRepositoryI
      */
     public function getLastByQuoteItemId($id)
     {
-        /** @var \WalktheChat\Walkthechat\Api\Data\ApiLogInterface $log */
+        /** @var \Walkthechat\Walkthechat\Api\Data\ApiLogInterface $log */
         $log = $this->logFactory->create();
 
         // request was rewrite in resource module to set DESC order by processed_at field
-        $this->logResource->load($log, $id, \WalktheChat\Walkthechat\Api\Data\ApiLogInterface::QUEUE_ITEM_ID_FIELD);
+        $this->logResource->load($log, $id, \Walkthechat\Walkthechat\Api\Data\ApiLogInterface::QUEUE_ITEM_ID_FIELD);
 
         return $log;
     }

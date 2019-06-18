@@ -1,29 +1,29 @@
 <?php
 /**
- * @package   WalktheChat\Walkthechat
+ * @package   Walkthechat\Walkthechat
  *
  * @author    Alex Yeremenko <madonzy13@gmail.com>
- * @copyright 2019 WalktheChat
+ * @copyright 2019 Walkthechat
  *
  * @license   See LICENSE.txt for license details.
  */
 
-namespace WalktheChat\Walkthechat\Service;
+namespace Walkthechat\Walkthechat\Service;
 
 /**
  * Class AuthorizeRepository
  *
- * @package WalktheChat\Walkthechat\Service
+ * @package Walkthechat\Walkthechat\Service
  */
 class AuthorizeRepository extends AbstractService
 {
     /**
-     * @var \WalktheChat\Walkthechat\Service\Resource\Authorize
+     * @var \Walkthechat\Walkthechat\Service\Resource\Authorize
      */
     protected $authorizeResource;
 
     /**
-     * @var \WalktheChat\Walkthechat\Service\Resource\Project
+     * @var \Walkthechat\Walkthechat\Service\Resource\Project
      */
     protected $projectResource;
 
@@ -40,16 +40,16 @@ class AuthorizeRepository extends AbstractService
     /**
      * {@inheritdoc}
      *
-     * @param \WalktheChat\Walkthechat\Service\Resource\Authorize $authorizeResource
-     * @param \WalktheChat\Walkthechat\Service\Resource\Project   $projectResource
+     * @param \Walkthechat\Walkthechat\Service\Resource\Authorize $authorizeResource
+     * @param \Walkthechat\Walkthechat\Service\Resource\Project   $projectResource
      */
     public function __construct(
-        \WalktheChat\Walkthechat\Service\Client $serviceClient,
+        \Walkthechat\Walkthechat\Service\Client $serviceClient,
         \Magento\Framework\Json\Helper\Data $jsonHelper,
-        \WalktheChat\Walkthechat\Helper\Data $helper,
-        \WalktheChat\Walkthechat\Log\ApiLogger $logger,
-        \WalktheChat\Walkthechat\Service\Resource\Authorize $authorizeResource,
-        \WalktheChat\Walkthechat\Service\Resource\Project $projectResource,
+        \Walkthechat\Walkthechat\Helper\Data $helper,
+        \Walkthechat\Walkthechat\Log\ApiLogger $logger,
+        \Walkthechat\Walkthechat\Service\Resource\Authorize $authorizeResource,
+        \Walkthechat\Walkthechat\Service\Resource\Project $projectResource,
         \Magento\Framework\App\Config\Storage\WriterInterface $configWriter,
         \Magento\Framework\App\Cache\TypeListInterface $cacheTypeList
     ) {

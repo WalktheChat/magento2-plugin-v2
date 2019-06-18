@@ -1,17 +1,17 @@
 <?php
 /**
- * @package   WalktheChat\Walkthechat
+ * @package   Walkthechat\Walkthechat
  * @author    Alex Yeremenko <madonzy13@gmail.com>
- * @copyright 2019 WalktheChat
+ * @copyright 2019 Walkthechat
  * @license   See LICENSE.txt for license details.
  */
 
-namespace WalktheChat\Walkthechat\Model;
+namespace Walkthechat\Walkthechat\Model;
 
 /**
  * Class ActionFactory
  *
- * @package WalktheChat\Walkthechat\Model
+ * @package Walkthechat\Walkthechat\Model
  */
 class ActionFactory
 {
@@ -21,9 +21,9 @@ class ActionFactory
      * @var array
      */
     const ALLOWED_ACTIONS = [
-        \WalktheChat\Walkthechat\Model\Action\Add::ACTION,
-        \WalktheChat\Walkthechat\Model\Action\Update::ACTION,
-        \WalktheChat\Walkthechat\Model\Action\Delete::ACTION,
+        \Walkthechat\Walkthechat\Model\Action\Add::ACTION,
+        \Walkthechat\Walkthechat\Model\Action\Update::ACTION,
+        \Walkthechat\Walkthechat\Model\Action\Delete::ACTION,
     ];
 
     /**
@@ -31,7 +31,7 @@ class ActionFactory
      *
      * @string
      */
-    const ACTION_NAMESPACE = '\WalktheChat\Walkthechat\Model\Action\\';
+    const ACTION_NAMESPACE = '\Walkthechat\Walkthechat\Model\Action\\';
 
     /**
      * @var \Magento\Framework\ObjectManagerInterface
@@ -52,7 +52,7 @@ class ActionFactory
     /**
      * @param string $action
      *
-     * @return \WalktheChat\Walkthechat\Model\Action\AbstractAction
+     * @return \Walkthechat\Walkthechat\Model\Action\AbstractAction
      * @throws \Exception
      */
     public function create($action)

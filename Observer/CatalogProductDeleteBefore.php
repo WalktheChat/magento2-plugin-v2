@@ -1,55 +1,55 @@
 <?php
 /**
- * @package   WalktheChat\Walkthechat
+ * @package   Walkthechat\Walkthechat
  *
  * @author    Alex Yeremenko <madonzy13@gmail.com>
- * @copyright 2019 WalktheChat
+ * @copyright 2019 Walkthechat
  *
  * @license   See LICENSE.txt for license details.
  */
 
-namespace WalktheChat\Walkthechat\Observer;
+namespace Walkthechat\Walkthechat\Observer;
 
 /**
  * Class CatalogProductDeleteBefore
  *
- * @package WalktheChat\Walkthechat\Observer
+ * @package Walkthechat\Walkthechat\Observer
  */
 class CatalogProductDeleteBefore implements \Magento\Framework\Event\ObserverInterface
 {
     /**
-     * @var \WalktheChat\Walkthechat\Api\Data\QueueInterfaceFactory
+     * @var \Walkthechat\Walkthechat\Api\Data\QueueInterfaceFactory
      */
     protected $queueFactory;
 
     /**
-     * @var \WalktheChat\Walkthechat\Model\QueueRepository
+     * @var \Walkthechat\Walkthechat\Model\QueueRepository
      */
     protected $queueRepository;
 
     /**
-     * @var \WalktheChat\Walkthechat\Helper\Data
+     * @var \Walkthechat\Walkthechat\Helper\Data
      */
     protected $helper;
 
     /**
-     * @var \WalktheChat\Walkthechat\Model\QueueService
+     * @var \Walkthechat\Walkthechat\Model\QueueService
      */
     protected $queueService;
 
     /**
      * CatalogProductSaveAfter constructor.
      *
-     * @param \WalktheChat\Walkthechat\Api\Data\QueueInterfaceFactory $queueFactory
-     * @param \WalktheChat\Walkthechat\Model\QueueRepository          $queueRepository
-     * @param \WalktheChat\Walkthechat\Helper\Data                    $helper
-     * @param \WalktheChat\Walkthechat\Model\QueueService             $queueService
+     * @param \Walkthechat\Walkthechat\Api\Data\QueueInterfaceFactory $queueFactory
+     * @param \Walkthechat\Walkthechat\Model\QueueRepository          $queueRepository
+     * @param \Walkthechat\Walkthechat\Helper\Data                    $helper
+     * @param \Walkthechat\Walkthechat\Model\QueueService             $queueService
      */
     public function __construct(
-        \WalktheChat\Walkthechat\Api\Data\QueueInterfaceFactory $queueFactory,
-        \WalktheChat\Walkthechat\Model\QueueRepository $queueRepository,
-        \WalktheChat\Walkthechat\Helper\Data $helper,
-        \WalktheChat\Walkthechat\Model\QueueService $queueService
+        \Walkthechat\Walkthechat\Api\Data\QueueInterfaceFactory $queueFactory,
+        \Walkthechat\Walkthechat\Model\QueueRepository $queueRepository,
+        \Walkthechat\Walkthechat\Helper\Data $helper,
+        \Walkthechat\Walkthechat\Model\QueueService $queueService
     ) {
         $this->queueFactory    = $queueFactory;
         $this->queueRepository = $queueRepository;
@@ -76,15 +76,15 @@ class CatalogProductDeleteBefore implements \Magento\Framework\Event\ObserverInt
                     $walkTheChatId
                     && !$this->queueService->isDuplicate(
                         $walkTheChatId,
-                        \WalktheChat\Walkthechat\Model\Action\Delete::ACTION,
-                        \WalktheChat\Walkthechat\Helper\Data::ATTRIBUTE_CODE
+                        \Walkthechat\Walkthechat\Model\Action\Delete::ACTION,
+                        \Walkthechat\Walkthechat\Helper\Data::ATTRIBUTE_CODE
                     )
                 ) {
-                    /** @var \WalktheChat\Walkthechat\Api\Data\QueueInterface $model */
+                    /** @var \Walkthechat\Walkthechat\Api\Data\QueueInterface $model */
                     $model = $this->queueFactory->create();
 
                     $model->setWalkthechatId($walkTheChatId);
-                    $model->setAction(\WalktheChat\Walkthechat\Model\Action\Delete::ACTION);
+                    $model->setAction(\Walkthechat\Walkthechat\Model\Action\Delete::ACTION);
 
                     $this->queueRepository->save($model);
                 }

@@ -14,7 +14,7 @@
             <walkthechat>
                 <active>1</active>
                 <sallowspecific>0</sallowspecific>
-                <model>WalktheChat\Walkthechat\Model\Carrier\WTCShipping</model>
+                <model>Walkthechat\Walkthechat\Model\Carrier\WTCShipping</model>
                 <name>WalkTheChat</name>
                 <title>WalkTheChat</title>
                 <type>I</type>
@@ -24,7 +24,7 @@
         <payment>
             <walkthechat>
                 <order_status>processing</order_status>
-                <model>WalktheChat\Walkthechat\Model\WTCPayment</model>
+                <model>Walkthechat\Walkthechat\Model\WTCPayment</model>
                 <active>1</active>
                 <title>WalkTheChat</title>
                 <payment_action>true</payment_action>

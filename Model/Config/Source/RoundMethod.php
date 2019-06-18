@@ -1,19 +1,19 @@
 <?php
 /**
- * @package   WalktheChat\Walkthechat
+ * @package   Walkthechat\Walkthechat
  *
  * @author    Alex Yeremenko <madonzy13@gmail.com>
- * @copyright 2019 WalktheChat
+ * @copyright 2019 Walkthechat
  *
  * @license   See LICENSE.txt for license details.
  */
 
-namespace WalktheChat\Walkthechat\Model\Config\Source;
+namespace Walkthechat\Walkthechat\Model\Config\Source;
 
 /**
  * Class RoundMethod
  *
- * @package WalktheChat\Walkthechat\Model\Config\Source
+ * @package Walkthechat\Walkthechat\Model\Config\Source
  */
 class RoundMethod implements \Magento\Framework\Option\ArrayInterface
 {

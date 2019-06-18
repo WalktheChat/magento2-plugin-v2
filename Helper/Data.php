@@ -1,19 +1,19 @@
 <?php
 /**
- * @package   WalktheChat\Walkthechat
+ * @package   Walkthechat\Walkthechat
  *
  * @author    Alex Yeremenko <madonzy13@gmail.com>
- * @copyright 2019 WalktheChat
+ * @copyright 2019 Walkthechat
  *
  * @license   See LICENSE.txt for license details.
  */
 
-namespace WalktheChat\Walkthechat\Helper;
+namespace Walkthechat\Walkthechat\Helper;
 
 /**
  * Class Data
  *
- * @package WalktheChat\Walkthechat\Helper
+ * @package Walkthechat\Walkthechat\Helper
  */
 class Data extends \Magento\Framework\App\Helper\AbstractHelper
 {
@@ -80,12 +80,12 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
      *
      * @param string $projectId
      *
-     * @throws \WalktheChat\Walkthechat\Exception\InvalidMagentoInstanceException
+     * @throws \Walkthechat\Walkthechat\Exception\InvalidMagentoInstanceException
      */
     public function validateProjectId($projectId)
     {
         if ($projectId !== $this->getProjectId()) {
-            throw new \WalktheChat\Walkthechat\Exception\InvalidMagentoInstanceException(
+            throw new \Walkthechat\Walkthechat\Exception\InvalidMagentoInstanceException(
                 __('Invalid instance request. Project ID is not supported for current Magento instance.')
             );
         }
@@ -292,7 +292,7 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
         $value = null;
 
         $walkTheChatIdAttribute = $product->getCustomAttribute(
-            \WalktheChat\Walkthechat\Helper\Data::ATTRIBUTE_CODE
+            \Walkthechat\Walkthechat\Helper\Data::ATTRIBUTE_CODE
         );
 
         // try to fetch from loaded data first, if noting then make a separate request
@@ -304,7 +304,7 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
 
             $value = $productResource->getAttributeRawValue(
                 $product->getId(),
-                \WalktheChat\Walkthechat\Helper\Data::ATTRIBUTE_CODE,
+                \Walkthechat\Walkthechat\Helper\Data::ATTRIBUTE_CODE,
                 $product->getStore()->getId()
             );
         }

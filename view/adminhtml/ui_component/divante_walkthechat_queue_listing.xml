@@ -11,7 +11,7 @@
         </item>
         <item name="spinner" xsi:type="string">wtc_walkthechat_queue_grid_columns</item>
         <item name="buttons" xsi:type="array">
-            <item name="delete_all" xsi:type="string">WalktheChat\Walkthechat\Block\Adminhtml\Dashboard\DeleteAllButton</item>
+            <item name="delete_all" xsi:type="string">Walkthechat\Walkthechat\Block\Adminhtml\Dashboard\DeleteAllButton</item>
             <!--<item name="sync_shipping" xsi:type="array">-->
                 <!--<item name="name" xsi:type="string">sync_shipping</item>-->
                 <!--<item name="label" xsi:type="string" translate="true">Sync Tablerate Shipping</item>-->
@@ -149,7 +149,7 @@
                 </item>
             </argument>
         </selectionsColumn>
-        <column name="product_id" class="WalktheChat\Walkthechat\Ui\Component\Listing\Column\Item">
+        <column name="product_id" class="Walkthechat\Walkthechat\Ui\Component\Listing\Column\Item">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">false</item>
@@ -179,7 +179,7 @@
         </column>
         <column name="status">
             <argument name="data" xsi:type="array">
-                <item name="options" xsi:type="object">WalktheChat\Walkthechat\Model\Config\Source\QueueItemStatus</item>
+                <item name="options" xsi:type="object">Walkthechat\Walkthechat\Model\Config\Source\QueueItemStatus</item>
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">select</item>
                     <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/select</item>

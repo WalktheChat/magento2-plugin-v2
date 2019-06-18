@@ -1,27 +1,27 @@
 <?php
 /**
- * @package   WalktheChat\Walkthechat
+ * @package   Walkthechat\Walkthechat
  * @author    Alex Yeremenko <madonzy13@gmail.com>
- * @copyright 2019 WalktheChat
+ * @copyright 2019 Walkthechat
  * @license   See LICENSE.txt for license details.
  */
 
-namespace WalktheChat\Walkthechat\Model;
+namespace Walkthechat\Walkthechat\Model;
 
 /**
  * Class OrderImport
  *
- * @package WalktheChat\Walkthechat\Model
+ * @package Walkthechat\Walkthechat\Model
  */
-class OrderImport implements \WalktheChat\Walkthechat\Api\OrderImportInterface
+class OrderImport implements \Walkthechat\Walkthechat\Api\OrderImportInterface
 {
     /**
-     * @var \WalktheChat\Walkthechat\Model\Import\RequestValidator
+     * @var \Walkthechat\Walkthechat\Model\Import\RequestValidator
      */
     protected $requestValidator;
 
     /**
-     * @var \WalktheChat\Walkthechat\Model\OrderService
+     * @var \Walkthechat\Walkthechat\Model\OrderService
      */
     protected $orderService;
 
@@ -31,23 +31,23 @@ class OrderImport implements \WalktheChat\Walkthechat\Api\OrderImportInterface
     protected $logger;
 
     /**
-     * @var \WalktheChat\Walkthechat\Helper\Data
+     * @var \Walkthechat\Walkthechat\Helper\Data
      */
     protected $helper;
 
     /**
      * OrderImport constructor.
      *
-     * @param \WalktheChat\Walkthechat\Model\Import\RequestValidator $requestValidator
-     * @param \WalktheChat\Walkthechat\Model\OrderService            $orderService
+     * @param \Walkthechat\Walkthechat\Model\Import\RequestValidator $requestValidator
+     * @param \Walkthechat\Walkthechat\Model\OrderService            $orderService
      * @param \Psr\Log\LoggerInterface                           $logger
-     * @param \WalktheChat\Walkthechat\Helper\Data                   $helper
+     * @param \Walkthechat\Walkthechat\Helper\Data                   $helper
      */
     public function __construct(
-        \WalktheChat\Walkthechat\Model\Import\RequestValidator $requestValidator,
-        \WalktheChat\Walkthechat\Model\OrderService $orderService,
+        \Walkthechat\Walkthechat\Model\Import\RequestValidator $requestValidator,
+        \Walkthechat\Walkthechat\Model\OrderService $orderService,
         \Psr\Log\LoggerInterface $logger,
-        \WalktheChat\Walkthechat\Helper\Data $helper
+        \Walkthechat\Walkthechat\Helper\Data $helper
     ) {
         $this->requestValidator = $requestValidator;
         $this->orderService     = $orderService;
@@ -93,9 +93,9 @@ class OrderImport implements \WalktheChat\Walkthechat\Api\OrderImportInterface
             ]);
         } catch (\Magento\Framework\Exception\ValidatorException $exception) {
             $errorMessage = $exception->getMessage();
-        } catch (\WalktheChat\Walkthechat\Exception\NotSynchronizedProductException $exception) {
+        } catch (\Walkthechat\Walkthechat\Exception\NotSynchronizedProductException $exception) {
             $errorMessage = $exception->getMessage();
-        } catch (\WalktheChat\Walkthechat\Exception\InvalidMagentoInstanceException $exception) {
+        } catch (\Walkthechat\Walkthechat\Exception\InvalidMagentoInstanceException $exception) {
             $errorMessage = $exception->getMessage();
         } catch (\Exception $exception) {
             $this->logger->error('Error during the WalkTheChat order import | '.$exception->getMessage());

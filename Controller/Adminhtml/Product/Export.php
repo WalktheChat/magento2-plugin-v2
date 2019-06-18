@@ -1,19 +1,19 @@
 <?php
 /**
- * @package   WalktheChat\Walkthechat
+ * @package   Walkthechat\Walkthechat
  *
  * @author    Alex Yeremenko <madonzy13@gmail.com>
- * @copyright 2019 WalktheChat
+ * @copyright 2019 Walkthechat
  *
  * @license   See LICENSE.txt for license details.
  */
 
-namespace WalktheChat\Walkthechat\Controller\Adminhtml\Product;
+namespace Walkthechat\Walkthechat\Controller\Adminhtml\Product;
 
 /**
  * Class Export
  *
- * @package WalktheChat\Walkthechat\Controller\Adminhtml\Product
+ * @package Walkthechat\Walkthechat\Controller\Adminhtml\Product
  */
 class Export extends \Magento\Backend\App\Action
 {
@@ -28,7 +28,7 @@ class Export extends \Magento\Backend\App\Action
     protected $collectionFactory;
 
     /**
-     * @var \WalktheChat\Walkthechat\Model\ProductService
+     * @var \Walkthechat\Walkthechat\Model\ProductService
      */
     protected $productService;
 
@@ -42,14 +42,14 @@ class Export extends \Magento\Backend\App\Action
      *
      * @param \Magento\Ui\Component\MassAction\Filter                        $filter
      * @param \Magento\Catalog\Model\ResourceModel\Product\CollectionFactory $collectionFactory
-     * @param \WalktheChat\Walkthechat\Model\ProductService                      $productService
+     * @param \Walkthechat\Walkthechat\Model\ProductService                      $productService
      * @param \Psr\Log\LoggerInterface                                       $logger
      */
     public function __construct(
         \Magento\Backend\App\Action\Context $context,
         \Magento\Ui\Component\MassAction\Filter $filter,
         \Magento\Catalog\Model\ResourceModel\Product\CollectionFactory $collectionFactory,
-        \WalktheChat\Walkthechat\Model\ProductService $productService,
+        \Walkthechat\Walkthechat\Model\ProductService $productService,
         \Psr\Log\LoggerInterface $logger
     ) {
         $this->filter            = $filter;

@@ -1,24 +1,24 @@
 <?php
 /**
- * @package   WalktheChat\Walkthechat
+ * @package   Walkthechat\Walkthechat
  *
  * @author    Alex Yeremenko <madonzy13@gmail.com>
- * @copyright 2019 WalktheChat
+ * @copyright 2019 Walkthechat
  *
  * @license   See LICENSE.txt for license details.
  */
 
-namespace WalktheChat\Walkthechat\Model;
+namespace Walkthechat\Walkthechat\Model;
 
 /**
  * Class ShippingService
  *
- * @package WalktheChat\Walkthechat\Model
+ * @package Walkthechat\Walkthechat\Model
  */
 class ShippingService
 {
     /**
-     * @var \WalktheChat\Walkthechat\Helper\Data
+     * @var \Walkthechat\Walkthechat\Helper\Data
      */
     protected $helper;
 
@@ -28,21 +28,21 @@ class ShippingService
     protected $collectionFactory;
 
     /**
-     * @var \WalktheChat\Walkthechat\Service\ShippingZonesRepository
+     * @var \Walkthechat\Walkthechat\Service\ShippingZonesRepository
      */
     protected $shippingZonesRepository;
 
     /**
      * ShippingService constructor.
      *
-     * @param \WalktheChat\Walkthechat\Helper\Data                                                 $helper
+     * @param \Walkthechat\Walkthechat\Helper\Data                                                 $helper
      * @param \Magento\OfflineShipping\Model\ResourceModel\Carrier\Tablerate\CollectionFactory $collectionFactory
-     * @param \WalktheChat\Walkthechat\Service\ShippingZonesRepository                             $shippingZonesRepository
+     * @param \Walkthechat\Walkthechat\Service\ShippingZonesRepository                             $shippingZonesRepository
      */
     public function __construct(
-        \WalktheChat\Walkthechat\Helper\Data $helper,
+        \Walkthechat\Walkthechat\Helper\Data $helper,
         \Magento\OfflineShipping\Model\ResourceModel\Carrier\Tablerate\CollectionFactory $collectionFactory,
-        \WalktheChat\Walkthechat\Service\ShippingZonesRepository $shippingZonesRepository
+        \Walkthechat\Walkthechat\Service\ShippingZonesRepository $shippingZonesRepository
     ) {
         $this->helper                  = $helper;
         $this->collectionFactory       = $collectionFactory;

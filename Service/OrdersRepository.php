@@ -1,19 +1,19 @@
 <?php
 /**
- * @package   WalktheChat\Walkthechat
+ * @package   Walkthechat\Walkthechat
  *
  * @author    Alex Yeremenko <madonzy13@gmail.com>
- * @copyright 2019 WalktheChat
+ * @copyright 2019 Walkthechat
  *
  * @license   See LICENSE.txt for license details.
  */
 
-namespace WalktheChat\Walkthechat\Service;
+namespace Walkthechat\Walkthechat\Service;
 
 /**
  * Class OrdersRepository
  *
- * @package WalktheChat\Walkthechat\Service
+ * @package Walkthechat\Walkthechat\Service
  */
 class OrdersRepository extends AbstractService
 {
@@ -28,7 +28,7 @@ class OrdersRepository extends AbstractService
     protected $orderParcelCreateResource;
 
     /**
-     * @var \WalktheChat\Walkthechat\Service\Resource\Orders\Refund
+     * @var \Walkthechat\Walkthechat\Service\Resource\Orders\Refund
      */
     protected $orderRefundResource;
 
@@ -45,21 +45,21 @@ class OrdersRepository extends AbstractService
     /**
      * {@inheritdoc}
      *
-     * @param \WalktheChat\Walkthechat\Service\Resource\Orders\Update         $orderUpdateResource
-     * @param \WalktheChat\Walkthechat\Service\Resource\Orders\Parcels\Create $orderParcelCreateResource
-     * @param \WalktheChat\Walkthechat\Service\Resource\Orders\Refund         $orderRefundResource
-     * @param \WalktheChat\Walkthechat\Service\Resource\Orders\Refund         $orderRefundResource
+     * @param \Walkthechat\Walkthechat\Service\Resource\Orders\Update         $orderUpdateResource
+     * @param \Walkthechat\Walkthechat\Service\Resource\Orders\Parcels\Create $orderParcelCreateResource
+     * @param \Walkthechat\Walkthechat\Service\Resource\Orders\Refund         $orderRefundResource
+     * @param \Walkthechat\Walkthechat\Service\Resource\Orders\Refund         $orderRefundResource
      * @param \Magento\Sales\Api\ShipmentRepositoryInterface              $shipmentRepository
      * @param \Magento\Sales\Api\CreditmemoRepositoryInterface            $creditmemoRepository
      */
     public function __construct(
-        \WalktheChat\Walkthechat\Service\Client $serviceClient,
+        \Walkthechat\Walkthechat\Service\Client $serviceClient,
         \Magento\Framework\Json\Helper\Data $jsonHelper,
-        \WalktheChat\Walkthechat\Helper\Data $helper,
-        \WalktheChat\Walkthechat\Log\ApiLogger $logger,
-        \WalktheChat\Walkthechat\Service\Resource\Orders\Update $orderUpdateResource,
-        \WalktheChat\Walkthechat\Service\Resource\Orders\Parcels\Create $orderParcelCreateResource,
-        \WalktheChat\Walkthechat\Service\Resource\Orders\Refund $orderRefundResource,
+        \Walkthechat\Walkthechat\Helper\Data $helper,
+        \Walkthechat\Walkthechat\Log\ApiLogger $logger,
+        \Walkthechat\Walkthechat\Service\Resource\Orders\Update $orderUpdateResource,
+        \Walkthechat\Walkthechat\Service\Resource\Orders\Parcels\Create $orderParcelCreateResource,
+        \Walkthechat\Walkthechat\Service\Resource\Orders\Refund $orderRefundResource,
         \Magento\Sales\Api\ShipmentRepositoryInterface $shipmentRepository,
         \Magento\Sales\Api\CreditmemoRepositoryInterface $creditmemoRepository
     ) {

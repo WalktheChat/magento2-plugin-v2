@@ -1,38 +1,38 @@
 <?php
 /**
- * @package   WalktheChat\Walkthechat
+ * @package   Walkthechat\Walkthechat
  *
  * @author    Alex Yeremenko <madonzy13@gmail.com>
- * @copyright 2019 WalktheChat
+ * @copyright 2019 Walkthechat
  *
  * @license   See LICENSE.txt for license details.
  */
 
-namespace WalktheChat\Walkthechat\Service;
+namespace Walkthechat\Walkthechat\Service;
 
 /**
  * Class ImagesRepository
  *
- * @package WalktheChat\Walkthechat\Service
+ * @package Walkthechat\Walkthechat\Service
  */
 class ImagesRepository extends AbstractService
 {
     /**
-     * @var \WalktheChat\Walkthechat\Service\Resource\Images\Create
+     * @var \Walkthechat\Walkthechat\Service\Resource\Images\Create
      */
     protected $imagesCreateResource;
 
     /**
      * {@inheritdoc}
      *
-     * @param \WalktheChat\Walkthechat\Service\Resource\Images\Create $imagesCreateResource
+     * @param \Walkthechat\Walkthechat\Service\Resource\Images\Create $imagesCreateResource
      */
     public function __construct(
-        \WalktheChat\Walkthechat\Service\Client $serviceClient,
+        \Walkthechat\Walkthechat\Service\Client $serviceClient,
         \Magento\Framework\Json\Helper\Data $jsonHelper,
-        \WalktheChat\Walkthechat\Helper\Data $helper,
-        \WalktheChat\Walkthechat\Log\ApiLogger $logger,
-        \WalktheChat\Walkthechat\Service\Resource\Images\Create $imagesCreateResource
+        \Walkthechat\Walkthechat\Helper\Data $helper,
+        \Walkthechat\Walkthechat\Log\ApiLogger $logger,
+        \Walkthechat\Walkthechat\Service\Resource\Images\Create $imagesCreateResource
     ) {
         $this->imagesCreateResource = $imagesCreateResource;
 
