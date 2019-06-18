@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <argument name="data" xsi:type="array">
+        <item name="js_config" xsi:type="array">
+            <item name="provider" xsi:type="string">wtc_walkthechat_api_log_details.wtc_walkthechat_api_log_details_data_source</item>
+            <item name="deps" xsi:type="string">wtc_walkthechat_api_log_details.wtc_walkthechat_api_log_details_data_source</item>
+        </item>
+        <item name="label" xsi:type="string" translate="true">Log Information</item>
+        <item name="config" xsi:type="array">
+            <item name="dataScope" xsi:type="string">data</item>
+            <item name="namespace" xsi:type="string">wtc_walkthechat_api_log_details</item>
+        </item>
+        <item name="template" xsi:type="string">templates/form/collapsible</item>
+        <item name="buttons" xsi:type="array">
+            <item name="back" xsi:type="string">WalktheChat\Walkthechat\Block\Adminhtml\Log\Details\BackButton</item>
+        </item>
+    </argument>
+    <dataSource name="wtc_walkthechat_api_log_details_data_source">
+        <argument name="dataProvider" xsi:type="configurableObject">
+            <argument name="class" xsi:type="string">WalktheChat\Walkthechat\Model\DataProvider</argument>
+            <argument name="name" xsi:type="string">wtc_walkthechat_api_log_details_data_source</argument>
+            <argument name="primaryFieldName" xsi:type="string">entity_id</argument>
+            <argument name="requestFieldName" xsi:type="string">entity_id</argument>
+        </argument>
+        <argument name="data" xsi:type="array">
+            <item name="js_config" xsi:type="array">
+                <item name="component" xsi:type="string">Magento_Ui/js/form/provider</item>
+            </item>
+        </argument>
+    </dataSource>
+    <fieldset name="log_request_details">
+        <argument name="data" xsi:type="array">
+            <item name="config" xsi:type="array">
+                <item name="collapsible" xsi:type="boolean">false</item>
+                <item name="disabled" xsi:type="boolean">true</item>
+                <item name="label" xsi:type="string" translate="true">Request Details</item>
+                <item name="sortOrder" xsi:type="number">20</item>
+            </item>
+        </argument>
+        <field name="created_at">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="label" xsi:type="string" translate="true">Date Time</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="source" xsi:type="string">log_request_details</item>
+                    <item name="dataScope" xsi:type="string">created_at</item>
+                </item>
+            </argument>
+        </field>
+        <field name="request_path">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="label" xsi:type="string" translate="true">Path</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="source" xsi:type="string">log_request_details</item>
+                    <item name="dataScope" xsi:type="string">request_path</item>
+                </item>
+            </argument>
+        </field>
+        <field name="request_method">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="label" xsi:type="string" translate="true">Method</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="source" xsi:type="string">log_request_details</item>
+                    <item name="dataScope" xsi:type="string">request_method</item>
+                </item>
+            </argument>
+        </field>
+        <field name="request_params">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="label" xsi:type="string" translate="true">Params</item>
+                    <item name="formElement" xsi:type="string">textarea</item>
+                    <item name="source" xsi:type="string">log_request_details</item>
+                    <item name="dataScope" xsi:type="string">request_params</item>
+                </item>
+            </argument>
+        </field>
+    </fieldset>
+    <fieldset name="log_response_details">
+        <argument name="data" xsi:type="array">
+            <item name="config" xsi:type="array">
+                <item name="collapsible" xsi:type="boolean">false</item>
+                <item name="disabled" xsi:type="boolean">true</item>
+                <item name="label" xsi:type="string" translate="true">Response Details</item>
+                <item name="sortOrder" xsi:type="number">30</item>
+            </item>
+        </argument>
+        <field name="is_success_response" formElement="select">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">log_response_details</item>
+                </item>
+            </argument>
+            <settings>
+                <dataType>number</dataType>
+                <label translate="true">Status</label>
+                <visible>true</visible>
+                <dataScope>is_success_response</dataScope>
+            </settings>
+            <formElements>
+                <select>
+                    <settings>
+                        <options>
+                            <option name="0" xsi:type="array">
+                                <item name="value" xsi:type="number">1</item>
+                                <item name="label" xsi:type="string" translate="true">Success</item>
+                            </option>
+                            <option name="1" xsi:type="array">
+                                <item name="value" xsi:type="number">0</item>
+                                <item name="label" xsi:type="string" translate="true">Error</item>
+                            </option>
+                        </options>
+                    </settings>
+                </select>
+            </formElements>
+        </field>
+        <field name="response_code">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="label" xsi:type="string" translate="true">Code</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="source" xsi:type="string">log_response_details</item>
+                    <item name="dataScope" xsi:type="string">response_code</item>
+                </item>
+            </argument>
+        </field>
+        <field name="response_data">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="label" xsi:type="string" translate="true">Data</item>
+                    <item name="formElement" xsi:type="string">textarea</item>
+                    <item name="source" xsi:type="string">log_response_details</item>
+                    <item name="dataScope" xsi:type="string">response_data</item>
+                </item>
+            </argument>
+        </field>
+    </fieldset>
+</form>

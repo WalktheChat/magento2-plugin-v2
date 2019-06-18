@@ -1,0 +1,13 @@
+<?php if ($this->isConnected()): ?>
+    <a class="action-default scalable save primary ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"
+       href="<?php echo $this->getDisconnectUrl() ?>">
+        <?php echo __('Disconnect'); ?>
+    </a>
+<?php elseif ($this->canConnect()): ?>
+    <a class="action-default scalable save primary ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"
+       href="<?php echo $this->getConnectUrl() ?>">
+        <?php echo __('Connect'); ?>
+    </a>
+<?php else: ?>
+    <?php echo __('Set app id and app key in order to connect it with Magento'); ?>
+<?php endif ?>

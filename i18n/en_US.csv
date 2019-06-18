@@ -1,0 +1,90 @@
+"Delete All Products from WalkTheChat","Delete All Products from WalkTheChat"
+"Back to Listing","Back to Listing"
+"App connected.","App connected."
+"App was disconnected.","App was disconnected."
+"%1 item(s) deleted.","%1 item(s) deleted."
+"Shipping Synced.","Shipping Synced."
+"Table Rate is disabled.","Table Rate is disabled."
+"%1 product(s) added to queue.","%1 product(s) added to queue."
+"Internal error occurred. Please see logs or contact administrator.","Internal error occurred. Please see logs or contact administrator."
+"Unable to lock the cron. Please check your ""var"" folder permissions.","Unable to lock the cron. Please check your ""var"" folder permissions."
+"Unable to unlock the walkthechat queue.","Unable to unlock the walkthechat queue."
+"Invalid instance request. Project ID is not supported for current Magento instance.","Invalid instance request. Project ID is not supported for current Magento instance."
+"Unable to load action. Undefined action ""%1"".","Unable to load action. Undefined action ""%1""."
+"API log with id ""%1"" does not exist.","API log with id ""%1"" does not exist."
+"Internal Error","Internal Error"
+"API Error","API Error"
+Complete,Complete
+"Waiting in Queue","Waiting in Queue"
+"Nearest Integer","Nearest Integer"
+"China friendly price","China friendly price"
+"Could not save the image in image sync table: %1","Could not save the image in image sync table: %1"
+"Unable to proceed order import. Items has invalid structure.","Unable to proceed order import. Items has invalid structure."
+"Unable to proceed order import. Delivery address has invalid structure.","Unable to proceed order import. Delivery address has invalid structure."
+"Unable to proceed order import. Shipping rate has invalid structure.","Unable to proceed order import. Shipping rate has invalid structure."
+"Unable to proceed order import. Tax has invalid structure.","Unable to proceed order import. Tax has invalid structure."
+"Unable to proceed order import. Total has invalid structure.","Unable to proceed order import. Total has invalid structure."
+"Unable to proceed order import. Id was not passed.","Unable to proceed order import. Id was not passed."
+"Unable to proceed order import. Order is not paid.","Unable to proceed order import. Order is not paid."
+"Not synchronized product was sent. Product with WalkTheChat ID: %1, wasn't exported from current Magento instance.","Not synchronized product was sent. Product with WalkTheChat ID: %1, wasn't exported from current Magento instance."
+"Error occurred when tried to added products to the queue. Please retry again or contact the administrator.","Error occurred when tried to added products to the queue. Please retry again or contact the administrator."
+"%1 product(s) can not be exported. Supported product types: Simple, Virtual and Configurable","%1 product(s) can not be exported. Supported product types: Simple, Virtual and Configurable"
+"Queue with id ""%1"" does not exist.","Queue with id ""%1"" does not exist."
+"Could not save the queue: %1","Could not save the queue: %1"
+"Could not delete the queue: %1","Could not delete the queue: %1"
+"Unable to save some items of queue","Unable to save some items of queue"
+"Unable to fetch token.","Unable to fetch token."
+"Unable to fetch Project ID.","Unable to fetch Project ID."
+Details,Details
+"Product with ID: %1","Product with ID: %1"
+"Order with ID: %1","Order with ID: %1"
+Disconnect,Disconnect
+Connect,Connect
+"Set app id and app key in order to connect it with Magento","Set app id and app key in order to connect it with Magento"
+Connected,Connected
+"Not Connected","Not Connected"
+Walkthechat,Walkthechat
+Settings,Settings
+"General Configuration","General Configuration"
+Status,Status
+"Shop Name","Shop Name"
+"API Url","API Url"
+"Authorization Url","Authorization Url"
+"App Id","App Id"
+"App Secret Key","App Secret Key"
+Synchronization,Synchronization
+"Enable Product Synchronization?","Enable Product Synchronization?"
+"Enable Order and Inventory Synchronization?","Enable Order and Inventory Synchronization?"
+Currency,Currency
+"Enable Currency Conversion?","Enable Currency Conversion?"
+"Exchange Rate","Exchange Rate"
+"Round Method","Round Method"
+WalkTheChat,WalkTheChat
+Enabled,Enabled
+"Method Name","Method Name"
+Title,Title
+"WalkTheChat - Queue Dashboard","WalkTheChat - Queue Dashboard"
+"Walkthechat - Log Details","Walkthechat - Log Details"
+"WalkTheChat - Logs","WalkTheChat - Logs"
+"Log Information","Log Information"
+"Request Details","Request Details"
+"Date Time","Date Time"
+Path,Path
+Method,Method
+Params,Params
+"Response Details","Response Details"
+Success,Success
+Error,Error
+Code,Code
+Data,Data
+"Is Success","Is Success"
+"Created At","Created At"
+"Export All Products","Export All Products"
+"Export Selected Products","Export Selected Products"
+Delete,Delete
+"Delete items","Delete items"
+"Are you sure you wan't to delete selected items from the queue?","Are you sure you wan't to delete selected items from the queue?"
+Item,Item
+Action,Action
+"Export To Walkthechat","Export To Walkthechat"
+"Delete From Walkthechat","Delete From Walkthechat"

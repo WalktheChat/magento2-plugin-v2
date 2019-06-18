@@ -1,0 +1,95 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <tab id="walkthechat" translate="label" sortOrder="200">
+            <label>Walkthechat</label>
+        </tab>
+        <section id="walkthechat_settings" translate="label" type="text" sortOrder="110" showInDefault="1">
+            <label>Settings</label>
+            <tab>walkthechat</tab>
+            <resource>WalktheChat_Walkthechat::config_settings</resource>
+            <group id="general" translate="label" sortOrder="10" showInDefault="1">
+                <label>General Configuration</label>
+                <field id="token" translate="label" sortOrder="1" showInDefault="1">
+                    <label>Status</label>
+                    <frontend_model>WalktheChat\Walkthechat\Block\Adminhtml\System\Config\Status</frontend_model>
+                </field>
+                <field id="project_id" type="hidden" />
+                <field id="shop_name" translate="label" type="text" sortOrder="5" showInDefault="1">
+                    <label>Shop Name</label>
+                </field>
+                <field id="api_url" translate="label" type="text" sortOrder="10" showInDefault="1">
+                    <label>API Url</label>
+                </field>
+                <field id="auth_url" translate="label" type="text" sortOrder="20" showInDefault="1">
+                    <label>Authorization Url</label>
+                </field>
+                <field id="app_id" translate="label" type="text" sortOrder="30" showInDefault="1">
+                    <label>App Id</label>
+                </field>
+                <field id="app_key" translate="label" type="text" sortOrder="40" showInDefault="1">
+                    <label>App Secret Key</label>
+                </field>
+                <field id="action" sortOrder="50" showInDefault="1">
+                    <frontend_model>WalktheChat\Walkthechat\Block\Adminhtml\System\Config\Action</frontend_model>
+                </field>
+            </group>
+            <group id="sync" translate="label" sortOrder="20" showInDefault="1">
+                <label>Synchronization</label>
+                <field id="product_sync_active" translate="label" type="select" sortOrder="10" showInDefault="1">
+                    <label>Enable Product Synchronization?</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="order_sync_active" translate="label" type="select" sortOrder="20" showInDefault="1">
+                    <label>Enable Order and Inventory Synchronization?</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+            </group>
+            <group id="currency" translate="label" sortOrder="30" showInDefault="1">
+                <label>Currency</label>
+                <field id="conversion_active" translate="label" type="select" sortOrder="10" showInDefault="1">
+                    <label>Enable Currency Conversion?</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="exchange_rate" translate="label" type="text" sortOrder="20" showInDefault="1">
+                    <label>Exchange Rate</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <depends>
+                        <field id="walkthechat_settings/currency/conversion_active">1</field>
+                    </depends>
+                </field>
+                <field id="round_method" translate="label" type="select" sortOrder="30" showInDefault="1">
+                    <label>Round Method</label>
+                    <source_model>WalktheChat\Walkthechat\Model\Config\Source\RoundMethod</source_model>
+                    <depends>
+                        <field id="walkthechat_settings/currency/conversion_active">1</field>
+                    </depends>
+                </field>
+            </group>
+        </section>
+        <section id="carriers" translate="label" type="text" sortOrder="320" showInDefault="1" showInWebsite="1" showInStore="1">
+            <group id="walkthechat" translate="label" type="text" sortOrder="0" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>WalkTheChat</label>
+                <field id="active" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Enabled</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="name" translate="label" type="text" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Method Name</label>
+                </field>
+            </group>
+        </section>
+        <section id="payment">
+            <group id="walkthechat" translate="label comment" type="text" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>WalkTheChat</label>
+                <field id="active" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Enabled</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="title" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Title</label>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>
