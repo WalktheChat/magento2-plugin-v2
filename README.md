@@ -9,6 +9,6 @@ Bi-directional integration of orders, products and shipping table rates between 
 5. Refund, Fulfill or Cancel (todo) orders imported from WalkTheChat storefront.
 
 ##How to Install the Module
-1. composer require walkthechat/module-walkthechat
+1. composer require walkthechat/magento2-plugin-v2
 2. rm -rf var/* generated/*
 3. bin/magento setup:upgrade
