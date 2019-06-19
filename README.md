@@ -1,4 +1,4 @@
-#WalkTheChat Module (Magento 2)
+# WalkTheChat Module (Magento 2)
 Bi-directional integration of orders, products and shipping table rates between Magento 2 and WalkTheChat CMS. 
 
 ## Possibilities
