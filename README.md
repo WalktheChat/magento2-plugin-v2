@@ -1,7 +1,7 @@
 # WalkTheChat Module (Magento 2)
 Bi-directional integration of orders, products and shipping table rates between Magento 2 and WalkTheChat CMS. 
 
-## Possibilities
+## Features
 1. Export products (Simple, Configurable and Virtual) to WalkTheChat CMS with fully currency rate exchange support.
 2. Update product inventory on WalkTheChat CMS when was ordered in Magento 2 store.
 3. Remove products in WalkTheChat CMS directly from Magento 2 Store.
