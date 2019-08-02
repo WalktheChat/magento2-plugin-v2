@@ -1,9 +1,9 @@
 <?php
 /**
  * @package   Walkthechat\Walkthechat
- * @author    Alex Yeremenko <madonzy13@gmail.com>
+ * @author    WalktheChat <info@walkthechat.com>
  * @copyright 2019 Walkthechat
- * @license   See LICENSE_DIVANTE.txt for license details.
+ * @license   See LICENSE_WALKTHECHAT.txt for license details.
  */
 
 namespace Walkthechat\Walkthechat\Model\Config\Source;

@@ -1,7 +1,7 @@
 <?php
 /**
  * @package   Walkthechat\Walkthechat
- * @author    Alex Yeremenko <madonzy13@gmail.com>
+ * @author    WalktheChat <info@walkthechat.com>
  * @copyright 2019 Walkthechat
  * @license   See LICENSE.txt for license details.
  */
