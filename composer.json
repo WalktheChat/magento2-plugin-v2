@@ -2,7 +2,6 @@
   "name": "walkthechat/magento2-plugin-v2",
   "description": "A Magento 2 module that provides bi-directional products, orders and shipping table rates synchronization with WalkTheChat CMS.",
   "type": "magento2-module",
-  "version": "1.0.3",
   "license": [
     "OSL-3.0",
     "AFL-3.0"
