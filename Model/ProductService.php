@@ -28,9 +28,9 @@ class ProductService
     protected $searchCriteriaBuilder;
 
     /**
-     * @var \Magento\CatalogInventory\Model\Stock\StockItemRepository
+     * @var \Magento\CatalogInventory\Model\Stock\StockItem
      */
-    protected $stockItemRepository;
+    protected $stockItem;
 
     /**
      * @var \Walkthechat\Walkthechat\Helper\Data
@@ -51,7 +51,7 @@ class ProductService
      * @param \Magento\Catalog\Model\ProductRepository                  $productRepository
      * @param \Magento\Framework\Api\SearchCriteriaBuilder              $searchCriteriaBuilder
      * @param \Walkthechat\Walkthechat\Helper\Data                          $helper
-     * @param \Magento\CatalogInventory\Model\Stock\StockItemRepository $stockItemRepository
+     * @param \Magento\CatalogInventory\Api\StockStateInterface         $stockItem
      * @param \Walkthechat\Walkthechat\Model\QueueService                   $queueService
      * @param \Walkthechat\Walkthechat\Api\QueueRepositoryInterface         $queueRepository
      */
@@ -59,13 +59,13 @@ class ProductService
         \Magento\Catalog\Model\ProductRepository $productRepository,
         \Magento\Framework\Api\SearchCriteriaBuilder $searchCriteriaBuilder,
         \Walkthechat\Walkthechat\Helper\Data $helper,
-        \Magento\CatalogInventory\Model\Stock\StockItemRepository $stockItemRepository,
+        \Magento\CatalogInventory\Api\StockStateInterface $stockItem,
         \Walkthechat\Walkthechat\Model\QueueService $queueService,
         \Walkthechat\Walkthechat\Api\QueueRepositoryInterface $queueRepository
     ) {
         $this->productRepository     = $productRepository;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
-        $this->stockItemRepository   = $stockItemRepository;
+        $this->stockItem             = $stockItem;
         $this->helper                = $helper;
         $this->queueService          = $queueService;
         $this->queueRepository       = $queueRepository;
@@ -268,7 +268,7 @@ class ProductService
             'variants'              => [
                 [
                     'id'                => $product->getId(),
-                    'inventoryQuantity' => $this->stockItemRepository->get($product->getId())->getQty(),
+                    'inventoryQuantity' => $this->stockItem->getStockQty($product->getId()),
                     'weight'            => $product->getWeight(),
                     'requiresShipping'  => true,
                     'sku'               => $product->getSku(),
@@ -324,7 +324,7 @@ class ProductService
 
                     $data['variants'][$k] = [
                         'id'                => $child->getId(),
-                        'inventoryQuantity' => $this->stockItemRepository->get($child->getId())->getQty(),
+                        'inventoryQuantity' => $this->stockItem->getStockQty($child->getId()),
                         'weight'            => $child->getWeight(),
                         'requiresShipping'  => true,
                         'sku'               => $child->getSku(),
