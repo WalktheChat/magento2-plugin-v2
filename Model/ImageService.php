@@ -26,6 +26,11 @@ class ImageService
     protected $imageSyncRepository;
 
     /**
+     * @var \Walkthechat\Walkthechat\Api\ContentMediaRepositoryInterface
+     */
+    protected $contentMediaRepository;
+
+    /**
      * @var \Magento\Framework\Api\SearchCriteriaInterface
      */
     protected $searchCriteria;
@@ -41,26 +46,45 @@ class ImageService
     protected $filterBuilder;
 
     /**
+     * @var \Walkthechat\Walkthechat\Model\Template\Filter
+     */
+    protected $filter;
+
+    /**
+     * @var \Magento\Framework\Filesystem
+     */
+    protected $filesystem;
+
+    /**
      * ImageService constructor.
      *
      * @param \Walkthechat\Walkthechat\Service\ImagesRepository           $requestImagesRepository
      * @param \Walkthechat\Walkthechat\Api\ImageSyncRepositoryInterface   $imageSyncRepository
+     * @param \Walkthechat\Walkthechat\Api\ContentMediaRepositoryInterface $contentMediaRepository
      * @param \Magento\Framework\Api\SearchCriteriaInterface          $searchCriteria
      * @param \Magento\Framework\Api\Search\FilterGroup               $filterGroup
      * @param \Magento\Framework\Api\FilterBuilder                    $filterBuilder
+     * @param \Walkthechat\Walkthechat\Model\Template\Filter          $filter
+     * @param \Magento\Framework\Filesystem                           $filesystem
      */
     public function __construct(
         \Walkthechat\Walkthechat\Service\ImagesRepository $requestImagesRepository,
         \Walkthechat\Walkthechat\Api\ImageSyncRepositoryInterface $imageSyncRepository,
+        \Walkthechat\Walkthechat\Api\ContentMediaRepositoryInterface $contentMediaRepository,
         \Magento\Framework\Api\SearchCriteriaInterface $searchCriteria,
         \Magento\Framework\Api\Search\FilterGroup $filterGroup,
-        \Magento\Framework\Api\FilterBuilder $filterBuilder
+        \Magento\Framework\Api\FilterBuilder $filterBuilder,
+        \Walkthechat\Walkthechat\Model\Template\Filter $filter,
+        \Magento\Framework\Filesystem $filesystem
     ) {
         $this->requestImagesRepository = $requestImagesRepository;
         $this->imageSyncRepository     = $imageSyncRepository;
+        $this->contentMediaRepository  = $contentMediaRepository;
         $this->searchCriteria          = $searchCriteria;
         $this->filterGroup             = $filterGroup;
         $this->filterBuilder           = $filterBuilder;
+        $this->filter                  = $filter;
+        $this->filesystem              = $filesystem;
     }
 
     /**
@@ -222,5 +246,66 @@ class ImageService
         }
 
         return $imagesData;
+    }
+
+    /**
+     * Add content media
+     *
+     * @param \Magento\Catalog\Api\Data\ProductInterface $mainProduct
+     *
+     * @return array
+     * @throws \Zend_Http_Client_Exception
+     */
+    public function addContentMedia(\Magento\Catalog\Api\Data\ProductInterface $mainProduct)
+    {
+        $contentMediaData = [
+            'content' => $mainProduct->getDescription(),
+            'syncMedia' => []
+        ];
+
+        if (preg_match_all(\Magento\Framework\Filter\Template::CONSTRUCTION_PATTERN, $contentMediaData['content'], $constructions, PREG_SET_ORDER)) {
+            $mediaPath = $this->filesystem->getDirectoryRead(\Magento\Framework\App\Filesystem\DirectoryList::MEDIA)->getAbsolutePath();
+
+            foreach ($constructions as $construction) {
+                if (isset($construction[1]) && $construction[1] == 'media') {
+                    $imagePath = $this->filter->mediaDirective($construction);
+
+                    $this->filterGroup->setFilters([
+                        $this->filterBuilder
+                            ->setField('image_path')
+                            ->setConditionType('eq')
+                            ->setValue($imagePath)
+                            ->create(),
+                    ]);
+
+                    $this->searchCriteria->setFilterGroups([$this->filterGroup]);
+
+                    $items = $this->contentMediaRepository
+                        ->getList($this->searchCriteria)
+                        ->getItems();
+
+                    if ($items) {
+                        $item = reset($items);
+                        $imageData = json_decode($item['image_data']);
+
+                        $contentMediaData['content'] = str_replace($construction[0], $imageData->url, $contentMediaData['content']);
+                    } else {
+                        $response = $this->requestImagesRepository->create($mediaPath . $imagePath);
+
+                        if (is_array($response) && isset($response[0])) {
+                            $contentMediaData['syncMedia'][] = [
+                                'image_path' => $imagePath,
+                                'image_data' => json_encode($response[0]),
+                            ];
+
+                            $contentMediaData['content'] =
+                                str_replace($construction[0], $response[0]['url'], $contentMediaData['content']);
+                        }
+                    }
+                }
+            }
+        }
+
+        return $contentMediaData;
     }
 }

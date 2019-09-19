@@ -246,11 +246,12 @@ class ProductService
      * @param \Magento\Catalog\Model\Product $product
      * @param bool                           $isNew
      * @param array                          $imagesData
+     * @param array                          $mediaContentData
      *
      * @return array
      * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
-    public function prepareProductData($product, $isNew = true, array $imagesData = [])
+    public function prepareProductData($product, $isNew = true, array $imagesData = [], array $mediaContentData = [])
     {
         $mainPrice        = $this->helper->convertPrice($product->getPrice());
         $mainSpecialPrice = $this->helper->convertPrice($product->getSpecialPrice());
@@ -287,7 +288,7 @@ class ProductService
             ];
 
             $data['bodyHtml'] = [
-                'en' => $product->getDescription(),
+                'en' => isset($mediaContentData['content']) && $mediaContentData['content'] ? $mediaContentData['content'] : $product->getDescription(),
             ];
 
             $data['variants'][0]['title'] = [
