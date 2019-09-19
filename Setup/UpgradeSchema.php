@@ -45,6 +45,10 @@ class UpgradeSchema implements \Magento\Framework\Setup\UpgradeSchemaInterface
         if (version_compare($context->getVersion(), '0.6.0', '<')) {
             $this->addStatusFieldInQueueTable($installer);
         }
+
+        if (version_compare($context->getVersion(), '1.1.0', '<')) {
+            $this->createContentMediaTable($installer);
+        }
     }
 
     /**
@@ -286,5 +290,58 @@ class UpgradeSchema implements \Magento\Framework\Setup\UpgradeSchemaInterface
                     ]
                 );
         }
+    }
+
+
+    /**
+     * Creates content media table
+     *
+     * @param \Magento\Framework\Setup\SchemaSetupInterface $installer
+     *
+     * @return $this
+     * @throws \Zend_Db_Exception
+     */
+    protected function createContentMediaTable(\Magento\Framework\Setup\SchemaSetupInterface $installer)
+    {
+        if (!$installer->tableExists(\Walkthechat\Walkthechat\Model\ResourceModel\ContentMedia::TABLE_NAME)) {
+            $table = $installer
+                ->getConnection()
+                ->newTable($installer->getTable(\Walkthechat\Walkthechat\Model\ResourceModel\ContentMedia::TABLE_NAME))
+                ->addColumn(
+                    \Walkthechat\Walkthechat\Api\Data\ContentMediaInterface::ID,
+                    \Magento\Framework\DB\Ddl\Table::TYPE_INTEGER,
+                    null,
+                    [
+                        'identity' => true,
+                        'unsigned' => true,
+                        'nullable' => false,
+                        'primary'  => true,
+                    ],
+                    'Entity ID'
+                )
+                ->addColumn(
+                    \Walkthechat\Walkthechat\Api\Data\ContentMediaInterface::IMAGE_PATH,
+                    \Magento\Framework\DB\Ddl\Table::TYPE_TEXT,
+                    255,
+                    [
+                        'nullable' => false,
+                    ],
+                    'Image Path'
+                )
+                ->addColumn(
+                    \Walkthechat\Walkthechat\Api\Data\ImageSyncInterface::IMAGE_DATA,
+                    \Magento\Framework\DB\Ddl\Table::TYPE_TEXT,
+                    null,
+                    [
+                        'nullable' => false,
+                    ],
+                    'Image Data'
+                )
+                ->setComment('WalkTheChat content media synchronization table');
+
+            $installer->getConnection()->createTable($table);
+        }
+
+        return $this;
     }
 }
