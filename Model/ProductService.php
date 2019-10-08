@@ -263,7 +263,7 @@ class ProductService
         $data = [
             'manageInventory'       => true,
             'visibility'            => $productVisibility,
-            'displayPrice'          => $mainSpecialPrice ? mainSpecialPrice : $mainPrice,
+            'displayPrice'          => $mainSpecialPrice ? $mainSpecialPrice : $mainPrice,
             'displayCompareAtPrice' => $mainSpecialPrice ? $mainPrice : null,
             'images'                => $imagesData['main'] ?? [],
             'variants'              => [
@@ -273,7 +273,7 @@ class ProductService
                     'weight'            => $product->getWeight(),
                     'requiresShipping'  => true,
                     'sku'               => $product->getSku(),
-                    'price'             => $mainSpecialPrice ? mainSpecialPrice : $mainPrice,
+                    'price'             => $mainSpecialPrice ? $mainSpecialPrice : $mainPrice,
                     'compareAtPrice'    => $mainSpecialPrice ? $mainPrice : null,
                     'visibility'        => $productVisibility,
                     'taxable'           => (bool)$product->getTaxClassId(),
