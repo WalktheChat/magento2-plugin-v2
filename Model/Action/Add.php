@@ -110,8 +110,7 @@ class Add extends \Walkthechat\Walkthechat\Model\Action\AbstractAction
      */
     public function execute(\Walkthechat\Walkthechat\Api\Data\QueueInterface $queueItem)
     {
-        //$product            = $this->productRepository->getById($queueItem->getProductId());
-        $product            = $this->productRepository->getById(2);
+        $product            = $this->productRepository->getById($queueItem->getProductId());
         $imagesData         = $this->imageService->addImages($product);
         $contentMediaData   = $this->imageService->addContentMedia($product);
 
