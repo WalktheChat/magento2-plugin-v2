@@ -322,6 +322,9 @@ class ProductService
                     if ($child->isDisabled()) {
                         continue;
                     }
+					
+					$childPrice			= $this->helper->convertPrice($child->getPrice());
+					$childSpecialPrice = $this->helper->convertPrice($child->getSpecialPrice());
 
                     $data['variants'][$k] = [
                         'id'                => $child->getId(),
@@ -329,8 +332,8 @@ class ProductService
                         'weight'            => $child->getWeight(),
                         'requiresShipping'  => true,
                         'sku'               => $child->getSku(),
-                        'price'             => $this->helper->convertPrice($child->getPrice()),
-                        'compareAtPrice'    => $this->helper->convertPrice($child->getSpecialPrice()),
+                        'price'             => $childSpecialPrice ? $childSpecialPrice : $childPrice,
+						'compareAtPrice'    => $childSpecialPrice ? $childPrice : null,
                         'visibility'        => $child->getVisibility() != \Magento\Catalog\Model\Product\Visibility::VISIBILITY_NOT_VISIBLE,
                         'taxable'           => (bool)$child->getTaxClassId(),
                     ];
