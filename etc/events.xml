@@ -3,4 +3,7 @@
     <event name="sales_order_place_after">
         <observer name="walkthechat_sales_order_place_after" instance="Walkthechat\Walkthechat\Observer\SalesOrderPlaceAfter" />
     </event>
+	<event name="catalog_product_attribute_update_before">
+		<observer name="walkthechat_catalog_product_attribute_update_before" instance="Walkthechat\Walkthechat\Observer\CatalogProductAttributeUpdateBefore" />
+	</event>
 </config>
