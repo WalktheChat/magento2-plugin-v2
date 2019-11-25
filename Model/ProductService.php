@@ -36,14 +36,21 @@ class ProductService
      * @var \Walkthechat\Walkthechat\Helper\Data
      */
     protected $helper;
+	
     /**
      * @var \Walkthechat\Walkthechat\Model\QueueService
      */
     private $queueService;
+	
     /**
      * @var \Walkthechat\Walkthechat\Api\QueueRepositoryInterface
      */
     private $queueRepository;
+	
+	/**
+     * @var \Magento\CatalogRule\Model\RuleFactory
+     */
+	private $ruleFactory;
 
     /**
      * ProductService constructor.
@@ -54,6 +61,7 @@ class ProductService
      * @param \Magento\CatalogInventory\Api\StockStateInterface         $stockItem
      * @param \Walkthechat\Walkthechat\Model\QueueService                   $queueService
      * @param \Walkthechat\Walkthechat\Api\QueueRepositoryInterface         $queueRepository
+     * @param \Magento\CatalogRule\Model\RuleFactory								$ruleFactory
      */
     public function __construct(
         \Magento\Catalog\Model\ProductRepository $productRepository,
@@ -61,7 +69,8 @@ class ProductService
         \Walkthechat\Walkthechat\Helper\Data $helper,
         \Magento\CatalogInventory\Api\StockStateInterface $stockItem,
         \Walkthechat\Walkthechat\Model\QueueService $queueService,
-        \Walkthechat\Walkthechat\Api\QueueRepositoryInterface $queueRepository
+        \Walkthechat\Walkthechat\Api\QueueRepositoryInterface $queueRepository,
+		\Magento\CatalogRule\Model\RuleFactory $ruleFactory
     ) {
         $this->productRepository     = $productRepository;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
@@ -69,6 +78,7 @@ class ProductService
         $this->helper                = $helper;
         $this->queueService          = $queueService;
         $this->queueRepository       = $queueRepository;
+        $this->ruleFactory       = $ruleFactory;
     }
 
     /**
@@ -253,9 +263,16 @@ class ProductService
      */
     public function prepareProductData($product, $isNew = true, array $imagesData = [], array $mediaContentData = [])
     {
+		$rule =  $this->ruleFactory->create();
+		
         $mainPrice        = $this->helper->convertPrice($product->getPrice());
         $mainSpecialPrice = $this->helper->convertPrice($product->getSpecialPrice());
-
+		$mainRulePrice = $this->helper->convertPrice($rule->calcProductPriceRule($product, $product->getPrice()));
+		
+		if (($mainRulePrice && !$mainSpecialPrice) || ($mainRulePrice && $mainRulePrice < $mainSpecialPrice)) {
+			$mainSpecialPrice = $mainRulePrice;
+		}
+		
         $productVisibility =
             $product->getVisibility() != \Magento\Catalog\Model\Product\Visibility::VISIBILITY_NOT_VISIBLE
             && !$product->isDisabled();
@@ -325,6 +342,11 @@ class ProductService
 					
 					$childPrice			= $this->helper->convertPrice($child->getPrice());
 					$childSpecialPrice = $this->helper->convertPrice($child->getSpecialPrice());
+					$childRulePrice = $this->helper->convertPrice($rule->calcProductPriceRule($child, $child->getPrice()));
+		
+					if (($childRulePrice && !$childSpecialPrice) || ($childRulePrice && $childRulePrice < $childSpecialPrice)) {
+						$childSpecialPrice = $childRulePrice;
+					}
 
                     $data['variants'][$k] = [
                         'id'                => $child->getId(),
