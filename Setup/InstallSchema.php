@@ -46,7 +46,7 @@ class InstallSchema implements \Magento\Framework\Setup\InstallSchemaInterface
      */
     protected function createLogsTable(\Magento\Framework\Setup\SchemaSetupInterface $installer)
     {
-        if (!$installer->tableExists(\Walkthechat\Walkthechat\Model\ResourceModel\ApiLog::TABLE_NAME)) {
+        if (!$installer->tableExists($installer->getTable(\Walkthechat\Walkthechat\Model\ResourceModel\ApiLog::TABLE_NAME))) {
             $table = $installer
                 ->getConnection()
                 ->newTable($installer->getTable(\Walkthechat\Walkthechat\Model\ResourceModel\ApiLog::TABLE_NAME))
@@ -142,7 +142,7 @@ class InstallSchema implements \Magento\Framework\Setup\InstallSchemaInterface
      */
     public function createQueueTable(\Magento\Framework\Setup\SchemaSetupInterface $installer)
     {
-        if (!$installer->tableExists(\Walkthechat\Walkthechat\Model\ResourceModel\Queue::TABLE_NAME)) {
+        if (!$installer->tableExists($installer->getTable(\Walkthechat\Walkthechat\Model\ResourceModel\Queue::TABLE_NAME))) {
             $table = $installer
                 ->getConnection()
                 ->newTable($installer->getTable(\Walkthechat\Walkthechat\Model\ResourceModel\Queue::TABLE_NAME))
@@ -259,10 +259,10 @@ class InstallSchema implements \Magento\Framework\Setup\InstallSchemaInterface
     {
         $connection = $installer->getConnection();
 
-        if (!$connection->tableColumnExists('sales_order', \Walkthechat\Walkthechat\Helper\Data::ATTRIBUTE_CODE)) {
+        if (!$connection->tableColumnExists($installer->getTable('sales_order'), \Walkthechat\Walkthechat\Helper\Data::ATTRIBUTE_CODE)) {
             $connection
                 ->addColumn(
-                    $connection->getTableName('sales_order'),
+                    $installer->getTable('sales_order'),
                     \Walkthechat\Walkthechat\Helper\Data::ATTRIBUTE_CODE,
                     [
                         'type'    => \Magento\Framework\DB\Ddl\Table::TYPE_TEXT,

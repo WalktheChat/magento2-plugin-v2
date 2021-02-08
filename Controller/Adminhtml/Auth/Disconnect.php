@@ -52,6 +52,7 @@ class Disconnect extends \Magento\Backend\App\Action
     public function execute()
     {
         $this->configWriter->delete('walkthechat_settings/general/token');
+        $this->configWriter->delete('walkthechat_settings/general/project_id');
         $this->cacheTypeList->cleanType('config');
         $this->messageManager->addSuccessMessage(__('App was disconnected.'));
 
