@@ -61,7 +61,7 @@ class UpgradeSchema implements \Magento\Framework\Setup\UpgradeSchemaInterface
      */
     protected function createImageSyncTable(\Magento\Framework\Setup\SchemaSetupInterface $installer)
     {
-        if (!$installer->tableExists(\Walkthechat\Walkthechat\Model\ResourceModel\ImageSync::TABLE_NAME)) {
+        if (!$installer->tableExists($installer->getTable(\Walkthechat\Walkthechat\Model\ResourceModel\ImageSync::TABLE_NAME))) {
             $table = $installer
                 ->getConnection()
                 ->newTable($installer->getTable(\Walkthechat\Walkthechat\Model\ResourceModel\ImageSync::TABLE_NAME))
@@ -164,7 +164,7 @@ class UpgradeSchema implements \Magento\Framework\Setup\UpgradeSchemaInterface
     {
         $connection = $installer->getConnection();
 
-        if (!$connection->tableColumnExists('sales_order_item', 'walkthechat_item_data')) {
+        if (!$connection->tableColumnExists($installer->getTable('sales_order_item'), 'walkthechat_item_data')) {
             $connection
                 ->addColumn(
                     $installer->getTable('sales_order_item'),
@@ -189,7 +189,7 @@ class UpgradeSchema implements \Magento\Framework\Setup\UpgradeSchemaInterface
         $connection = $installer->getConnection();
 
         if (!$connection->tableColumnExists(
-            \Walkthechat\Walkthechat\Model\ResourceModel\Queue::TABLE_NAME,
+            $installer->getTable(\Walkthechat\Walkthechat\Model\ResourceModel\Queue::TABLE_NAME),
             \Walkthechat\Walkthechat\Api\Data\QueueInterface::STATUS
         )) {
             $connection
@@ -217,12 +217,12 @@ class UpgradeSchema implements \Magento\Framework\Setup\UpgradeSchemaInterface
     {
         $connection = $installer->getConnection();
 
-        if ($connection->isTableExists(\Walkthechat\Walkthechat\Model\ResourceModel\ApiLog::TABLE_NAME)) {
-            $connection->truncateTable(\Walkthechat\Walkthechat\Model\ResourceModel\ApiLog::TABLE_NAME);
+        if ($connection->isTableExists($installer->getTable(\Walkthechat\Walkthechat\Model\ResourceModel\ApiLog::TABLE_NAME))) {
+            $connection->truncateTable($installer->getTable(\Walkthechat\Walkthechat\Model\ResourceModel\ApiLog::TABLE_NAME));
         }
 
         if (!$connection->tableColumnExists(
-            \Walkthechat\Walkthechat\Model\ResourceModel\ApiLog::TABLE_NAME,
+            $installer->getTable(\Walkthechat\Walkthechat\Model\ResourceModel\ApiLog::TABLE_NAME),
             \Walkthechat\Walkthechat\Api\Data\ApiLogInterface::QUEUE_ITEM_ID_FIELD
         )) {
             $connection
@@ -241,14 +241,14 @@ class UpgradeSchema implements \Magento\Framework\Setup\UpgradeSchemaInterface
             $connection
                 ->addForeignKey(
                     $connection->getForeignKeyName(
-                        \Walkthechat\Walkthechat\Model\ResourceModel\ApiLog::TABLE_NAME,
+                        $installer->getTable(\Walkthechat\Walkthechat\Model\ResourceModel\ApiLog::TABLE_NAME),
                         \Walkthechat\Walkthechat\Api\Data\ApiLogInterface::QUEUE_ITEM_ID_FIELD,
-                        \Walkthechat\Walkthechat\Model\ResourceModel\Queue::TABLE_NAME,
+                        $installer->getTable(\Walkthechat\Walkthechat\Model\ResourceModel\Queue::TABLE_NAME),
                         \Walkthechat\Walkthechat\Api\Data\QueueInterface::ID
                     ),
-                    \Walkthechat\Walkthechat\Model\ResourceModel\ApiLog::TABLE_NAME,
+                    $installer->getTable(\Walkthechat\Walkthechat\Model\ResourceModel\ApiLog::TABLE_NAME),
                     \Walkthechat\Walkthechat\Api\Data\ApiLogInterface::QUEUE_ITEM_ID_FIELD,
-                    \Walkthechat\Walkthechat\Model\ResourceModel\Queue::TABLE_NAME,
+                    $installer->getTable(\Walkthechat\Walkthechat\Model\ResourceModel\Queue::TABLE_NAME),
                     \Walkthechat\Walkthechat\Api\Data\QueueInterface::ID
                 );
         }
@@ -265,7 +265,7 @@ class UpgradeSchema implements \Magento\Framework\Setup\UpgradeSchemaInterface
         $connection = $installer->getConnection();
         $fieldName  = 'is_sent_to_walk_the_chat';
 
-        if (!$connection->tableColumnExists('sales_shipment', $fieldName)) {
+        if (!$connection->tableColumnExists($installer->getTable('sales_shipment'), $fieldName)) {
             $connection
                 ->addColumn(
                     $installer->getTable('sales_shipment'),
@@ -278,7 +278,7 @@ class UpgradeSchema implements \Magento\Framework\Setup\UpgradeSchemaInterface
                 );
         }
 
-        if (!$connection->tableColumnExists('sales_creditmemo', $fieldName)) {
+        if (!$connection->tableColumnExists($installer->getTable('sales_creditmemo'), $fieldName)) {
             $connection
                 ->addColumn(
                     $installer->getTable('sales_creditmemo'),
@@ -303,7 +303,7 @@ class UpgradeSchema implements \Magento\Framework\Setup\UpgradeSchemaInterface
      */
     protected function createContentMediaTable(\Magento\Framework\Setup\SchemaSetupInterface $installer)
     {
-        if (!$installer->tableExists(\Walkthechat\Walkthechat\Model\ResourceModel\ContentMedia::TABLE_NAME)) {
+        if (!$installer->tableExists($installer->getTable(\Walkthechat\Walkthechat\Model\ResourceModel\ContentMedia::TABLE_NAME))) {
             $table = $installer
                 ->getConnection()
                 ->newTable($installer->getTable(\Walkthechat\Walkthechat\Model\ResourceModel\ContentMedia::TABLE_NAME))
