@@ -336,11 +336,7 @@ class ProductService
 
                 $k = 0;
                 foreach ($children as $child) {
-                    if ($child->isDisabled()) {
-                        continue;
-                    }
-					
-					$childPrice			= $this->helper->convertPrice($child->getPrice());
+                    $childPrice			= $this->helper->convertPrice($child->getPrice());
 					$childSpecialPrice = $this->helper->convertPrice($child->getSpecialPrice());
 					$childRulePrice = $this->helper->convertPrice($rule->calcProductPriceRule($child, $child->getPrice()));
 		
@@ -356,7 +352,7 @@ class ProductService
                         'sku'               => $child->getSku(),
                         'price'             => $childSpecialPrice ? $childSpecialPrice : $childPrice,
 						'compareAtPrice'    => $childSpecialPrice ? $childPrice : null,
-                        'visibility'        => $child->getVisibility() != \Magento\Catalog\Model\Product\Visibility::VISIBILITY_NOT_VISIBLE,
+                        'visibility'        => $child->isDisabled() ? false : true,
                         'taxable'           => (bool)$child->getTaxClassId(),
                     ];
 
