@@ -26,4 +26,4 @@ Bi-directional integration of orders, products and shipping table rates between 
 ## How to set the Order Webhook
 1. In your WalktheChat back-end, go to "Settings" / "Third-party App integration"
 2. Open the App you previously created
-3. Enter "*magento_domain_name*/rest/v1/walkthechat/import/order" in the "Orders Webhook" field where *magento_domain_name* is the url or your Magento site (starting with "http://" or https://)
+3. Enter "*magento_domain_name*/rest/V1/walkthechat/import/order" in the "Orders Webhook" field where *magento_domain_name* is the url or your Magento site (starting with "http://" or https://)
