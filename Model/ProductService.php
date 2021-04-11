@@ -139,28 +139,42 @@ class ProductService
         $bulkData        = [];
 
         foreach ($products as $product) {
+            $isSupportedProductType = in_array($product->getTypeId(), [
+                \Magento\Catalog\Model\Product\Type::TYPE_SIMPLE,
+                \Magento\Catalog\Model\Product\Type::TYPE_VIRTUAL,
+                \Magento\ConfigurableProduct\Model\Product\Type\Configurable::TYPE_CODE,
+            ]);
+
+            if (!$isSupportedProductType) {
+                ++$productsProceed;
+
+                continue;
+            }
+
             $walkTheChatAttributeValue = $this->helper->getWalkTheChatAttributeValue($product);
 
-            // temporary solution (null filter doesn't work for custom attributes)
-            if (!$walkTheChatAttributeValue) {
-                $isSupportedProductType = in_array($product->getTypeId(), [
-                    \Magento\Catalog\Model\Product\Type::TYPE_SIMPLE,
-                    \Magento\Catalog\Model\Product\Type::TYPE_VIRTUAL,
-                    \Magento\ConfigurableProduct\Model\Product\Type\Configurable::TYPE_CODE,
-                ]);
-
-                if (!$isSupportedProductType) {
-                    ++$productsProceed;
-
-                    continue;
+            if ($walkTheChatAttributeValue) {
+                // don't add to queue twice when exporting
+                if (!$this->queueService->isDuplicate(
+                    $product->getId(),
+                    \Walkthechat\Walkthechat\Model\Action\Update::ACTION,
+                    'product_id'
+                )
+                ) {
+                    $bulkData[] = [
+                        'product_id' => $product->getId(),
+                        'walkthechat_id' => $walkTheChatAttributeValue,
+                        'action'     => \Walkthechat\Walkthechat\Model\Action\Update::ACTION,
+                    ];
                 }
-
+            } else {
                 // don't add to queue twice when exporting
                 if (!$this->queueService->isDuplicate(
                     $product->getId(),
                     \Walkthechat\Walkthechat\Model\Action\Add::ACTION,
                     'product_id'
-                )) {
+                )
+                ) {
                     $bulkData[] = [
                         'product_id' => $product->getId(),
                         'action'     => \Walkthechat\Walkthechat\Model\Action\Add::ACTION,
@@ -336,7 +350,7 @@ class ProductService
 
                 $k = 0;
                 foreach ($children as $child) {
-                    $childPrice			= $this->helper->convertPrice($child->getPrice());
+					$childPrice			= $this->helper->convertPrice($child->getPrice());
 					$childSpecialPrice = $this->helper->convertPrice($child->getSpecialPrice());
 					$childRulePrice = $this->helper->convertPrice($rule->calcProductPriceRule($child, $child->getPrice()));
 		

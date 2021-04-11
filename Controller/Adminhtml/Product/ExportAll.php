@@ -65,6 +65,6 @@ class ExportAll extends \Magento\Backend\App\Action
             $this->messageManager->addErrorMessage(__('Internal error occurred. Please see logs or contact administrator.'));
         }
 
-        $this->_redirect('*/dashboard/index');
+        $this->_redirect('*/dashboard/products');
     }
 }

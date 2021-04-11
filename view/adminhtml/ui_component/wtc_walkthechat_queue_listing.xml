@@ -7,7 +7,6 @@
         </item>
         <item name="spinner" xsi:type="string">wtc_walkthechat_queue_grid_columns</item>
         <item name="buttons" xsi:type="array">
-            <item name="delete_all" xsi:type="string">Walkthechat\Walkthechat\Block\Adminhtml\Dashboard\DeleteAllButton</item>
             <!--<item name="sync_shipping" xsi:type="array">-->
                 <!--<item name="name" xsi:type="string">sync_shipping</item>-->
                 <!--<item name="label" xsi:type="string" translate="true">Sync Tablerate Shipping</item>-->
@@ -15,19 +14,12 @@
                 <!--<item name="url" xsi:type="string">*/*/syncShipping</item>-->
                 <!--<item name="sort_order" xsi:type="string">100</item>-->
             <!--</item>-->
-            <item name="export_all" xsi:type="array">
+            <item name="products" xsi:type="array">
                 <item name="name" xsi:type="string">export_all</item>
-                <item name="label" xsi:type="string" translate="true">Export All Products</item>
+                <item name="label" xsi:type="string" translate="true">Manage Products</item>
                 <item name="class" xsi:type="string">primary</item>
-                <item name="url" xsi:type="string">*/product/exportAll</item>
-                <item name="sort_order" xsi:type="string">200</item>
-            </item>
-            <item name="export_selected" xsi:type="array">
-                <item name="name" xsi:type="string">export_selected</item>
-                <item name="label" xsi:type="string" translate="true">Export Selected Products</item>
-                <item name="class" xsi:type="string">primary</item>
-                <item name="url" xsi:type="string">catalog/product</item>
-                <item name="sort_order" xsi:type="string">300</item>
+                <item name="url" xsi:type="string">*/*/products</item>
+                <item name="sort_order" xsi:type="string">100</item>
             </item>
         </item>
     </argument>
