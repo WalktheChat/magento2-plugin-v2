@@ -2,40 +2,23 @@
 <listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
     <argument name="data" xsi:type="array">
         <item name="js_config" xsi:type="array">
-            <item name="provider" xsi:type="string">wtc_walkthechat_product_listing.wtc_walkthechat_product_listing_data_source</item>
-        </item>
-        <item name="buttons" xsi:type="array">
-            <item name="delete_all" xsi:type="string">Walkthechat\Walkthechat\Block\Adminhtml\Dashboard\DeleteAllButton</item>
-            <item name="export_all" xsi:type="array">
-                <item name="name" xsi:type="string">export_all</item>
-                <item name="label" xsi:type="string" translate="true">Export All Products</item>
-                <item name="class" xsi:type="string">primary</item>
-                <item name="url" xsi:type="string">*/product/exportAll</item>
-                <item name="sort_order" xsi:type="string">200</item>
-            </item>
-            <item name="export_selected" xsi:type="array">
-                <item name="name" xsi:type="string">export_selected</item>
-                <item name="label" xsi:type="string" translate="true">Export Selected Products</item>
-                <item name="class" xsi:type="string">primary</item>
-                <item name="url" xsi:type="string">*/*/export</item>
-                <item name="sort_order" xsi:type="string">300</item>
-            </item>
+            <item name="provider" xsi:type="string">wtc_walkthechat_product_export_listing.wtc_walkthechat_product_export_listing_data_source</item>
         </item>
     </argument>
     <settings>
         <spinner>product_columns</spinner>
         <deps>
-            <dep>wtc_walkthechat_product_listing.wtc_walkthechat_product_listing_data_source</dep>
+            <dep>wtc_walkthechat_product_export_listing.wtc_walkthechat_product_export_listing_data_source</dep>
         </deps>
     </settings>
-    <dataSource name="wtc_walkthechat_product_listing_data_source" component="Magento_Ui/js/grid/provider">
+    <dataSource name="wtc_walkthechat_product_export_listing_data_source" component="Magento_Ui/js/grid/provider">
         <settings>
             <storageConfig>
                 <param name="dataScope" xsi:type="string">filters.store_id</param>
             </storageConfig>
             <updateUrl path="mui/index/render"/>
         </settings>
-        <dataProvider class="Walkthechat\Walkthechat\Ui\DataProvider\ProductDataProvider" name="wtc_walkthechat_product_listing_data_source">
+        <dataProvider class="Walkthechat\Walkthechat\Ui\DataProvider\ProductExportDataProvider" name="wtc_walkthechat_product_export_listing_data_source">
             <settings>
                 <requestFieldName>id</requestFieldName>
                 <primaryFieldName>entity_id</primaryFieldName>
@@ -50,22 +33,11 @@
         <massaction name="listing_massaction"
                     component="Magento_Ui/js/grid/tree-massactions"
                     class="\Magento\Catalog\Ui\Component\Product\MassAction">
-            <action name="delete">
+            <action name="walkthechat_export">
                 <settings>
-                    <confirm>
-                        <title>Delete items</title>
-                        <message>Are you sure you want to delete selected products from WalkTheChat?</message>
-                    </confirm>
-                    <url path="*/*/deleteProducts"/>
-                    <type>delete</type>
-                    <label translate="true">Delete</label>
-                </settings>
-            </action>
-            <action name="resync">
-                <settings>
-                    <url path="*/*/resyncProducts"/>
-                    <type>walkthechat_resync</type>
-                    <label translate="true">Re-sync</label>
+                    <url path="*/product/export" />
+                    <type>walkthechat_export</type>
+                    <label translate="true">Export To Walkthechat</label>
                 </settings>
             </action>
         </massaction>
@@ -75,7 +47,7 @@
         <settings>
             <childDefaults>
                 <param name="fieldAction" xsi:type="array">
-                    <item name="provider" xsi:type="string">wtc_walkthechat_product_listing.wtc_walkthechat_product_listing.product_columns.actions</item>
+                    <item name="provider" xsi:type="string">wtc_walkthechat_product_export_listing.wtc_walkthechat_product_export_listing.product_columns.actions</item>
                     <item name="target" xsi:type="string">applyAction</item>
                     <item name="params" xsi:type="array">
                         <item name="0" xsi:type="string">edit</item>
