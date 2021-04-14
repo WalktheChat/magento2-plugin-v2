@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <update handle="styles" />
+    <body>
+        <referenceBlock name="page.title">
+            <action method="setPageTitle">
+                <argument translate="true" name="title" xsi:type="string">WalkTheChat - Export Products</argument>
+            </action>
+        </referenceBlock>
+        <referenceContainer name="content">
+            <uiComponent name="wtc_walkthechat_product_export_listing" />
+        </referenceContainer>
+    </body>
+</page>
