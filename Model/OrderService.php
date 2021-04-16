@@ -576,6 +576,7 @@ class OrderService
             'city'                 => $address['city'],
             'country_id'           => $address['countryCode'],
             'region'               => $address['province'],
+            'region_id'            => $this->helper->convertRegionNameToRegionId($address['province']),
             'postcode'             => $address['zipcode'],
             'telephone'            => $address['phone'],
             'fax'                  => '',
