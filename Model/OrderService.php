@@ -78,6 +78,11 @@ class OrderService
     protected $baseCurrencyCode;
 
     /**
+     * @var \Magento\ConfigurableProduct\Model\ResourceModel\Product\Type\Configurable
+     */
+    protected $configurableProductType;
+
+    /**
      * OrderService constructor.
      *
      * @param \Magento\Store\Model\StoreManagerInterface      $storeManager
@@ -89,6 +94,7 @@ class OrderService
      * @param \Walkthechat\Walkthechat\Helper\Data                $helper
      * @param \Magento\Sales\Api\OrderItemRepositoryInterface $orderItemRepository
      * @param \Magento\Quote\Api\CartRepositoryInterface      $cartRepository
+     * @param \Magento\ConfigurableProduct\Model\ResourceModel\Product\Type\Configurable $configurableProductType
      */
     public function __construct(
         \Magento\Store\Model\StoreManagerInterface $storeManager,
@@ -99,7 +105,8 @@ class OrderService
         \Magento\Framework\Registry $registry,
         \Walkthechat\Walkthechat\Helper\Data $helper,
         \Magento\Sales\Api\OrderItemRepositoryInterface $orderItemRepository,
-        \Magento\Quote\Api\CartRepositoryInterface $cartRepository
+        \Magento\Quote\Api\CartRepositoryInterface $cartRepository,
+        \Magento\ConfigurableProduct\Model\ResourceModel\Product\Type\Configurable $configurableProductType
     ) {
         $this->storeManager        = $storeManager;
         $this->quoteFactory        = $quoteFactory;
@@ -110,6 +117,7 @@ class OrderService
         $this->helper              = $helper;
         $this->orderItemRepository = $orderItemRepository;
         $this->cartRepository      = $cartRepository;
+        $this->configurableProductType  = $configurableProductType;
     }
 
     /**
@@ -135,6 +143,7 @@ class OrderService
 
             $order
                 ->setWalkthechatId($data['id'])
+                ->setWalkthechatName($data['name'])
                 ->setEmailSent(0);
 
             $this->orderRepository->save($order);
@@ -330,8 +339,14 @@ class OrderService
         foreach ($data['items']['products'] as $k => $item) {
             try {
                 $product = $this->productRepository->get($item['variant']['sku']);
+                $parentIds = $this->configurableProductType->getParentIdsByChild($product->getId());
 
-                if ($this->helper->getWalkTheChatAttributeValue($product) !== $item['product']['id']) {
+                if (count($parentIds)) {
+                    $parent = $this->productRepository->getById($parentIds[0]);
+                    if ($this->helper->getWalkTheChatAttributeValue($parent) !== $item['product']['id']) {
+                        throw new \Magento\Framework\Exception\NoSuchEntityException();
+                    }
+                } elseif ($this->helper->getWalkTheChatAttributeValue($product) !== $item['product']['id']) {
                     throw new \Magento\Framework\Exception\NoSuchEntityException();
                 }
 

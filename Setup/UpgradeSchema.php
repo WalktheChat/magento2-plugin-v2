@@ -49,6 +49,10 @@ class UpgradeSchema implements \Magento\Framework\Setup\UpgradeSchemaInterface
         if (version_compare($context->getVersion(), '1.1.0', '<')) {
             $this->createContentMediaTable($installer);
         }
+
+        if (version_compare($context->getVersion(), '1.2.0', '<')) {
+            $this->createWalkTheChatOrderNameAttribute($installer);
+        }
     }
 
     /**
@@ -343,5 +347,28 @@ class UpgradeSchema implements \Magento\Framework\Setup\UpgradeSchemaInterface
         }
 
         return $this;
+    }
+
+    /**
+     * Create new walkthechat name column in order table
+     *
+     * @param \Magento\Framework\Setup\SchemaSetupInterface $installer
+     */
+    protected function createWalkTheChatOrderNameAttribute(\Magento\Framework\Setup\SchemaSetupInterface $installer)
+    {
+        $connection = $installer->getConnection();
+
+        if (!$connection->tableColumnExists($installer->getTable('sales_order'), \Walkthechat\Walkthechat\Helper\Data::ATTRIBUTE_NAME_CODE)) {
+            $connection
+                ->addColumn(
+                    $installer->getTable('sales_order'),
+                    \Walkthechat\Walkthechat\Helper\Data::ATTRIBUTE_NAME_CODE,
+                    [
+                        'type'    => \Magento\Framework\DB\Ddl\Table::TYPE_TEXT,
+                        'length'  => 255,
+                        'comment' => 'WalkTheChat Name',
+                    ]
+                );
+        }
     }
 }

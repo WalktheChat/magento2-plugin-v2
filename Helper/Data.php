@@ -23,6 +23,11 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     const ATTRIBUTE_CODE = 'walkthechat_id';
 
     /**
+     * Code of order name attribute used in orders
+     */
+    const ATTRIBUTE_NAME_CODE = 'walkthechat_name';
+
+    /**
      * @var \Magento\Framework\App\Config\ScopeConfigInterface
      */
     protected $scopeConfig;
