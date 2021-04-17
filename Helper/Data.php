@@ -23,6 +23,11 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     const ATTRIBUTE_CODE = 'walkthechat_id';
 
     /**
+     * Code of order name attribute used in orders
+     */
+    const ATTRIBUTE_NAME_CODE = 'walkthechat_name';
+
+    /**
      * @var \Magento\Framework\App\Config\ScopeConfigInterface
      */
     protected $scopeConfig;
@@ -38,19 +43,27 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     protected $baseCurrencyCode;
 
     /**
+     * @var \Magento\Directory\Model\RegionFactory
+     */
+    protected $regionFactory;
+
+    /**
      * Constructor
      *
      * @param \Magento\Framework\App\Helper\Context              $context
      * @param \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
      * @param \Magento\Backend\Model\UrlInterface                $urlBackendBuilder
+     * @param \Magento\Directory\Model\RegionFactory             $regionFactory
      */
     public function __construct(
         \Magento\Framework\App\Helper\Context $context,
         \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig,
-        \Magento\Backend\Model\UrlInterface $urlBackendBuilder
+        \Magento\Backend\Model\UrlInterface $urlBackendBuilder,
+        \Magento\Directory\Model\RegionFactory $regionFactory
     ) {
         $this->scopeConfig       = $scopeConfig;
         $this->urlBackendBuilder = $urlBackendBuilder;
+        $this->regionFactory     = $regionFactory;
 
         parent::__construct($context);
     }
@@ -329,5 +342,59 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
         }
 
         return strtolower($orderCurrency) !== strtolower($this->baseCurrencyCode);
+    }
+
+    /**
+     * Convert region name to region ID
+     *
+     * @param $name
+     * @return null|integer
+     */
+    public function convertRegionNameToRegionId($name)
+    {
+        $regionId = null;
+
+        $regions = [
+            '北京市' => 'CN-BJ',
+            '上海市' => 'CN-SH',
+            '天津市' => 'CN-TJ',
+            '重庆市' => 'CN-CQ',
+            '广东省' => 'CN-GD',
+            '江苏省' => 'CN-JS',
+            '浙江省' => 'CN-ZJ',
+            '福建省' => 'CN-FJ',
+            '黑龙江省' => 'CN-HL',
+            '吉林省' => 'CN-JL',
+            '辽宁省' => 'CN-LN',
+            '山东省' => 'CN-SD',
+            '山西省' => 'CN-SX',
+            '河北省' => 'CN-HE',
+            '河南省' => 'CN-HN',
+            '安徽省' => 'CN-AH',
+            '江西省' => 'CN-JX',
+            '陕西省' => 'CN-SN',
+            '湖北省' => 'CN-HB',
+            '湖南省' => 'CN-HN',
+            '四川省' => 'CN-SC',
+            '甘肃省' => 'CN-GS',
+            '贵州省' => 'CN-GZ',
+            '青海省' => 'CN-QH',
+            '云南省' => 'CN-YN',
+            '海南省' => 'CN-HI',
+            '内蒙古自治区' => 'CN-NM',
+            '广西壮族自治区' => 'CN-GX',
+            '西藏自治区' => 'CN-XZ',
+            '宁夏回族自治区' => 'CN-NX',
+            '新疆维吾尔自治区' => 'CN-XJ',
+            '台湾省' => 'CN-TW',
+            '香港特别行政区' => 'CN-HK',
+            '澳门特别行政区' => 'CN-MO'
+        ];
+
+        if (isset($regions[$name])) {
+            $regionId = $this->regionFactory->create()->loadByCode($regions[$name], 'CN')->getId();
+        }
+
+        return $regionId;
     }
 }

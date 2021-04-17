@@ -19,6 +19,7 @@ class RequestValidator
      * Validates params and throw exception if validation failed
      *
      * @param string $id
+     * @param string $name
      * @param string $financialStatus
      * @param mixed  $itemsToFulfill
      * @param array  $items
@@ -34,6 +35,7 @@ class RequestValidator
      */
     public function validate(
         $id,
+        $name,
         $financialStatus,
         $itemsToFulfill,
         $items,
@@ -53,6 +55,7 @@ class RequestValidator
 
         return compact(
             'id',
+            'name',
             'items',
             'itemsToFulfill',
             'deliveryAddress',
@@ -202,6 +205,25 @@ class RequestValidator
 
         throw new \Magento\Framework\Exception\ValidatorException(
             __('Unable to proceed order import. Id was not passed.')
+        );
+    }
+
+    /**
+     * Throws exception if name is invalid
+     *
+     * @param string $name
+     *
+     * @return bool
+     * @throws \Magento\Framework\Exception\ValidatorException
+     */
+    protected function validateName($name)
+    {
+        if (isset($name)) {
+            return true;
+        }
+
+        throw new \Magento\Framework\Exception\ValidatorException(
+            __('Unable to proceed order import. Name was not passed.')
         );
     }
 

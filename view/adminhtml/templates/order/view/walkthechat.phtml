@@ -1,0 +1,8 @@
+<?php $order = $block->getOrder(); ?>
+<?php if ($order->getWalkthechatName()): ?>
+    <tr>
+        <th><?= $block->escapeHtml(__('WalkTheChat ID')) ?></th>
+        <td><?= $block->escapeHtml($order->getWalkthechatName()) ?></td>
+    </tr>
+<?php endif ?>
+
