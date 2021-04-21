@@ -64,6 +64,7 @@ class ProductExportDataProvider extends \Magento\Catalog\Ui\DataProvider\Product
                 null,
                 'left'
             )
+            ->addAttributeToFilter('status', \Magento\Catalog\Model\Product\Attribute\Source\Status::STATUS_ENABLED)
             ->setVisibility($this->productVisibility->getVisibleInSiteIds());
     }
 }

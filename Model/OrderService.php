@@ -339,15 +339,18 @@ class OrderService
         foreach ($data['items']['products'] as $k => $item) {
             try {
                 $product = $this->productRepository->get($item['variant']['sku']);
-                $parentIds = $this->configurableProductType->getParentIdsByChild($product->getId());
 
-                if (count($parentIds)) {
-                    $parent = $this->productRepository->getById($parentIds[0]);
-                    if ($this->helper->getWalkTheChatAttributeValue($parent) !== $item['product']['id']) {
+                if ($this->helper->getWalkTheChatAttributeValue($product) !== $item['product']['id']) {
+                    $parentIds = $this->configurableProductType->getParentIdsByChild($product->getId());
+
+                    if (count($parentIds)) {
+                        $parent = $this->productRepository->getById($parentIds[0]);
+                        if ($this->helper->getWalkTheChatAttributeValue($parent) !== $item['product']['id']) {
+                            throw new \Magento\Framework\Exception\NoSuchEntityException();
+                        }
+                    } else {
                         throw new \Magento\Framework\Exception\NoSuchEntityException();
                     }
-                } elseif ($this->helper->getWalkTheChatAttributeValue($product) !== $item['product']['id']) {
-                    throw new \Magento\Framework\Exception\NoSuchEntityException();
                 }
 
                 $qty            = $item['quantity'];
