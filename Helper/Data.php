@@ -260,7 +260,7 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
         if ($this->isCurrencyConversionActive()) {
             $rate = $this->getCurrencyConversionRate();
 
-            if ($rate) {
+            if ($price && $rate) {
                 if ($export) {
                     if ($this->getCurrencyConversionMethod() == 2) {
                         if ($price * $rate < 1) {
