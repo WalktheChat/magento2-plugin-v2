@@ -104,10 +104,6 @@ class Delete extends \Walkthechat\Walkthechat\Model\Action\AbstractAction
             }
         }
 
-        if ($productIds) {
-            $this->imageSyncRepository->deleteByProductIds($productIds);
-        }
-
         return true;
     }
 }
