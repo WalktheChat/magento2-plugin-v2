@@ -253,7 +253,7 @@ class SyncImages
                         $ids = [$product->getId()];
 
                         if ($product->getTypeId() === \Magento\ConfigurableProduct\Model\Product\Type\Configurable::TYPE_CODE) {
-                            $children   = $product->getTypeInstance()->getUsedProducts($product);
+                            $children = $product->getTypeInstance()->getUsedProducts($product);
                             foreach ($children as $child) {
                                 $ids[] = $child->getId();
                             }
@@ -262,7 +262,7 @@ class SyncImages
                                 $parent = $this->productRepository->getById($parentId);
                                 $ids[] = $parent->getId();
 
-                                $children   = $product->getTypeInstance()->getUsedProducts($product);
+                                $children = $parent->getTypeInstance()->getUsedProducts($parent);
                                 foreach ($children as $child) {
                                     $ids[] = $child->getId();
                                 }
