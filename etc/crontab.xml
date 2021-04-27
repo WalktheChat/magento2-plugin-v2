@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Cron:etc/crontab.xsd">
     <group id="default">
-        <job name="walkthechat_refresh_price" instance="Walkthechat\Walkthechat\Cron\ProcessQueue" method="execute">
+        <job name="walkthechat_main_sync" instance="Walkthechat\Walkthechat\Cron\ProcessQueue" method="execute">
             <schedule>* * * * *</schedule>
         </job>
         <job name="walkthechat_sync_images" instance="Walkthechat\Walkthechat\Cron\SyncImages" method="execute">
