@@ -66,5 +66,13 @@ class ProductExportDataProvider extends \Magento\Catalog\Ui\DataProvider\Product
             )
             ->addAttributeToFilter('status', \Magento\Catalog\Model\Product\Attribute\Source\Status::STATUS_ENABLED)
             ->setVisibility($this->productVisibility->getVisibleInSiteIds());
+
+        $this->collection->getSelect()
+            ->joinLeft(
+                ['link_table' => $this->collection->getResource()->getTable('catalog_product_super_link')],
+                'link_table.product_id = e.entity_id',
+                ['product_id']
+            )
+            ->where('link_table.product_id IS NULL');
     }
 }
