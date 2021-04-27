@@ -56,16 +56,27 @@ class ImageService
     protected $filesystem;
 
     /**
+     * @var \Magento\Catalog\Model\Product\Gallery\GalleryManagement
+     */
+    protected $galleryManagement;
+
+    /**
+     * @var \Magento\Catalog\Model\Product\Media\Config
+     */
+    protected $catalogProductMediaConfig;
+
+    /**
      * ImageService constructor.
-     *
-     * @param \Walkthechat\Walkthechat\Service\ImagesRepository           $requestImagesRepository
-     * @param \Walkthechat\Walkthechat\Api\ImageSyncRepositoryInterface   $imageSyncRepository
+     * @param \Walkthechat\Walkthechat\Service\ImagesRepository $requestImagesRepository
+     * @param \Walkthechat\Walkthechat\Api\ImageSyncRepositoryInterface $imageSyncRepository
      * @param \Walkthechat\Walkthechat\Api\ContentMediaRepositoryInterface $contentMediaRepository
-     * @param \Magento\Framework\Api\SearchCriteriaInterface          $searchCriteria
-     * @param \Magento\Framework\Api\Search\FilterGroup               $filterGroup
-     * @param \Magento\Framework\Api\FilterBuilder                    $filterBuilder
-     * @param \Walkthechat\Walkthechat\Model\Template\Filter          $filter
-     * @param \Magento\Framework\Filesystem                           $filesystem
+     * @param \Magento\Framework\Api\SearchCriteriaInterface $searchCriteria
+     * @param \Magento\Framework\Api\Search\FilterGroup $filterGroup
+     * @param \Magento\Framework\Api\FilterBuilder $filterBuilder
+     * @param Template\Filter $filter
+     * @param \Magento\Framework\Filesystem $filesystem
+     * @param \Magento\Catalog\Model\Product\Gallery\GalleryManagement $galleryManagement
+     * @param \Magento\Catalog\Model\Product\Media\Config $catalogProductMediaConfig
      */
     public function __construct(
         \Walkthechat\Walkthechat\Service\ImagesRepository $requestImagesRepository,
@@ -75,7 +86,9 @@ class ImageService
         \Magento\Framework\Api\Search\FilterGroup $filterGroup,
         \Magento\Framework\Api\FilterBuilder $filterBuilder,
         \Walkthechat\Walkthechat\Model\Template\Filter $filter,
-        \Magento\Framework\Filesystem $filesystem
+        \Magento\Framework\Filesystem $filesystem,
+        \Magento\Catalog\Model\Product\Gallery\GalleryManagement $galleryManagement,
+        \Magento\Catalog\Model\Product\Media\Config $catalogProductMediaConfig
     ) {
         $this->requestImagesRepository = $requestImagesRepository;
         $this->imageSyncRepository     = $imageSyncRepository;
@@ -85,73 +98,40 @@ class ImageService
         $this->filterBuilder           = $filterBuilder;
         $this->filter                  = $filter;
         $this->filesystem              = $filesystem;
+        $this->galleryManagement       = $galleryManagement;
+        $this->catalogProductMediaConfig = $catalogProductMediaConfig;
     }
 
     /**
-     * @param \Magento\Catalog\Api\Data\ProductInterface $product
+     * Add image to wtc
      *
-     * @return array
-     * @throws \Zend_Http_Client_Exception
+     * @param string $sku
+     * @param int $id
+     * @return bool|mixed
      */
-    public function addImages(\Magento\Catalog\Api\Data\ProductInterface $product)
+    public function addImage(string $sku, int $id)
     {
-        /** @var \Magento\Catalog\Model\Product $product */
+        $galleryImage = $this->galleryManagement->get($sku, $id);
+        $directory = $this->filesystem->getDirectoryRead(\Magento\Framework\App\Filesystem\DirectoryList::MEDIA);
 
-        $imagesData = [
-            'main'           => [],
-            'children'       => [],
-            '_syncImageData' => [],
-        ];
+        $response = $this->requestImagesRepository->create($directory->getAbsolutePath($this->catalogProductMediaConfig->getMediaPath($galleryImage->getFile())));
 
-        foreach ($product->getMediaGalleryImages() as $galleryImage) {
-            $response = $this->requestImagesRepository->create($galleryImage->getPath());
-
-            if (is_array($response) && isset($response[0])) {
-                $imagesData['main'][] = $response[0];
-
-                $imagesData['_syncImageData'][] = [
-                    'product_id' => $product->getId(),
-                    'image_id'   => $galleryImage->getId(),
-                    'image_data' => json_encode($response[0]),
-                ];
-            }
+        if (is_array($response) && isset($response[0])) {
+            return $response[0];
         }
 
-        if ($product->getTypeId() === \Magento\ConfigurableProduct\Model\Product\Type\Configurable::TYPE_CODE) {
-            /** @var \Magento\Catalog\Model\Product[] $children */
-            $children = $product->getTypeInstance()->getUsedProducts($product);
-
-            if ($children) {
-                foreach ($children as $child) {
-                    foreach ($child->getMediaGalleryImages() as $galleryImage) {
-                        $response = $this->requestImagesRepository->create($galleryImage->getPath());
-
-                        if (is_array($response) && isset($response[0])) {
-                            $imagesData['children'][$child->getId()][] = $response[0];
-
-                            $imagesData['_syncImageData'][] = [
-                                'product_id' => $child->getId(),
-                                'image_id'   => $galleryImage->getId(),
-                                'image_data' => json_encode($response[0]),
-                            ];
-                        }
-                    }
-                }
-            }
-        }
-
-        return $imagesData;
+        return false;
     }
 
     /**
-     * Update images in product
+     * Prepare product images
      *
      * @param \Magento\Catalog\Api\Data\ProductInterface $mainProduct
      *
      * @return array
      * @throws \Zend_Http_Client_Exception
      */
-    public function updateImages(\Magento\Catalog\Api\Data\ProductInterface $mainProduct)
+    public function prepareImages(\Magento\Catalog\Api\Data\ProductInterface $mainProduct)
     {
         /** @var \Magento\Catalog\Model\Product[] $products */
         $products = [$mainProduct];
@@ -212,35 +192,26 @@ class ImageService
                     if ($productGalleryImage->getId() == $image->getImageId()) {
                         $isFound = true;
 
-                        $savedImageData = json_decode($image->getImageData(), true);
+                        if ($image->getImageData()) {
+                            $savedImageData = json_decode($image->getImageData(), true);
 
-                        if ($isMainProduct) {
-                            $imagesData['main'][] = $savedImageData;
-                        } else {
-                            $imagesData['children'][$product->getId()][] = $savedImageData;
+                            if ($isMainProduct) {
+                                $imagesData['main'][] = $savedImageData;
+                            } else {
+                                $imagesData['children'][$product->getId()][] = $savedImageData;
+                            }
                         }
 
                         break;
                     }
                 }
 
-                // upload product image to CDN if wasn't found in saved images
                 if (!$isFound) {
-                    $response = $this->requestImagesRepository->create($productGalleryImage->getPath());
-
-                    if (is_array($response) && isset($response[0])) {
-                        if ($isMainProduct) {
-                            $imagesData['main'][] = $response[0];
-                        } else {
-                            $imagesData['children'][$product->getId()][] = $response[0];
-                        }
-
-                        $imagesData['_syncImageData'][] = [
-                            'product_id' => $product->getId(),
-                            'image_id'   => $productGalleryImage->getId(),
-                            'image_data' => json_encode($response[0]),
-                        ];
-                    }
+                    $imagesData['_syncImageData'][] = [
+                        'product_id' => $product->getId(),
+                        'image_id'   => $productGalleryImage->getId(),
+                        'image_data' => ''
+                    ];
                 }
             }
         }

@@ -4,5 +4,8 @@
         <job name="walkthechat_refresh_price" instance="Walkthechat\Walkthechat\Cron\ProcessQueue" method="execute">
             <schedule>* * * * *</schedule>
         </job>
+        <job name="walkthechat_sync_images" instance="Walkthechat\Walkthechat\Cron\SyncImages" method="execute">
+            <schedule>* * * * *</schedule>
+        </job>
     </group>
 </config>

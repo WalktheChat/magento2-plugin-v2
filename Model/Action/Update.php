@@ -113,7 +113,7 @@ class Update extends \Walkthechat\Walkthechat\Model\Action\AbstractAction
     {
         if ($queueItem->getProductId()) {
             $product    = $this->productRepository->getById($queueItem->getProductId());
-            $imagesData = $this->imageService->updateImages($product);
+            $imagesData = $this->imageService->prepareImages($product);
             $data       = $this->productService->prepareProductData($product, false, $imagesData);
 
             $data['id'] = $queueItem->getWalkthechatId() ?? $this->helper->getWalkTheChatAttributeValue($product);
