@@ -38,31 +38,81 @@ class QueueService
     protected $searchCriteriaBuilder;
 
     /**
+     * @var \Magento\Framework\Api\Search\FilterGroupBuilder
+     */
+    protected $filterGroupBuilder;
+
+    /**
+     * @var \Magento\Framework\Api\FilterBuilder
+     */
+    protected $filterBuilder;
+
+    /**
      * @var \Psr\Log\LoggerInterface
      */
     protected $logger;
 
     /**
      * QueueService constructor.
-     *
-     * @param \Magento\Framework\Stdlib\DateTime\DateTime       $date
+     * @param \Magento\Framework\Stdlib\DateTime\DateTime $date
      * @param \Walkthechat\Walkthechat\Api\QueueRepositoryInterface $queueRepository
-     * @param \Walkthechat\Walkthechat\Model\ActionFactory          $actionFactory
-     * @param \Magento\Framework\Api\SearchCriteriaBuilder      $searchCriteriaBuilder
-     * @param \Psr\Log\LoggerInterface                          $logger
+     * @param ActionFactory $actionFactory
+     * @param \Magento\Framework\Api\SearchCriteriaBuilder $searchCriteriaBuilder
+     * @param \Magento\Framework\Api\Search\FilterGroupBuilder $filterGroupBuilder
+     * @param \Magento\Framework\Api\FilterBuilder $filterBuilder
+     * @param \Psr\Log\LoggerInterface $logger
      */
     public function __construct(
         \Magento\Framework\Stdlib\DateTime\DateTime $date,
         \Walkthechat\Walkthechat\Api\QueueRepositoryInterface $queueRepository,
         \Walkthechat\Walkthechat\Model\ActionFactory $actionFactory,
         \Magento\Framework\Api\SearchCriteriaBuilder $searchCriteriaBuilder,
+        \Magento\Framework\Api\Search\FilterGroupBuilder $filterGroupBuilder,
+        \Magento\Framework\Api\FilterBuilder $filterBuilder,
         \Psr\Log\LoggerInterface $logger
     ) {
         $this->date                  = $date;
         $this->queueRepository       = $queueRepository;
         $this->actionFactory         = $actionFactory;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
+        $this->filterGroupBuilder    = $filterGroupBuilder;
+        $this->filterBuilder         = $filterBuilder;
         $this->logger                = $logger;
+    }
+
+    /**
+     * Count new not processed
+     *
+     * @return int
+     */
+    public function countNewNotProcessed()
+    {
+        $filterGroup1 = $this->filterGroupBuilder
+            ->addFilter(
+                $this->filterBuilder
+                    ->setField('processed_at')
+                    ->setConditionType('null')
+                    ->setValue(true)
+                    ->create()
+            )
+            ->create();
+
+        $filterGroup2 = $this->filterGroupBuilder
+            ->addFilter(
+                $this->filterBuilder
+                    ->setField('action')
+                    ->setConditionType('eq')
+                    ->setValue(\Walkthechat\Walkthechat\Model\Action\Add::ACTION)
+                    ->create()
+            )
+            ->create();
+
+        $this->searchCriteriaBuilder->setFilterGroups([$filterGroup1, $filterGroup2]);
+
+        /** @var \Magento\Framework\Api\SearchCriteriaInterface $searchCriteria */
+        $searchCriteria = $this->searchCriteriaBuilder->create();
+
+        return $this->queueRepository->getList($searchCriteria)->getTotalCount();
     }
 
     /**

@@ -82,6 +82,24 @@ class ProductService
     }
 
     /**
+     * Get All Synced Products
+     *
+     * @return mixed
+     */
+    public function getSyncedProducts()
+    {
+        $searchCriteria = $this->searchCriteriaBuilder
+            ->addFilter(
+                \Walkthechat\Walkthechat\Helper\Data::ATTRIBUTE_CODE,
+                '',
+                'neq'
+            )
+            ->create();
+
+        return $this->productRepository->getList($searchCriteria);
+    }
+
+    /**
      * Get all products available for export
      *
      * @return \Magento\Catalog\Api\Data\ProductInterface[]

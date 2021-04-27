@@ -103,6 +103,36 @@ class ImageService
     }
 
     /**
+     * @return mixed
+     */
+    public function getSyncedImages()
+    {
+        $this->filterGroup->setFilters([
+            $this->filterBuilder
+                ->setField('image_data')
+                ->setConditionType('neq')
+                ->setValue('')
+                ->create(),
+        ]);
+
+        $this->searchCriteria->setFilterGroups([$this->filterGroup]);
+
+        return $this->imageSyncRepository
+            ->getList($this->searchCriteria);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getExportedImages()
+    {
+        $this->searchCriteria->setFilterGroups([]);
+
+        return $this->imageSyncRepository
+            ->getList($this->searchCriteria);
+    }
+
+    /**
      * Add image to wtc
      *
      * @param string $sku
