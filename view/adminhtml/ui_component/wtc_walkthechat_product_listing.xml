@@ -5,6 +5,13 @@
             <item name="provider" xsi:type="string">wtc_walkthechat_product_listing.wtc_walkthechat_product_listing_data_source</item>
         </item>
         <item name="buttons" xsi:type="array">
+            <item name="back" xsi:type="array">
+                <item name="name" xsi:type="string">back</item>
+                <item name="label" xsi:type="string" translate="true">Back To Dashboard</item>
+                <item name="class" xsi:type="string">return back</item>
+                <item name="url" xsi:type="string">*/dashboard/index</item>
+                <item name="sort_order" xsi:type="string">100</item>
+            </item>
             <item name="delete_all" xsi:type="string">Walkthechat\Walkthechat\Block\Adminhtml\Dashboard\DeleteAllButton</item>
             <item name="export_all" xsi:type="array">
                 <item name="name" xsi:type="string">export_all</item>

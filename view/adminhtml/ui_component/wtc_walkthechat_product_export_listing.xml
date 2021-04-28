@@ -4,6 +4,15 @@
         <item name="js_config" xsi:type="array">
             <item name="provider" xsi:type="string">wtc_walkthechat_product_export_listing.wtc_walkthechat_product_export_listing_data_source</item>
         </item>
+        <item name="buttons" xsi:type="array">
+            <item name="back" xsi:type="array">
+                <item name="name" xsi:type="string">back</item>
+                <item name="label" xsi:type="string" translate="true">Back To Synced Products</item>
+                <item name="class" xsi:type="string">return back</item>
+                <item name="url" xsi:type="string">*/*/products</item>
+                <item name="sort_order" xsi:type="string">100</item>
+            </item>
+        </item>
     </argument>
     <settings>
         <spinner>product_columns</spinner>

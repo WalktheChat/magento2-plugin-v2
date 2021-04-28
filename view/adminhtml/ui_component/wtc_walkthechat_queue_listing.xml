@@ -6,6 +6,13 @@
             <item name="deps" xsi:type="string">wtc_walkthechat_queue_listing.wtc_walkthechat_queue_grid_data_source</item>
         </item>
         <item name="spinner" xsi:type="string">wtc_walkthechat_queue_grid_columns</item>
+        <item name="html_blocks" xsi:type="array">
+            <item name="stats" xsi:type="array">
+                <item name="name" xsi:type="string">stats</item>
+                <item name="type" xsi:type="string">Walkthechat\Walkthechat\Block\Adminhtml\Dashboard\Stats</item>
+                <item name="arguments" xsi:type="array"></item>
+            </item>
+        </item>
         <item name="buttons" xsi:type="array">
             <!--<item name="sync_shipping" xsi:type="array">-->
                 <!--<item name="name" xsi:type="string">sync_shipping</item>-->

@@ -1,0 +1,20 @@
+<div class="action delete">
+    <table class="admin__table-secondary">
+        <tbody>
+        <tr>
+            <th><?php echo __('Exported Products') ?>:</th>
+            <td><?php echo $this->getSyncedProducts() ?> / <?php echo $this->getExportedProducts() ?></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<div class="action delete">
+    <table class="admin__table-secondary">
+        <tbody>
+        <tr>
+            <th><?php echo __('Exported Images') ?>:</th>
+            <td><?php echo $this->getSyncedImages() ?> / <?php echo $this->getExportedImages() ?></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
