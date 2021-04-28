@@ -183,6 +183,7 @@ class ImageService
         // if product is configurable then first will be parent and others are children
         foreach ($products as $k => $product) {
             $isMainProduct = !$k;
+            $imgPosition = 0;
 
             foreach ($product->getMediaGalleryImages() as $productGalleryImage) {
                 $isFound = false;
@@ -194,6 +195,13 @@ class ImageService
 
                         if ($image->getImageData()) {
                             $savedImageData = json_decode($image->getImageData(), true);
+
+                            if ($product->getThumbnail() == $productGalleryImage->getFile()) {
+                                $savedImageData['position'] = 0;
+                            } else {
+                                $imgPosition++;
+                                $savedImageData['position'] = $imgPosition;
+                            }
 
                             if ($isMainProduct) {
                                 $imagesData['main'][] = $savedImageData;
