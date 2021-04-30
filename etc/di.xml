@@ -53,4 +53,12 @@
             <argument name="resourceModel" xsi:type="string">Walkthechat\Walkthechat\Model\ResourceModel\ApiLog</argument>
         </arguments>
     </virtualType>
+
+    <virtualType name="Magento\Sales\Model\ResourceModel\Grid">
+        <arguments>
+            <argument name="columns" xsi:type="array">
+                <item name="walkthechat_name" xsi:type="string">sales_order.walkthechat_name</item>
+            </argument>
+        </arguments>
+    </virtualType>
 </config>
