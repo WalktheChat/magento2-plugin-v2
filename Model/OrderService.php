@@ -573,8 +573,8 @@ class OrderService
         $address = $data['deliveryAddress'];
 
         return [
-            'firstname'            => substr($address['name'], 1),
-            'lastname'             => $address['name'][0],
+            'firstname'            => mb_substr($address['name'], 1),
+            'lastname'             => mb_substr($address['name'], 0, 1),
             'street'               => $address['address'].', '.$address['district'],
             'city'                 => $address['city'],
             'country_id'           => $address['countryCode'],
