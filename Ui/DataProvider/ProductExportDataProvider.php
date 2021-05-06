@@ -17,18 +17,32 @@ use Magento\Ui\DataProvider\Modifier\ModifierInterface;
 use Magento\Ui\DataProvider\Modifier\PoolInterface;
 use Magento\Catalog\Model\Product\Visibility ;
 
+/**
+ * Class ProductExportDataProvider
+ * @package Walkthechat\Walkthechat\Ui\DataProvider
+ */
 class ProductExportDataProvider extends \Magento\Catalog\Ui\DataProvider\Product\ProductDataProvider
 {
+    /**
+     * @var Visibility
+     */
     protected $productVisibility;
 
     /**
-     * @param string $name
-     * @param string $primaryFieldName
-     * @param string $requestFieldName
+     * @var \Walkthechat\Walkthechat\Helper\Data
+     */
+    protected $helper;
+
+    /**
+     * ProductExportDataProvider constructor.
+     * @param $name
+     * @param $primaryFieldName
+     * @param $requestFieldName
      * @param CollectionFactory $collectionFactory
-     * @param \Magento\Catalog\Model\Product\Visibility $productVisibility
-     * @param \Magento\Ui\DataProvider\AddFieldToCollectionInterface[] $addFieldStrategies
-     * @param \Magento\Ui\DataProvider\AddFilterToCollectionInterface[] $addFilterStrategies
+     * @param Visibility $productVisibility
+     * @param \Walkthechat\Walkthechat\Helper\Data $helper
+     * @param array $addFieldStrategies
+     * @param array $addFilterStrategies
      * @param array $meta
      * @param array $data
      * @param PoolInterface|null $modifiersPool
@@ -39,6 +53,7 @@ class ProductExportDataProvider extends \Magento\Catalog\Ui\DataProvider\Product
         $requestFieldName,
         CollectionFactory $collectionFactory,
         Visibility $productVisibility,
+        \Walkthechat\Walkthechat\Helper\Data $helper,
         array $addFieldStrategies = [],
         array $addFilterStrategies = [],
         array $meta = [],
@@ -47,9 +62,13 @@ class ProductExportDataProvider extends \Magento\Catalog\Ui\DataProvider\Product
     ) {
         parent::__construct($name, $primaryFieldName, $requestFieldName, $collectionFactory, $addFieldStrategies, $addFilterStrategies, $meta, $data, $modifiersPool);
 
-        $this->productVisibility = $productVisibility;
+        $this->productVisibility    = $productVisibility;
+        $this->helper               = $helper;
 
-        $this->collection->addAttributeToFilter('type_id', ['in' => [\Magento\Catalog\Model\Product\Type::TYPE_SIMPLE, \Magento\ConfigurableProduct\Model\Product\Type\Configurable::TYPE_CODE]])
+        $store = $this->helper->getStore();
+
+        $this->collection->setStoreId($store->getId())
+            ->addAttributeToFilter('type_id', ['in' => [\Magento\Catalog\Model\Product\Type::TYPE_SIMPLE, \Magento\ConfigurableProduct\Model\Product\Type\Configurable::TYPE_CODE]])
             ->addAttributeToFilter(
                 [
                     [
@@ -65,7 +84,8 @@ class ProductExportDataProvider extends \Magento\Catalog\Ui\DataProvider\Product
                 'left'
             )
             ->addAttributeToFilter('status', \Magento\Catalog\Model\Product\Attribute\Source\Status::STATUS_ENABLED)
-            ->setVisibility($this->productVisibility->getVisibleInSiteIds());
+            ->setVisibility($this->productVisibility->getVisibleInSiteIds())
+            ->addStoreFilter($store);
 
         $this->collection->getSelect()
             ->joinLeft(

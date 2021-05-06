@@ -112,7 +112,7 @@ class Update extends \Walkthechat\Walkthechat\Model\Action\AbstractAction
     public function execute(\Walkthechat\Walkthechat\Api\Data\QueueInterface $queueItem)
     {
         if ($queueItem->getProductId()) {
-            $product    = $this->productRepository->getById($queueItem->getProductId());
+            $product    = $this->productRepository->getById($queueItem->getProductId(), false, $this->helper->getStore()->getId());
             $imagesData = $this->imageService->prepareImages($product);
             $data       = $this->productService->prepareProductData($product, false, $imagesData);
 

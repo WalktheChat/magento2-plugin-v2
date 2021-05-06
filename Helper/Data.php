@@ -48,22 +48,30 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     protected $regionFactory;
 
     /**
+     * @var \Magento\Store\Model\StoreManagerInterface
+     */
+    protected $storeManager;
+
+    /**
      * Constructor
      *
-     * @param \Magento\Framework\App\Helper\Context              $context
+     * @param \Magento\Framework\App\Helper\Context $context
      * @param \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
-     * @param \Magento\Backend\Model\UrlInterface                $urlBackendBuilder
-     * @param \Magento\Directory\Model\RegionFactory             $regionFactory
+     * @param \Magento\Backend\Model\UrlInterface $urlBackendBuilder
+     * @param \Magento\Directory\Model\RegionFactory $regionFactory
+     * @param \Magento\Store\Model\StoreManagerInterface $storeManager
      */
     public function __construct(
         \Magento\Framework\App\Helper\Context $context,
         \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig,
         \Magento\Backend\Model\UrlInterface $urlBackendBuilder,
-        \Magento\Directory\Model\RegionFactory $regionFactory
+        \Magento\Directory\Model\RegionFactory $regionFactory,
+        \Magento\Store\Model\StoreManagerInterface $storeManager
     ) {
         $this->scopeConfig       = $scopeConfig;
         $this->urlBackendBuilder = $urlBackendBuilder;
         $this->regionFactory     = $regionFactory;
+        $this->storeManager      = $storeManager;
 
         parent::__construct($context);
     }
@@ -152,6 +160,18 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     public function canConnect()
     {
         return $this->getAppId() && $this->getAppKey();
+    }
+
+    /**
+     * Get data source store view
+     *
+     * @return mixed
+     */
+    public function getStore()
+    {
+        $storeId = $this->scopeConfig->getValue('walkthechat_settings/sync/store');
+
+        return $this->storeManager->getStore($storeId);
     }
 
     /**
