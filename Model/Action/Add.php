@@ -63,18 +63,20 @@ class Add extends \Walkthechat\Walkthechat\Model\Action\AbstractAction
     protected $contentMediaRepository;
 
     /**
-     * {@inheritdoc}
-     *
-     * @param \Walkthechat\Walkthechat\Helper\Data                $helper
-     * @param \Magento\Catalog\Model\ProductRepository        $productRepository
+     * Add constructor.
+     * @param \Walkthechat\Walkthechat\Helper\Data $helper
+     * @param \Walkthechat\Walkthechat\Api\Data\ImageSyncInterfaceFactory $imageSyncFactory
+     * @param \Walkthechat\Walkthechat\Api\ImageSyncRepositoryInterface $imageSyncRepository
+     * @param \Magento\Catalog\Model\ProductRepository $productRepository
      * @param \Walkthechat\Walkthechat\Service\ProductsRepository $queueProductRepositoryFactory
-     * @param \Walkthechat\Walkthechat\Service\ImagesRepository   $requestImagesRepository
-     * @param \Walkthechat\Walkthechat\Model\ImageService         $imageService
-     * @param \Walkthechat\Walkthechat\Model\ProductService       $productService
-     * @param \Walkthechat\Walkthechat\Api\Data\ContentMediaInterfaceFactory    $contentMediaFactory
-     * @param \Walkthechat\Walkthechat\Api\ContentMediaRepositoryInterface  $contentMediaRepository
+     * @param \Walkthechat\Walkthechat\Service\ImagesRepository $requestImagesRepository
+     * @param \Walkthechat\Walkthechat\Model\ImageService $imageService
+     * @param \Walkthechat\Walkthechat\Model\ProductService $productService
+     * @param \Walkthechat\Walkthechat\Api\Data\ContentMediaInterfaceFactory $contentMediaFactory
+     * @param \Walkthechat\Walkthechat\Api\ContentMediaRepositoryInterface $contentMediaRepository
      */
     public function __construct(
+        \Walkthechat\Walkthechat\Helper\Data $helper,
         \Walkthechat\Walkthechat\Api\Data\ImageSyncInterfaceFactory $imageSyncFactory,
         \Walkthechat\Walkthechat\Api\ImageSyncRepositoryInterface $imageSyncRepository,
         \Magento\Catalog\Model\ProductRepository $productRepository,
@@ -85,6 +87,7 @@ class Add extends \Walkthechat\Walkthechat\Model\Action\AbstractAction
         \Walkthechat\Walkthechat\Api\Data\ContentMediaInterfaceFactory $contentMediaFactory,
         \Walkthechat\Walkthechat\Api\ContentMediaRepositoryInterface $contentMediaRepository
     ) {
+        $this->helper                  = $helper;
         $this->productRepository       = $productRepository;
         $this->queueProductRepository  = $queueProductRepositoryFactory;
         $this->requestImagesRepository = $requestImagesRepository;
@@ -110,7 +113,7 @@ class Add extends \Walkthechat\Walkthechat\Model\Action\AbstractAction
      */
     public function execute(\Walkthechat\Walkthechat\Api\Data\QueueInterface $queueItem)
     {
-        $product            = $this->productRepository->getById($queueItem->getProductId());
+        $product            = $this->productRepository->getById($queueItem->getProductId(), false, $this->helper->getStore()->getId());
         $imagesData         = $this->imageService->prepareImages($product);
         $contentMediaData   = $this->imageService->addContentMedia($product);
 

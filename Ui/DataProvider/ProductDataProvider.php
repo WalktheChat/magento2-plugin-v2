@@ -16,15 +16,26 @@ use Magento\Store\Model\Store;
 use Magento\Ui\DataProvider\Modifier\ModifierInterface;
 use Magento\Ui\DataProvider\Modifier\PoolInterface;
 
+/**
+ * Class ProductDataProvider
+ * @package Walkthechat\Walkthechat\Ui\DataProvider
+ */
 class ProductDataProvider extends \Magento\Catalog\Ui\DataProvider\Product\ProductDataProvider
 {
     /**
-     * @param string $name
-     * @param string $primaryFieldName
-     * @param string $requestFieldName
+     * @var \Walkthechat\Walkthechat\Helper\Data
+     */
+    protected $helper;
+
+    /**
+     * ProductDataProvider constructor.
+     * @param $name
+     * @param $primaryFieldName
+     * @param $requestFieldName
      * @param CollectionFactory $collectionFactory
-     * @param \Magento\Ui\DataProvider\AddFieldToCollectionInterface[] $addFieldStrategies
-     * @param \Magento\Ui\DataProvider\AddFilterToCollectionInterface[] $addFilterStrategies
+     * @param \Walkthechat\Walkthechat\Helper\Data $helper
+     * @param array $addFieldStrategies
+     * @param array $addFilterStrategies
      * @param array $meta
      * @param array $data
      * @param PoolInterface|null $modifiersPool
@@ -34,6 +45,7 @@ class ProductDataProvider extends \Magento\Catalog\Ui\DataProvider\Product\Produ
         $primaryFieldName,
         $requestFieldName,
         CollectionFactory $collectionFactory,
+        \Walkthechat\Walkthechat\Helper\Data $helper,
         array $addFieldStrategies = [],
         array $addFilterStrategies = [],
         array $meta = [],
@@ -42,6 +54,9 @@ class ProductDataProvider extends \Magento\Catalog\Ui\DataProvider\Product\Produ
     ) {
         parent::__construct($name, $primaryFieldName, $requestFieldName, $collectionFactory, $addFieldStrategies, $addFilterStrategies, $meta, $data, $modifiersPool);
 
-        $this->collection->addAttributeToFilter(\Walkthechat\Walkthechat\Helper\Data::ATTRIBUTE_CODE, ['neq' => 'NULL']);
+        $this->helper = $helper;
+
+        $this->collection->setStoreId($this->helper->getStore()->getId())
+            ->addAttributeToFilter(\Walkthechat\Walkthechat\Helper\Data::ATTRIBUTE_CODE, ['neq' => 'NULL']);
     }
 }
