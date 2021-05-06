@@ -43,19 +43,15 @@ class Stats extends \Magento\Backend\Block\Template {
      * @param \Walkthechat\Walkthechat\Model\ProductService $productService
      * @param \Walkthechat\Walkthechat\Model\ImageService $imageService
      * @param array $data
-     * @param \Magento\Framework\Json\Helper\Data|null $jsonHelper
-     * @param \Magento\Directory\Helper\Data|null $directoryHelper
      */
     public function __construct(
         \Magento\Backend\Block\Template\Context $context,
         \Walkthechat\Walkthechat\Model\QueueService $queueService,
         \Walkthechat\Walkthechat\Model\ProductService $productService,
         \Walkthechat\Walkthechat\Model\ImageService $imageService,
-        array $data = [],
-        \Magento\Framework\Json\Helper\Data $jsonHelper = null,
-        \Magento\Directory\Helper\Data $directoryHelper = null
+        array $data = []
     ) {
-        parent::__construct($context, $data, $jsonHelper, $directoryHelper);
+        parent::__construct($context, $data);
 
         $this->queueService   = $queueService;
         $this->productService = $productService;
