@@ -54,7 +54,7 @@
         </arguments>
     </virtualType>
 
-    <virtualType name="Magento\Sales\Model\ResourceModel\Grid">
+    <virtualType name="Magento\Sales\Model\ResourceModel\Order\Grid">
         <arguments>
             <argument name="columns" xsi:type="array">
                 <item name="walkthechat_name" xsi:type="string">sales_order.walkthechat_name</item>
