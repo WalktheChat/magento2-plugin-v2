@@ -28,10 +28,9 @@ class ProductDataProvider extends \Magento\Catalog\Ui\DataProvider\Product\Produ
     protected $helper;
 
     /**
-     * ProductDataProvider constructor.
-     * @param $name
-     * @param $primaryFieldName
-     * @param $requestFieldName
+     * @param string $name
+     * @param string $primaryFieldName
+     * @param string $requestFieldName
      * @param CollectionFactory $collectionFactory
      * @param \Walkthechat\Walkthechat\Helper\Data $helper
      * @param array $addFieldStrategies

@@ -34,10 +34,9 @@ class ProductExportDataProvider extends \Magento\Catalog\Ui\DataProvider\Product
     protected $helper;
 
     /**
-     * ProductExportDataProvider constructor.
-     * @param $name
-     * @param $primaryFieldName
-     * @param $requestFieldName
+     * @param string $name
+     * @param string $primaryFieldName
+     * @param string $requestFieldName
      * @param CollectionFactory $collectionFactory
      * @param Visibility $productVisibility
      * @param \Walkthechat\Walkthechat\Helper\Data $helper
