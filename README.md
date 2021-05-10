@@ -17,8 +17,8 @@ Bi-directional integration of orders, products and shipping table rates between 
 1. In your WalktheChat back-end, go to "Settings" / "Third-party App integration" and generate a new App
 2. On your Magento 2 store, go to "WalktheChat" / "Configuration section"
 3. Enter your WalktheChat store name
-4. In the "API Url" field, enter "https://api.walkthechat.com/api/v1/" (don't ommit the final "/")
-5. In the "Authorization Url" field, enter "https://cms.v3.walkthechat.com/third-party-apps/auth"
+4. In the "API Url" field, enter "https://api.walkthechat.com/api/v1/" (don't omit the final "/")
+5. In the "Authorization Url" field, enter "https://cms.v3.walkthechat.com/settings/third-party-apps/auth"
 6. Enter your AppId and AppSecret found in your WalktheChat Third-party App
 7. Click "Save Config"
 8. Click "Connect"
