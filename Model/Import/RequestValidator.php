@@ -20,7 +20,9 @@ class RequestValidator
      *
      * @param string $id
      * @param string $name
+     * @param string $email
      * @param string $financialStatus
+     * @param mixed  $payment
      * @param mixed  $itemsToFulfill
      * @param array  $items
      * @param array  $deliveryAddress
@@ -36,7 +38,9 @@ class RequestValidator
     public function validate(
         $id,
         $name,
+        $email,
         $financialStatus,
+        $payment,
         $itemsToFulfill,
         $items,
         $deliveryAddress,
@@ -47,6 +51,7 @@ class RequestValidator
     ) {
         $this->validateId($id);
         $this->validateStatus($financialStatus);
+        $this->validatePayment($payment);
         $this->validateItems($items);
         $this->validateDeliveryAddress($deliveryAddress);
         $this->validateShippingRate($shippingRate);
@@ -56,6 +61,8 @@ class RequestValidator
         return compact(
             'id',
             'name',
+            'email',
+            'payment',
             'items',
             'itemsToFulfill',
             'deliveryAddress',
@@ -63,6 +70,25 @@ class RequestValidator
             'tax',
             'total',
             'coupon'
+        );
+    }
+
+    /**
+     * Throws exception if payment structure is invalid
+     *
+     * @param array $payment
+     *
+     * @return bool
+     * @throws \Magento\Framework\Exception\ValidatorException
+     */
+    protected function validatePayment($payment)
+    {
+        if (isset($payment['provider']) && isset($payment['vendor'])) {
+            return true;
+        }
+
+        throw new \Magento\Framework\Exception\ValidatorException(
+            __('Unable to proceed order import. Payment has invalid structure.')
         );
     }
 

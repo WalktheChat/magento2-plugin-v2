@@ -30,6 +30,11 @@ class WTCPayment extends \Magento\Payment\Model\Method\AbstractMethod
     protected $_isOffline = true;
 
     /**
+     * @var string
+     */
+    protected $_infoBlockType = \Walkthechat\Walkthechat\Block\Payment\Info::class;
+
+    /**
      * {@inheritdoc}
      *
      * Allow only for import request

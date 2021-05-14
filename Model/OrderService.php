@@ -83,6 +83,36 @@ class OrderService
     protected $configurableProductType;
 
     /**
+     * @var \Magento\Customer\Model\CustomerFactory
+     */
+    protected $customerFactory;
+
+    /**
+     * @var \Magento\Customer\Api\CustomerRepositoryInterface
+     */
+    protected $customerRepository;
+
+    /**
+     * @var \Magento\Framework\Math\Random
+     */
+    protected $mathRandom;
+
+    /**
+     * @var \Magento\Sales\Model\Service\InvoiceService
+     */
+    protected $invoiceService;
+
+    /**
+     * @var \Magento\Framework\DB\TransactionFactory
+     */
+    protected $transactionFactory;
+
+    /**
+     * @var \Magento\Framework\Serialize\Serializer\Json
+     */
+    protected $serializer;
+
+    /**
      * OrderService constructor.
      *
      * @param \Magento\Store\Model\StoreManagerInterface      $storeManager
@@ -95,6 +125,12 @@ class OrderService
      * @param \Magento\Sales\Api\OrderItemRepositoryInterface $orderItemRepository
      * @param \Magento\Quote\Api\CartRepositoryInterface      $cartRepository
      * @param \Magento\ConfigurableProduct\Model\ResourceModel\Product\Type\Configurable $configurableProductType
+     * @param \Magento\Customer\Model\CustomerFactory         $customerFactory
+     * @param \Magento\Customer\Api\CustomerRepositoryInterface $customerRepository
+     * @param \Magento\Framework\Math\Random                  $mathRandom
+     * @param \Magento\Sales\Model\Service\InvoiceService     $invoiceService
+     * @param \Magento\Framework\DB\TransactionFactory        $transactionFactory
+     * @param \Magento\Framework\Serialize\Serializer\Json|null $serializer
      */
     public function __construct(
         \Magento\Store\Model\StoreManagerInterface $storeManager,
@@ -106,7 +142,13 @@ class OrderService
         \Walkthechat\Walkthechat\Helper\Data $helper,
         \Magento\Sales\Api\OrderItemRepositoryInterface $orderItemRepository,
         \Magento\Quote\Api\CartRepositoryInterface $cartRepository,
-        \Magento\ConfigurableProduct\Model\ResourceModel\Product\Type\Configurable $configurableProductType
+        \Magento\ConfigurableProduct\Model\ResourceModel\Product\Type\Configurable $configurableProductType,
+        \Magento\Customer\Model\CustomerFactory $customerFactory,
+        \Magento\Customer\Api\CustomerRepositoryInterface $customerRepository,
+        \Magento\Framework\Math\Random $mathRandom,
+        \Magento\Sales\Model\Service\InvoiceService $invoiceService,
+        \Magento\Framework\DB\TransactionFactory $transactionFactory,
+        \Magento\Framework\Serialize\Serializer\Json $serializer = null
     ) {
         $this->storeManager        = $storeManager;
         $this->quoteFactory        = $quoteFactory;
@@ -118,6 +160,13 @@ class OrderService
         $this->orderItemRepository = $orderItemRepository;
         $this->cartRepository      = $cartRepository;
         $this->configurableProductType  = $configurableProductType;
+        $this->customerFactory     = $customerFactory;
+        $this->customerRepository  = $customerRepository;
+        $this->mathRandom          = $mathRandom;
+        $this->invoiceService      = $invoiceService;
+        $this->transactionFactory  = $transactionFactory;
+        $this->serializer          = $serializer ?: \Magento\Framework\App\ObjectManager::getInstance()
+            ->get(\Magento\Framework\Serialize\Serializer\Json::class);
     }
 
     /**
@@ -141,12 +190,28 @@ class OrderService
         if ($order instanceof \Magento\Sales\Api\Data\OrderInterface) {
             $this->setOrderTotals($order, $quote);
 
+            $order->getPayment()->setAdditionalInformation('provider', $data['payment']['provider']);
+            $order->getPayment()->setAdditionalInformation('vendor', $data['payment']['vendor']);
+
             $order
                 ->setWalkthechatId($data['id'])
                 ->setWalkthechatName($data['name'])
                 ->setEmailSent(0);
 
             $this->orderRepository->save($order);
+
+            if ($order->canInvoice()) {
+                $invoice = $this->invoiceService->prepareInvoice($order);
+                $invoice->register();
+                $invoice->getOrder()->setCustomerNoteNotify(false);
+                $invoice->getOrder()->setIsInProcess(true);
+
+                $order->addCommentToStatusHistory(__('WalkTheChat: Automatically Invoiced'), false);
+
+                $transaction = $this->transactionFactory->create();
+                $transaction->addObject($invoice)->addObject($invoice->getOrder());
+                $transaction->save();
+            }
         }
 
         return $order;
@@ -298,13 +363,31 @@ class OrderService
         $quote->setCheckoutMethod(\Magento\Quote\Api\CartManagementInterface::METHOD_GUEST);
 
         $quote->setStore($store);
+        $quote->setWalkthechatId($data['id']);
         $quote->setCurrency();
 
-        $quote->setCustomerIsGuest(true);
-        $quote->setCustomerEmail($data['id'].'@walkthechat.com');
-        $quote->setCustomerTaxvat($data['tax']['rate']);
-
         $addressData = $this->prepareAddressData($data);
+
+        $customerEmail = $data['email'] ? $data['email'] : $data['id'].'@walkthechat.com';
+
+        $customer = $this->customerFactory->create();
+        $customer->setWebsiteId($store->getWebsiteId());
+        $customer->loadByEmail($customerEmail);
+
+        if (!$customer->getEntityId()) {
+            $customer->setWebsiteId($store->getWebsiteId())
+                ->setStore($store)
+                ->setFirstname($addressData['firstname'])
+                ->setLastname($addressData['lastname'])
+                ->setEmail($customerEmail)
+                ->setPassword($this->_generatePassword())
+                ->save();
+        }
+
+        $customer = $this->customerRepository->getById($customer->getEntityId());
+        $quote->assignCustomer($customer);
+
+        $quote->setCustomerTaxvat($data['tax']['rate']);
 
         $quote->getBillingAddress()->addData($addressData);
         $quote->getShippingAddress()->addData($addressData);

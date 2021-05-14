@@ -1,0 +1,20 @@
+<?php $paymentTitle = $block->getMethod()->getConfigData('title', $block->getInfo()->getOrder()->getStoreId()); ?>
+
+<?= $block->escapeHtml($paymentTitle) ?>
+
+<?php if ($block->getProvider()): ?>
+    <table class="data-table admin__table-secondary">
+        <tr>
+            <th><?= __('Provider') ?>:</th>
+            <td>
+                <?= $block->getProvider() ?>
+            </td>
+        </tr>
+        <tr>
+            <th><?= __('Vendor') ?>:</th>
+            <td>
+                <?= $block->getVendor() ?>
+            </td>
+        </tr>
+    </table>
+<?php endif ?>
