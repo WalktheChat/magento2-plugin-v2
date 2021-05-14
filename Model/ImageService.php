@@ -41,6 +41,11 @@ class ImageService
     protected $filterGroup;
 
     /**
+     * @var \Magento\Framework\Api\Search\FilterGroupBuilder
+     */
+    protected $filterGroupBuilder;
+
+    /**
      * @var \Magento\Framework\Api\FilterBuilder
      */
     protected $filterBuilder;
@@ -66,17 +71,24 @@ class ImageService
     protected $catalogProductMediaConfig;
 
     /**
+     * @var \Walkthechat\Walkthechat\Model\ProductService
+     */
+    protected $productService;
+
+    /**
      * ImageService constructor.
      * @param \Walkthechat\Walkthechat\Service\ImagesRepository $requestImagesRepository
      * @param \Walkthechat\Walkthechat\Api\ImageSyncRepositoryInterface $imageSyncRepository
      * @param \Walkthechat\Walkthechat\Api\ContentMediaRepositoryInterface $contentMediaRepository
      * @param \Magento\Framework\Api\SearchCriteriaInterface $searchCriteria
      * @param \Magento\Framework\Api\Search\FilterGroup $filterGroup
+     * @param \Magento\Framework\Api\Search\FilterGroupBuilder $filterGroupBuilder
      * @param \Magento\Framework\Api\FilterBuilder $filterBuilder
      * @param Template\Filter $filter
      * @param \Magento\Framework\Filesystem $filesystem
      * @param \Magento\Catalog\Model\Product\Gallery\GalleryManagement $galleryManagement
      * @param \Magento\Catalog\Model\Product\Media\Config $catalogProductMediaConfig
+     * @param \Walkthechat\Walkthechat\Model\ProductService $productService
      */
     public function __construct(
         \Walkthechat\Walkthechat\Service\ImagesRepository $requestImagesRepository,
@@ -84,22 +96,26 @@ class ImageService
         \Walkthechat\Walkthechat\Api\ContentMediaRepositoryInterface $contentMediaRepository,
         \Magento\Framework\Api\SearchCriteriaInterface $searchCriteria,
         \Magento\Framework\Api\Search\FilterGroup $filterGroup,
+        \Magento\Framework\Api\Search\FilterGroupBuilder $filterGroupBuilder,
         \Magento\Framework\Api\FilterBuilder $filterBuilder,
         \Walkthechat\Walkthechat\Model\Template\Filter $filter,
         \Magento\Framework\Filesystem $filesystem,
         \Magento\Catalog\Model\Product\Gallery\GalleryManagement $galleryManagement,
-        \Magento\Catalog\Model\Product\Media\Config $catalogProductMediaConfig
+        \Magento\Catalog\Model\Product\Media\Config $catalogProductMediaConfig,
+        \Walkthechat\Walkthechat\Model\ProductService $productService
     ) {
         $this->requestImagesRepository = $requestImagesRepository;
         $this->imageSyncRepository     = $imageSyncRepository;
         $this->contentMediaRepository  = $contentMediaRepository;
         $this->searchCriteria          = $searchCriteria;
         $this->filterGroup             = $filterGroup;
+        $this->filterGroupBuilder      = $filterGroupBuilder;
         $this->filterBuilder           = $filterBuilder;
         $this->filter                  = $filter;
         $this->filesystem              = $filesystem;
         $this->galleryManagement       = $galleryManagement;
         $this->catalogProductMediaConfig = $catalogProductMediaConfig;
+        $this->productService          = $productService;
     }
 
     /**
@@ -107,15 +123,41 @@ class ImageService
      */
     public function getSyncedImages()
     {
-        $this->filterGroup->setFilters([
-            $this->filterBuilder
-                ->setField('image_data')
-                ->setConditionType('neq')
-                ->setValue('')
-                ->create(),
-        ]);
+        $productIds = [];
 
-        $this->searchCriteria->setFilterGroups([$this->filterGroup]);
+        foreach ($this->productService->getSyncedProducts()->getItems() as $product) {
+            $productIds[] = $product->getId();
+
+            if ($product->getTypeId() === \Magento\ConfigurableProduct\Model\Product\Type\Configurable::TYPE_CODE) {
+                $children = $product->getTypeInstance()->getUsedProducts($product);
+
+                foreach ($children as $child) {
+                    $productIds[] = $child->getId();
+                }
+            }
+        }
+
+        $filterGroup1 = $this->filterGroupBuilder
+            ->addFilter(
+                $this->filterBuilder
+                    ->setField('product_id')
+                    ->setConditionType('in')
+                    ->setValue($productIds)
+                    ->create()
+            )
+            ->create();
+
+        $filterGroup2 = $this->filterGroupBuilder
+            ->addFilter(
+                $this->filterBuilder
+                    ->setField('image_data')
+                    ->setConditionType('neq')
+                    ->setValue('')
+                    ->create()
+            )
+            ->create();
+
+        $this->searchCriteria->setFilterGroups([$filterGroup1, $filterGroup2]);
 
         return $this->imageSyncRepository
             ->getList($this->searchCriteria);
@@ -126,7 +168,29 @@ class ImageService
      */
     public function getExportedImages()
     {
-        $this->searchCriteria->setFilterGroups([]);
+        $productIds = [];
+
+        foreach ($this->productService->getSyncedProducts()->getItems() as $product) {
+            $productIds[] = $product->getId();
+
+            if ($product->getTypeId() === \Magento\ConfigurableProduct\Model\Product\Type\Configurable::TYPE_CODE) {
+                $children = $product->getTypeInstance()->getUsedProducts($product);
+
+                foreach ($children as $child) {
+                    $productIds[] = $child->getId();
+                }
+            }
+        }
+
+        $this->filterGroup->setFilters([
+            $this->filterBuilder
+                ->setField('product_id')
+                ->setConditionType('in')
+                ->setValue($productIds)
+                ->create(),
+        ]);
+
+        $this->searchCriteria->setFilterGroups([$this->filterGroup]);
 
         return $this->imageSyncRepository
             ->getList($this->searchCriteria);
