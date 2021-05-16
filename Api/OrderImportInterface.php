@@ -21,8 +21,10 @@ interface OrderImportInterface
      *
      * @param string $id
      * @param string $name
+     * @param string $email
      * @param string $projectId
      * @param string $financialStatus
+     * @param mixed  $payment
      * @param mixed  $itemsToFulfill
      * @param mixed  $items
      * @param mixed  $deliveryAddress
@@ -36,8 +38,10 @@ interface OrderImportInterface
     public function import(
         $id,
         $name,
+        $email,
         $projectId,
         $financialStatus,
+        $payment,
         $itemsToFulfill,
         $items,
         $deliveryAddress,
