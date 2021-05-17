@@ -16,12 +16,38 @@ namespace Walkthechat\Walkthechat\Model\Import;
 class RequestValidator
 {
     /**
+     * @var \Walkthechat\Walkthechat\Helper\Data
+     */
+    protected $helper;
+
+    /**
+     * RequestValidator constructor.
+     *
+     * @param \Walkthechat\Walkthechat\Helper\Data $helper
+     */
+    public function __construct(
+        \Walkthechat\Walkthechat\Helper\Data $helper
+    ) {
+        $this->helper = $helper;
+    }
+
+    /**
      * Validates params and throw exception if validation failed
      *
      * @param string $id
      * @param string $name
      * @param string $email
+     * @param string $projectId
+     * @param string $customerId
+     * @param string $reference
+     * @param string $status
+     * @param string $fulfillmentStatus
      * @param string $financialStatus
+     * @param boolean $draft
+     * @param boolean $refundable
+     * @param string $created
+     * @param string $modified
+     * @param string $sign
      * @param mixed  $payment
      * @param mixed  $itemsToFulfill
      * @param array  $items
@@ -39,7 +65,17 @@ class RequestValidator
         $id,
         $name,
         $email,
+        $projectId,
+        $customerId,
+        $reference,
+        $status,
+        $fulfillmentStatus,
         $financialStatus,
+        $draft,
+        $refundable,
+        $created,
+        $modified,
+        $sign,
         $payment,
         $itemsToFulfill,
         $items,
@@ -57,6 +93,7 @@ class RequestValidator
         $this->validateShippingRate($shippingRate);
         $this->validateTax($tax);
         $this->validateTotal($total);
+        $this->validateSignature($sign, $projectId, $customerId, $reference, $status, $fulfillmentStatus, $financialStatus, $draft, $refundable, $id, $created, $modified, $total);
 
         return compact(
             'id',
@@ -71,6 +108,66 @@ class RequestValidator
             'total',
             'coupon'
         );
+    }
+
+    /**
+     * Throws exception if request signature is invalid
+     *
+     * @param string $sign
+     * @param string $projectId
+     * @param string $customerId
+     * @param string $reference
+     * @param string $status
+     * @param string $fulfillmentStatus
+     * @param string $financialStatus
+     * @param boolean $draft
+     * @param boolean $refundable
+     * @param string $id
+     * @param string $created
+     * @param string $modified
+     * @param array $total
+     *
+     * @return bool
+     * @throws \Magento\Framework\Exception\ValidatorException
+     */
+    protected function validateSignature($sign, $projectId, $customerId, $reference, $status, $fulfillmentStatus, $financialStatus, $draft, $refundable, $id, $created, $modified, $total)
+    {
+        $params = [
+            'projectId'                 => $projectId,
+            'customerId'                => $customerId,
+            'reference'                 => $reference,
+            'status'                    => $status,
+            'fulfillmentStatus'         => $fulfillmentStatus,
+            'financialStatus'           => $financialStatus,
+            'draft'                     => $draft ? 'true' : 'false',
+            'refundable'                => $refundable ? 'true' : 'false',
+            'id'                        => $id,
+            'created'                   => $created,
+            'modified'                  => $modified,
+            'total.currency'            => $total['currency'],
+            'total.grandTotal.total'    => $total['grandTotal']['total']
+        ];
+
+        ksort($params);
+
+        $params['key'] = $this->helper->getAppKey();
+
+        $string = '';
+
+        foreach ($params as $key => $value) {
+            if ($string) {
+                $string .= '&';
+            }
+            $string .= $key . '=' . $value;
+        }
+
+        if ($sign != md5($string)) {
+            throw new \Magento\Framework\Exception\ValidatorException(
+                __('Unable to proceed order import. Invalid signature.')
+            );
+        }
+
+        return true;
     }
 
     /**
@@ -199,7 +296,8 @@ class RequestValidator
     protected function validateTotal($total)
     {
         if (
-            isset($total['grandTotal']['tax'])
+            isset($total['currency'])
+            && isset($total['grandTotal']['tax'])
             && isset($total['grandTotal']['shipping'])
             && isset($total['grandTotal']['totalWithoutDiscountAndTax'])
             && isset($total['grandTotal']['totalWithoutTax'])
