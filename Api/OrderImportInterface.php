@@ -23,7 +23,16 @@ interface OrderImportInterface
      * @param string $name
      * @param string $email
      * @param string $projectId
+     * @param string $customerId
+     * @param string $reference
+     * @param string $status
+     * @param string $fulfillmentStatus
      * @param string $financialStatus
+     * @param boolean $draft
+     * @param boolean $refundable
+     * @param string $created
+     * @param string $modified
+     * @param string $sign
      * @param mixed  $payment
      * @param mixed  $itemsToFulfill
      * @param mixed  $items
@@ -40,7 +49,16 @@ interface OrderImportInterface
         $name,
         $email,
         $projectId,
+        $customerId,
+        $reference,
+        $status,
+        $fulfillmentStatus,
         $financialStatus,
+        $draft,
+        $refundable,
+        $created,
+        $modified,
+        $sign,
         $payment,
         $itemsToFulfill,
         $items,
