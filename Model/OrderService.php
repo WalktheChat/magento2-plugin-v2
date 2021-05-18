@@ -669,4 +669,19 @@ class OrderService
             'save_in_address_book' => false,
         ];
     }
+
+    /**
+     * Retrieve random password
+     *
+     * @param   int $length
+     * @return  string
+     */
+    private function _generatePassword($length = 10)
+    {
+        $chars = \Magento\Framework\Math\Random::CHARS_LOWERS
+            . \Magento\Framework\Math\Random::CHARS_UPPERS
+            . \Magento\Framework\Math\Random::CHARS_DIGITS;
+
+        return $password = $this->mathRandom->getRandomString($length, $chars);
+    }
 }
