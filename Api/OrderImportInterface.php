@@ -47,7 +47,7 @@ interface OrderImportInterface
     public function import(
         $id,
         $name,
-        $email,
+        $email = '',
         $projectId,
         $customerId,
         $reference,
