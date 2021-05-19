@@ -368,24 +368,27 @@ class OrderService
 
         $addressData = $this->prepareAddressData($data);
 
-        $customerEmail = $data['email'] ? $data['email'] : $data['id'].'@walkthechat.com';
+        if ($data['email']) {
+            $customer = $this->customerFactory->create();
+            $customer->setWebsiteId($store->getWebsiteId());
+            $customer->loadByEmail($data['email']);
 
-        $customer = $this->customerFactory->create();
-        $customer->setWebsiteId($store->getWebsiteId());
-        $customer->loadByEmail($customerEmail);
+            if (!$customer->getEntityId()) {
+                $customer->setWebsiteId($store->getWebsiteId())
+                    ->setStore($store)
+                    ->setFirstname($addressData['firstname'])
+                    ->setLastname($addressData['lastname'])
+                    ->setEmail($data['email'])
+                    ->setPassword($this->_generatePassword())
+                    ->save();
+            }
 
-        if (!$customer->getEntityId()) {
-            $customer->setWebsiteId($store->getWebsiteId())
-                ->setStore($store)
-                ->setFirstname($addressData['firstname'])
-                ->setLastname($addressData['lastname'])
-                ->setEmail($customerEmail)
-                ->setPassword($this->_generatePassword())
-                ->save();
+            $customer = $this->customerRepository->getById($customer->getEntityId());
+            $quote->assignCustomer($customer);
+        } else {
+            $quote->setCustomerIsGuest(true);
+            $quote->setCustomerEmail($data['id'].'@walkthechat.com');
         }
-
-        $customer = $this->customerRepository->getById($customer->getEntityId());
-        $quote->assignCustomer($customer);
 
         $quote->setCustomerTaxvat($data['tax']['rate']);
 
