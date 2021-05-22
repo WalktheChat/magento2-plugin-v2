@@ -61,7 +61,7 @@ class OrderImport implements \Walkthechat\Walkthechat\Api\OrderImportInterface
     public function import(
         $id,
         $name,
-        $email,
+        $email = '',
         $projectId,
         $customerId,
         $reference,
@@ -88,7 +88,7 @@ class OrderImport implements \Walkthechat\Walkthechat\Api\OrderImportInterface
             $data = $this->requestValidator->validate(
                 $id,
                 $name,
-                $email = '',
+                $email,
                 $projectId,
                 $customerId,
                 $reference,
