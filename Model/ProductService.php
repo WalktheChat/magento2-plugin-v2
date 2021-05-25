@@ -298,7 +298,10 @@ class ProductService
 		$rule =  $this->ruleFactory->create();
 		
         $mainPrice        = $this->helper->convertPrice($product->getPrice());
-        $mainSpecialPrice = $this->helper->convertPrice($product->getSpecialPrice());
+        $mainSpecialPrice = null;
+        if (!$product->getSpecialFromDate() && !$product->getSpecialToDate()) {
+            $mainSpecialPrice = $this->helper->convertPrice($product->getSpecialPrice());
+        }
 		$mainRulePrice = $this->helper->convertPrice($rule->calcProductPriceRule($product, $product->getPrice()));
 		
 		if (($mainRulePrice && !$mainSpecialPrice) || ($mainRulePrice && $mainRulePrice < $mainSpecialPrice)) {
@@ -369,7 +372,10 @@ class ProductService
                 $k = 0;
                 foreach ($children as $child) {
 					$childPrice			= $this->helper->convertPrice($child->getPrice());
-					$childSpecialPrice = $this->helper->convertPrice($child->getSpecialPrice());
+                    $childSpecialPrice = null;
+                    if (!$child->getSpecialFromDate() && !$child->getSpecialToDate()) {
+                        $childSpecialPrice = $this->helper->convertPrice($child->getSpecialPrice());
+                    }
 					$childRulePrice = $this->helper->convertPrice($rule->calcProductPriceRule($child, $child->getPrice()));
 		
 					if (($childRulePrice && !$childSpecialPrice) || ($childRulePrice && $childRulePrice < $childSpecialPrice)) {
