@@ -193,6 +193,11 @@ class OrderService
             $order->getPayment()->setAdditionalInformation('provider', $data['payment']['provider']);
             $order->getPayment()->setAdditionalInformation('vendor', $data['payment']['vendor']);
 
+            if ($data['payment']['provider'] == 'adyen') {
+                $order->getPayment()->setAdditionalInformation('psp_reference', $data['payment']['details']['pspReference']);
+                $order->getPayment()->setAdditionalInformation('merchant_reference', $data['payment']['details']['merchantReference']);
+            }
+
             $order
                 ->setWalkthechatId($data['id'])
                 ->setWalkthechatName($data['name'])
@@ -528,12 +533,20 @@ class OrderService
             ->collectShippingRates()
             ->setShippingMethod('walkthechat_walkthechat');
 
-        $quote->setPaymentMethod('walkthechat');
+        $paymentMethod = 'walkthechat';
+
+        if ($data['payment']['provider'] == 'adyen') {
+            $paymentMethod .= '_' . $data['payment']['vendor'];
+        } else {
+            $paymentMethod .= '_cashondelivery';
+        }
+
+        $quote->setPaymentMethod($paymentMethod);
 
         $quote
             ->getPayment()
             ->setQuote($quote)
-            ->importData(['method' => 'walkthechat']);
+            ->importData(['method' => $paymentMethod]);
 
         $quote->collectTotals();
 
