@@ -57,6 +57,10 @@ class UpgradeSchema implements \Magento\Framework\Setup\UpgradeSchemaInterface
         if (version_compare($context->getVersion(), '1.3.0', '<')) {
             $this->createWalkTheChatOrderNameOnGrid($installer);
         }
+
+        if (version_compare($context->getVersion(), '1.4.0', '<')) {
+            $this->makeQueueItemIdFieldNullable($installer);
+        }
     }
 
     /**
@@ -394,6 +398,36 @@ class UpgradeSchema implements \Magento\Framework\Setup\UpgradeSchemaInterface
                         'type'    => \Magento\Framework\DB\Ddl\Table::TYPE_TEXT,
                         'length'  => 255,
                         'comment' => 'WalkTheChat Name',
+                    ]
+                );
+        }
+    }
+
+    /**
+     * Make queue item field nullable in api log table
+     *
+     * @param \Magento\Framework\Setup\SchemaSetupInterface $installer
+     */
+    protected function makeQueueItemIdFieldNullable(\Magento\Framework\Setup\SchemaSetupInterface $installer)
+    {
+        $connection = $installer->getConnection();
+
+        if ($connection->tableColumnExists(
+            $installer->getTable(\Walkthechat\Walkthechat\Model\ResourceModel\ApiLog::TABLE_NAME),
+            \Walkthechat\Walkthechat\Api\Data\ApiLogInterface::QUEUE_ITEM_ID_FIELD
+        )) {
+            $connection
+                ->changeColumn(
+                    $installer->getTable(\Walkthechat\Walkthechat\Model\ResourceModel\ApiLog::TABLE_NAME),
+                    \Walkthechat\Walkthechat\Api\Data\ApiLogInterface::QUEUE_ITEM_ID_FIELD,
+                    \Walkthechat\Walkthechat\Api\Data\ApiLogInterface::QUEUE_ITEM_ID_FIELD,
+                    [
+                        'type'     => \Magento\Framework\DB\Ddl\Table::TYPE_INTEGER,
+                        'nullable' => true,
+                        'unsigned' => true,
+                        'length'   => null,
+                        'comment'  => 'Queue item ID',
+                        'default'  => null
                     ]
                 );
         }
