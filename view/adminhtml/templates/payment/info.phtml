@@ -16,5 +16,21 @@
                 <?= $block->getVendor() ?>
             </td>
         </tr>
+        <?php if ($block->getPspReference()): ?>
+            <tr>
+                <th><?= __('PSP Reference') ?>:</th>
+                <td>
+                    <?= $block->getPspReference() ?>
+                </td>
+            </tr>
+        <?php endif ?>
+        <?php if ($block->getMerchantReference()): ?>
+            <tr>
+                <th><?= __('Merchant Reference') ?>:</th>
+                <td>
+                    <?= $block->getMerchantReference() ?>
+                </td>
+            </tr>
+        <?php endif ?>
     </table>
 <?php endif ?>

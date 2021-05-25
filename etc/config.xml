@@ -30,6 +30,30 @@
                 <payment_action>true</payment_action>
                 <group>offline</group>
             </walkthechat>
+            <walkthechat_cashondelivery>
+                <order_status>processing</order_status>
+                <model>WalkthechatPaymentCashondelivery</model>
+                <active>1</active>
+                <title>WalkTheChat Cashondelivery</title>
+                <payment_action>true</payment_action>
+                <group>offline</group>
+            </walkthechat_cashondelivery>
+            <walkthechat_alipay>
+                <order_status>processing</order_status>
+                <model>WalkthechatPaymentAlipay</model>
+                <active>1</active>
+                <title>WalkTheChat Alipay</title>
+                <payment_action>true</payment_action>
+                <group>offline</group>
+            </walkthechat_alipay>
+            <walkthechat_wechatpay>
+                <order_status>processing</order_status>
+                <model>WalkthechatPaymentWechatpay</model>
+                <active>1</active>
+                <title>WalkTheChat Wechatpay</title>
+                <payment_action>true</payment_action>
+                <group>offline</group>
+            </walkthechat_wechatpay>
         </payment>
     </default>
 </config>

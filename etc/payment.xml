@@ -9,5 +9,14 @@
         <method name="walkthechat">
             <allow_multiple_address>0</allow_multiple_address>
         </method>
+        <method name="walkthechat_cashondelivery">
+            <allow_multiple_address>0</allow_multiple_address>
+        </method>
+        <method name="walkthechat_alipay">
+            <allow_multiple_address>0</allow_multiple_address>
+        </method>
+        <method name="walkthechat_wechatpay">
+            <allow_multiple_address>0</allow_multiple_address>
+        </method>
     </methods>
 </payment>

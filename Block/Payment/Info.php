@@ -34,4 +34,20 @@ class Info extends \Magento\Payment\Block\Info
     {
         return $this->getInfo()->getAdditionalInformation('vendor');
     }
+
+    /**
+     * @return string
+     */
+    public function getPspReference()
+    {
+        return $this->getInfo()->getAdditionalInformation('psp_reference');
+    }
+
+    /**
+     * @return string
+     */
+    public function getMerchantReference()
+    {
+        return $this->getInfo()->getAdditionalInformation('merchant_reference');
+    }
 }
