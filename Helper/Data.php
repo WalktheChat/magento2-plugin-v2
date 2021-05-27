@@ -28,21 +28,6 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     const ATTRIBUTE_NAME_CODE = 'walkthechat_name';
 
     /**
-     * Code of COD payment
-     */
-    const PAYMENT_COD = 'walkthechat_cashondelivery';
-
-    /**
-     * Code of Alipay payment
-     */
-    const PAYMENT_ALIPAY = 'walkthechat_alipay';
-
-    /**
-     * Code of Wechatpay payment
-     */
-    const PAYMENT_WECHATPAY = 'walkthechat_wechatpay';
-
-    /**
      * @var \Magento\Framework\App\Config\ScopeConfigInterface
      */
     protected $scopeConfig;
