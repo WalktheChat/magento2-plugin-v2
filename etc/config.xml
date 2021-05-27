@@ -24,7 +24,7 @@
         <payment>
             <walkthechat>
                 <order_status>processing</order_status>
-                <model>Walkthechat\Walkthechat\Model\WTCPayment</model>
+                <model>Walkthechat\Walkthechat\Model\Payment\Method\Walkthechat</model>
                 <active>1</active>
                 <title>WalkTheChat</title>
                 <payment_action>true</payment_action>
@@ -32,7 +32,7 @@
             </walkthechat>
             <walkthechat_cashondelivery>
                 <order_status>processing</order_status>
-                <model>WalkthechatPaymentCashondelivery</model>
+                <model>Walkthechat\Walkthechat\Model\Payment\Method\Walkthechat\Cashondelivery</model>
                 <active>1</active>
                 <title>WalkTheChat Cashondelivery</title>
                 <payment_action>true</payment_action>
@@ -40,7 +40,7 @@
             </walkthechat_cashondelivery>
             <walkthechat_alipay>
                 <order_status>processing</order_status>
-                <model>WalkthechatPaymentAlipay</model>
+                <model>Walkthechat\Walkthechat\Model\Payment\Method\Walkthechat\Alipay</model>
                 <active>1</active>
                 <title>WalkTheChat Alipay</title>
                 <payment_action>true</payment_action>
@@ -48,7 +48,7 @@
             </walkthechat_alipay>
             <walkthechat_wechatpay>
                 <order_status>processing</order_status>
-                <model>WalkthechatPaymentWechatpay</model>
+                <model>Walkthechat\Walkthechat\Model\Payment\Method\Walkthechat\Wechatpay</model>
                 <active>1</active>
                 <title>WalkTheChat Wechatpay</title>
                 <payment_action>true</payment_action>

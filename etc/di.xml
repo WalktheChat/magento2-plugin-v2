@@ -61,22 +61,4 @@
             </argument>
         </arguments>
     </virtualType>
-
-    <virtualType name="WalkthechatPaymentCashondelivery" type="Walkthechat\Walkthechat\Model\WTCPayment">
-        <arguments>
-            <argument name="code" xsi:type="const">\Walkthechat\Walkthechat\Helper\Data::PAYMENT_COD</argument>
-        </arguments>
-    </virtualType>
-
-    <virtualType name="WalkthechatPaymentAlipay" type="Walkthechat\Walkthechat\Model\WTCPayment">
-        <arguments>
-            <argument name="code" xsi:type="const">\Walkthechat\Walkthechat\Helper\Data::PAYMENT_ALIPAY</argument>
-        </arguments>
-    </virtualType>
-
-    <virtualType name="WalkthechatPaymentWechatpay" type="Walkthechat\Walkthechat\Model\WTCPayment">
-        <arguments>
-            <argument name="code" xsi:type="const">\Walkthechat\Walkthechat\Helper\Data::PAYMENT_WECHATPAY</argument>
-        </arguments>
-    </virtualType>
 </config>
