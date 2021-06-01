@@ -232,7 +232,13 @@ class SyncImages
 
                 foreach ($images as $image) {
                     $product = $this->productRepository->getById($image->getProductId());
-                    $response = $this->imageService->addImage($product->getSku(), $image->getImageId());
+
+                    try {
+                        $response = $this->imageService->addImage($product->getSku(), $image->getImageId());
+                    } catch (\Exception $exception) {
+                        $this->logger->error("WalkTheChat | Sync Image Error (#{$image->getImageId()}): {$exception->getMessage()}");
+                        continue;
+                    }
 
                     if ($response) {
                         $model = $this->imageSyncFactory->create()->load($image->getId());
