@@ -307,6 +307,10 @@ class ProductService
 		if (($mainRulePrice && !$mainSpecialPrice) || ($mainRulePrice && $mainRulePrice < $mainSpecialPrice)) {
 			$mainSpecialPrice = $mainRulePrice;
 		}
+
+		if ($mainPrice == $mainSpecialPrice) {
+		    $mainSpecialPrice = null;
+        }
 		
         $productVisibility =
             $product->getVisibility() != \Magento\Catalog\Model\Product\Visibility::VISIBILITY_NOT_VISIBLE
@@ -381,6 +385,10 @@ class ProductService
 					if (($childRulePrice && !$childSpecialPrice) || ($childRulePrice && $childRulePrice < $childSpecialPrice)) {
 						$childSpecialPrice = $childRulePrice;
 					}
+
+					if ($childPrice == $childSpecialPrice) {
+					    $childSpecialPrice = null;
+                    }
 
                     $data['variants'][$k] = [
                         'id'                => $child->getId(),
