@@ -682,7 +682,7 @@ class OrderService
             'postcode'             => $address['zipcode'],
             'telephone'            => $address['phone'],
             'fax'                  => '',
-            'save_in_address_book' => false,
+            'save_in_address_book' => true,
         ];
     }
 
