@@ -331,10 +331,10 @@ class OrderService
 
                 $groupComment = implode("\n", $comments);
 
-                $amount = $creditMemo->getBaseGrandTotal();
+                $amount = $creditMemo->getGrandTotal();
 
                 if ($this->helper->isDifferentCurrency($order->getOrderCurrencyCode())) {
-                    $amount = $creditMemo->getGrandTotal();
+                    $amount = $creditMemo->getBaseGrandTotal();
                 }
 
                 $data[$creditMemo->getEntityId()]['data'] = [
