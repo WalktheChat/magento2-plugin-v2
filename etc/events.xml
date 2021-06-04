@@ -6,4 +6,16 @@
 	<event name="catalog_product_attribute_update_before">
 		<observer name="walkthechat_catalog_product_attribute_update_before" instance="Walkthechat\Walkthechat\Observer\CatalogProductAttributeUpdateBefore" />
 	</event>
+    <event name="catalog_product_save_after">
+        <observer name="walkthechat_catalog_product_save_after" instance="Walkthechat\Walkthechat\Observer\CatalogProductSaveAfter" />
+    </event>
+    <event name="catalog_product_delete_before">
+        <observer name="walkthechat_catalog_product_delete_before" instance="Walkthechat\Walkthechat\Observer\CatalogProductDeleteBefore" />
+    </event>
+    <event name="sales_order_save_after">
+        <observer name="walkthechat_sales_order_save_after" instance="Walkthechat\Walkthechat\Observer\SalesOrderSaveAfter" />
+    </event>
+    <event name="sales_order_shipment_save_after">
+        <observer name="walkthechat_sales_order_shipment_save_after" instance="Walkthechat\Walkthechat\Observer\SalesOrderSaveAfter" />
+    </event>
 </config>
