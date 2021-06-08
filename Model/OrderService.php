@@ -576,10 +576,10 @@ class OrderService
             $quote->setBaseTaxAmount($this->helper->convertPrice($taxAmount, false));
         }
 
-        $quote->setDiscountAmount($discountAmount);
+        $quote->setDiscountAmount(-1 * abs($discountAmount));
 
         if ($this->helper->isDifferentCurrency($this->orderCurrencyCode)) {
-            $quote->setBaseDiscountAmount($this->helper->convertPrice($discountAmount, false));
+            $quote->setBaseDiscountAmount(-1 * abs($this->helper->convertPrice($discountAmount, false)));
         }
 
         if (isset($data['coupon']['amount'])) {
