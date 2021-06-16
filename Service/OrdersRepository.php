@@ -18,9 +18,14 @@ namespace Walkthechat\Walkthechat\Service;
 class OrdersRepository extends AbstractService
 {
     /**
-     * @var Resource\Orders\Update
+     * @var Resource\Orders\Find
      */
-    protected $orderUpdateResource;
+    protected $orderFindResource;
+
+    /**
+     * @var Resource\Orders\Get
+     */
+    protected $orderGetResource;
 
     /**
      * @var Resource\Orders\Parcels\Create
@@ -45,7 +50,8 @@ class OrdersRepository extends AbstractService
     /**
      * {@inheritdoc}
      *
-     * @param \Walkthechat\Walkthechat\Service\Resource\Orders\Update         $orderUpdateResource
+     * @param \Walkthechat\Walkthechat\Service\Resource\Orders\Find           $orderFindResource
+     * @param \Walkthechat\Walkthechat\Service\Resource\Orders\Get            $orderGetResource
      * @param \Walkthechat\Walkthechat\Service\Resource\Orders\Parcels\Create $orderParcelCreateResource
      * @param \Walkthechat\Walkthechat\Service\Resource\Orders\Refund         $orderRefundResource
      * @param \Walkthechat\Walkthechat\Service\Resource\Orders\Refund         $orderRefundResource
@@ -57,13 +63,15 @@ class OrdersRepository extends AbstractService
         \Magento\Framework\Json\Helper\Data $jsonHelper,
         \Walkthechat\Walkthechat\Helper\Data $helper,
         \Walkthechat\Walkthechat\Log\ApiLogger $logger,
-        \Walkthechat\Walkthechat\Service\Resource\Orders\Update $orderUpdateResource,
+        \Walkthechat\Walkthechat\Service\Resource\Orders\Find $orderFindResource,
+        \Walkthechat\Walkthechat\Service\Resource\Orders\Get $orderGetResource,
         \Walkthechat\Walkthechat\Service\Resource\Orders\Parcels\Create $orderParcelCreateResource,
         \Walkthechat\Walkthechat\Service\Resource\Orders\Refund $orderRefundResource,
         \Magento\Sales\Api\ShipmentRepositoryInterface $shipmentRepository,
         \Magento\Sales\Api\CreditmemoRepositoryInterface $creditmemoRepository
     ) {
-        $this->orderUpdateResource       = $orderUpdateResource;
+        $this->orderFindResource       = $orderFindResource;
+        $this->orderGetResource          = $orderGetResource;
         $this->orderParcelCreateResource = $orderParcelCreateResource;
         $this->orderRefundResource       = $orderRefundResource;
         $this->shipmentRepository        = $shipmentRepository;
@@ -75,6 +83,30 @@ class OrdersRepository extends AbstractService
             $helper,
             $logger
         );
+    }
+
+    /**
+     * Find order
+     *
+     * @return mixed
+     * @throws \Zend_Http_Client_Exception
+     */
+    public function find()
+    {
+        return $this->request($this->orderFindResource);
+    }
+
+    /**
+     * Get order by ID
+     *
+     * @param $id
+     *
+     * @return mixed
+     * @throws \Zend_Http_Client_Exception
+     */
+    public function get($id)
+    {
+        return $this->request($this->orderGetResource, ['id' => $id]);
     }
 
     /**

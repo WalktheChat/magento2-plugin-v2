@@ -83,7 +83,8 @@ class RequestValidator
         $shippingRate,
         $tax,
         $total,
-        $coupon
+        $coupon,
+        $checkSignature
     ) {
         $this->validateId($id);
         $this->validateStatus($financialStatus);
@@ -93,7 +94,9 @@ class RequestValidator
         $this->validateShippingRate($shippingRate);
         $this->validateTax($tax);
         $this->validateTotal($total);
-        $this->validateSignature($sign, $projectId, $customerId, $reference, $status, $fulfillmentStatus, $financialStatus, $draft, $refundable, $id, $created, $modified, $total);
+        if ($checkSignature) {
+            $this->validateSignature($sign, $projectId, $customerId, $reference, $status, $fulfillmentStatus, $financialStatus, $draft, $refundable, $id, $created, $modified, $total);
+        }
 
         return compact(
             'id',

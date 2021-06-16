@@ -28,6 +28,13 @@
                 <item name="url" xsi:type="string">*/*/products</item>
                 <item name="sort_order" xsi:type="string">100</item>
             </item>
+            <item name="orders" xsi:type="array">
+                <item name="name" xsi:type="string">orders</item>
+                <item name="label" xsi:type="string" translate="true">Manage Orders</item>
+                <item name="class" xsi:type="string">primary</item>
+                <item name="url" xsi:type="string">*/*/orders</item>
+                <item name="sort_order" xsi:type="string">100</item>
+            </item>
         </item>
     </argument>
     <dataSource name="wtc_walkthechat_queue_grid_data_source">

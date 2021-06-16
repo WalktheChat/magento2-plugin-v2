@@ -60,6 +60,7 @@ class Uninstall implements \Magento\Framework\Setup\UninstallInterface
         $connection->dropTable(\Walkthechat\Walkthechat\Model\ResourceModel\ApiLog::TABLE_NAME);
         $connection->dropTable(\Walkthechat\Walkthechat\Model\ResourceModel\Queue::TABLE_NAME);
         $connection->dropTable(\Walkthechat\Walkthechat\Model\ResourceModel\ImageSync::TABLE_NAME);
+        $connection->dropTable(\Walkthechat\Walkthechat\Model\ResourceModel\Order::TABLE_NAME);
 
         // drop module integrated columns
         $connection->dropColumn('sales_order', \Walkthechat\Walkthechat\Helper\Data::ATTRIBUTE_CODE);

@@ -41,6 +41,7 @@ interface OrderImportInterface
      * @param mixed  $tax
      * @param mixed  $total
      * @param mixed  $coupon
+     * @param mixed  $checkSignature
      *
      * @return string
      */
@@ -66,6 +67,7 @@ interface OrderImportInterface
         $shippingRate,
         $tax,
         $total,
-        $coupon = []
+        $coupon = [],
+        $checkSignature = true
     );
 }
