@@ -61,6 +61,10 @@ class UpgradeSchema implements \Magento\Framework\Setup\UpgradeSchemaInterface
         if (version_compare($context->getVersion(), '1.4.0', '<')) {
             $this->makeQueueItemIdFieldNullable($installer);
         }
+
+        if (version_compare($context->getVersion(), '1.5.0', '<')) {
+            $this->createOrderTable($installer);
+        }
     }
 
     /**
@@ -431,5 +435,122 @@ class UpgradeSchema implements \Magento\Framework\Setup\UpgradeSchemaInterface
                     ]
                 );
         }
+    }
+
+    /**
+     * Creates order table
+     *
+     * @param \Magento\Framework\Setup\SchemaSetupInterface $installer
+     *
+     * @return $this
+     * @throws \Zend_Db_Exception
+     */
+    protected function createOrderTable(\Magento\Framework\Setup\SchemaSetupInterface $installer)
+    {
+        if (!$installer->tableExists($installer->getTable(\Walkthechat\Walkthechat\Model\ResourceModel\Order::TABLE_NAME))) {
+            $table = $installer
+                ->getConnection()
+                ->newTable($installer->getTable(\Walkthechat\Walkthechat\Model\ResourceModel\Order::TABLE_NAME))
+                ->addColumn(
+                    \Walkthechat\Walkthechat\Api\Data\OrderInterface::ID,
+                    \Magento\Framework\DB\Ddl\Table::TYPE_INTEGER,
+                    null,
+                    [
+                        'identity' => true,
+                        'unsigned' => true,
+                        'nullable' => false,
+                        'primary'  => true,
+                    ],
+                    'Entity ID'
+                )
+                ->addColumn(
+                    \Walkthechat\Walkthechat\Api\Data\OrderInterface::WALKTHECHAT_ID,
+                    \Magento\Framework\DB\Ddl\Table::TYPE_TEXT,
+                    255,
+                    [
+                        'nullable' => true,
+                        'default'  => null,
+                    ],
+                    'WalkTheChat Id'
+                )
+                ->addColumn(
+                    \Walkthechat\Walkthechat\Api\Data\OrderInterface::WALKTHECHAT_NAME,
+                    \Magento\Framework\DB\Ddl\Table::TYPE_TEXT,
+                    255,
+                    [
+                        'nullable' => true,
+                        'default'  => null,
+                    ],
+                    'WalkTheChat Name'
+                )
+                ->addColumn(
+                    \Walkthechat\Walkthechat\Api\Data\OrderInterface::ORDER_ID,
+                    \Magento\Framework\DB\Ddl\Table::TYPE_INTEGER,
+                    null,
+                    [
+                        'nullable' => true,
+                        'unsigned' => true,
+                        'default'  => null,
+                    ],
+                    'Magento Order Id'
+                )
+                ->addColumn(
+                    \Walkthechat\Walkthechat\Api\Data\OrderInterface::CREATED_AT,
+                    \Magento\Framework\DB\Ddl\Table::TYPE_TIMESTAMP,
+                    null,
+                    [
+                        'nullable' => false,
+                        'default'  => \Magento\Framework\DB\Ddl\Table::TIMESTAMP_INIT,
+                    ],
+                    'Created At'
+                )
+                ->addColumn(
+                    \Walkthechat\Walkthechat\Api\Data\OrderInterface::UPDATED_AT,
+                    \Magento\Framework\DB\Ddl\Table::TYPE_TIMESTAMP,
+                    null,
+                    [
+                        'nullable' => false,
+                        'default'  => \Magento\Framework\DB\Ddl\Table::TIMESTAMP_INIT_UPDATE,
+                    ],
+                    'Updated At'
+                )
+                ->addColumn(
+                    \Walkthechat\Walkthechat\Api\Data\OrderInterface::STATUS,
+                    \Magento\Framework\DB\Ddl\Table::TYPE_SMALLINT,
+                    null,
+                    [
+                        'nullable' => false,
+                        'unsigned' => true,
+                        'length'   => null,
+                    ],
+                    'Status'
+                )
+                ->addColumn(
+                    \Walkthechat\Walkthechat\Api\Data\OrderInterface::MESSAGE,
+                    \Magento\Framework\DB\Ddl\Table::TYPE_TEXT,
+                    null,
+                    [
+                        'nullable' => true,
+                    ],
+                    'Message'
+                )
+                ->addForeignKey(
+                    $installer->getFkName(
+                        \Walkthechat\Walkthechat\Model\ResourceModel\Order::TABLE_NAME,
+                        \Walkthechat\Walkthechat\Api\Data\OrderInterface::ORDER_ID,
+                        $installer->getTable('sales_order'),
+                        'entity_id'
+                    ),
+                    \Walkthechat\Walkthechat\Api\Data\OrderInterface::ORDER_ID,
+                    $installer->getTable('sales_order'),
+                    'entity_id',
+                    \Magento\Framework\DB\Ddl\Table::ACTION_CASCADE
+                )
+                ->setComment('WalkTheChat Order Table');
+
+            $installer->getConnection()->createTable($table);
+        }
+
+        return $this;
     }
 }
