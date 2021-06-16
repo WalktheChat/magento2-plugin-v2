@@ -83,7 +83,7 @@ class Import extends \Magento\Backend\App\Action
                     $data['refundable'],
                     $data['created'],
                     $data['modified'],
-                    $data['sign'],
+                    '',
                     isset($data['payment']) ? $data['payment'] : [],
                     $data['itemsToFulfill'],
                     $data['items'],
