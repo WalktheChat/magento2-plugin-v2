@@ -86,14 +86,29 @@ class OrdersRepository extends AbstractService
     }
 
     /**
-     * Find order
+     * Find orders
+     *
+     * @param $from
+     * @param $to
      *
      * @return mixed
      * @throws \Zend_Http_Client_Exception
      */
-    public function find()
+    public function find($from, $to)
     {
-        return $this->request($this->orderFindResource);
+        $filter = ['where' => [
+            'and' => [
+                ['draft' => false],
+                ['created' => [
+                    'between' => [
+                        $from,
+                        $to
+                    ]
+                ]]
+            ]
+        ]];
+
+        return $this->request($this->orderFindResource, ['filter' => json_encode($filter)]);
     }
 
     /**
