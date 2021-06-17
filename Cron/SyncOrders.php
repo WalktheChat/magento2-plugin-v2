@@ -28,9 +28,9 @@ class SyncOrders
     protected $ordersRepository;
 
     /**
-     * @var \Magento\Sales\Api\Data\OrderInterface
+     * @var \Magento\Sales\Api\Data\OrderInterfaceFactory
      */
-    protected $orderModel;
+    protected $orderFactory;
 
     /**
      * @var \Walkthechat\Walkthechat\Model\OrderImport
@@ -51,21 +51,21 @@ class SyncOrders
      * SyncOrders constructor.
      * @param \Walkthechat\Walkthechat\Helper\Data $helper
      * @param \Walkthechat\Walkthechat\Service\OrdersRepository $ordersRepository
-     * @param \Magento\Sales\Api\Data\OrderInterface $orderModel
+     * @param \Magento\Sales\Api\Data\OrderInterfaceFactory $orderFactory
      * @param \Magento\Framework\Stdlib\DateTime\DateTime $date
      * @param \Magento\Store\Model\App\Emulation $emulation
      */
     public function __construct(
         \Walkthechat\Walkthechat\Helper\Data $helper,
         \Walkthechat\Walkthechat\Service\OrdersRepository $ordersRepository,
-        \Magento\Sales\Api\Data\OrderInterface $orderModel,
+        \Magento\Sales\Api\Data\OrderInterfaceFactory $orderFactory,
         \Walkthechat\Walkthechat\Model\OrderImport $orderImport,
         \Magento\Framework\Stdlib\DateTime\DateTime $date,
         \Magento\Store\Model\App\Emulation $emulation
     ) {
         $this->helper           = $helper;
         $this->ordersRepository = $ordersRepository;
-        $this->orderModel       = $orderModel;
+        $this->orderFactory     = $orderFactory;
         $this->orderImport      = $orderImport;
         $this->date             = $date;
         $this->emulation        = $emulation;
@@ -80,7 +80,8 @@ class SyncOrders
     {
         $orders = $this->ordersRepository->find($this->date->gmtDate('Y-m-d\TH:00:00\Z', time() - 3600), $this->date->gmtDate('Y-m-d\TH:00:00\Z'));
         foreach ($orders as $data) {
-            $order = $this->orderModel->load($data['id'], 'walkthechat_id');
+            $order = $this->orderFactory->create()->load($data['id'], 'walkthechat_id');
+
             if (!$order->getId()) {
                 $this->emulation->startEnvironmentEmulation($this->helper->getStore()->getStoreId(), 'frontend');
 
