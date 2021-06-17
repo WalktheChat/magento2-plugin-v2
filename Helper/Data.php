@@ -175,6 +175,18 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
+     * Get data source website
+     *
+     * @return mixed
+     */
+    public function getWebsite()
+    {
+        $websiteId = $this->getStore()->getWebsiteId();
+
+        return $this->storeManager->getWebsite($websiteId);
+    }
+
+    /**
      * Checks if product synchronisation is enabled
      *
      * @return boolean
