@@ -331,19 +331,7 @@ class ProductService
             'displayPrice'          => $mainSpecialPrice ? $mainSpecialPrice : $mainPrice,
             'displayCompareAtPrice' => $mainSpecialPrice ? $mainPrice : null,
             'images'                => $imagesData['main'] ?? [],
-            'variants'              => [
-                [
-                    'id'                => $product->getId(),
-                    'inventoryQuantity' => $this->_getProductSaleableQty($product->getSku(), $stockId),
-                    'weight'            => $product->getWeight(),
-                    'requiresShipping'  => true,
-                    'sku'               => $product->getSku(),
-                    'price'             => $mainSpecialPrice ? $mainSpecialPrice : $mainPrice,
-                    'compareAtPrice'    => $mainSpecialPrice ? $mainPrice : null,
-                    'visibility'        => $productVisibility,
-                    'taxable'           => (bool)$product->getTaxClassId(),
-                ],
-            ],
+            'variants'              => []
         ];
 
         // if is "update" action - don't update the title and description
@@ -379,9 +367,6 @@ class ProductService
             $children = $product->getTypeInstance()->getUsedProducts($product);
 
             if ($children) {
-                // if product is configurable - remove main product variant
-                $data['variants'] = [];
-
                 $k = 0;
                 foreach ($children as $child) {
                     $childPrice			= $this->helper->convertPrice($child->getPrice());
@@ -442,6 +427,18 @@ class ProductService
                     ++$k;
                 }
             }
+        } else {
+            $data['variants'][] = [
+                'id'                => $product->getId(),
+                'inventoryQuantity' => $this->_getProductSaleableQty($product->getSku(), $stockId),
+                'weight'            => $product->getWeight(),
+                'requiresShipping'  => true,
+                'sku'               => $product->getSku(),
+                'price'             => $mainSpecialPrice ? $mainSpecialPrice : $mainPrice,
+                'compareAtPrice'    => $mainSpecialPrice ? $mainPrice : null,
+                'visibility'        => $productVisibility,
+                'taxable'           => (bool)$product->getTaxClassId(),
+            ];
         }
 
         return $data;
