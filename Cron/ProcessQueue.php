@@ -116,12 +116,11 @@ class ProcessQueue
             \Magento\Framework\App\Filesystem\DirectoryList::VAR_DIR
         );
 
-        try {
-            if ($this->isCronLocked($varDirectory)) {
-                return;
-            }
+        if ($this->isCronLocked($varDirectory)) {
+            return;
+        }
 
-            // prevent running many CRONs at the same time
+        try {
             $isLocked = $this->lockCron($varDirectory);
 
             if ($isLocked) {
