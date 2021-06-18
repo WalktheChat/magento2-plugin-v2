@@ -129,15 +129,9 @@ class ProcessQueue
                 // after saving walkthechat_id into product, set flag not to execute observer methods
                 $this->registry->register('walkthechat_omit_update_action', true);
 
-                $items = $this->queueService->getAllNotProcessed();
-
-                $count = 0;
+                $items = $this->queueService->getNotProcessed(static::QUEUE_ITEMS_PER_PROCESS);
 
                 foreach ($items as $item) {
-                    if ($count++ === static::QUEUE_ITEMS_PER_PROCESS) {
-                        break;
-                    }
-
                     $this->registry->register('walkthechat_current_queue_item_id', $item->getId());
 
                     $this->queueService->sync($item);

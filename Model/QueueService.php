@@ -116,16 +116,21 @@ class QueueService
     }
 
     /**
-     * Get all not processed rows
+     * Get not processed rows
      *
+     * @param int|null $pageSize
      * @return \Walkthechat\Walkthechat\Api\Data\QueueInterface[]
      */
-    public function getAllNotProcessed()
+    public function getNotProcessed($pageSize = null)
     {
         $this->searchCriteriaBuilder->addFilter('processed_at', true, 'null');
 
         /** @var \Magento\Framework\Api\SearchCriteriaInterface $searchCriteria */
         $searchCriteria = $this->searchCriteriaBuilder->create();
+
+        if ($pageSize) {
+            $searchCriteria->setPageSize($pageSize);
+        }
 
         $results = $this->queueRepository->getList($searchCriteria);
 
