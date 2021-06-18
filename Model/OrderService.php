@@ -401,6 +401,10 @@ class OrderService
         $quote->getShippingAddress()->addData($addressData);
 
         // set shipping price in the shipping career
+        if (!is_null($this->registry->registry(\Walkthechat\Walkthechat\Model\Carrier\WTCShipping::WALKTHECHAT_SHIPPING_PRICE_KEY))) {
+            $this->registry->unregister(\Walkthechat\Walkthechat\Model\Carrier\WTCShipping::WALKTHECHAT_SHIPPING_PRICE_KEY);
+        }
+
         $this->registry->register(
             \Walkthechat\Walkthechat\Model\Carrier\WTCShipping::WALKTHECHAT_SHIPPING_PRICE_KEY,
             (float)$data['shippingRate']['rate']
