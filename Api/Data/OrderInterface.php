@@ -33,6 +33,7 @@ interface OrderInterface
     /**@#+
      * Statuses
      */
+    const NEW_STATUS          = 0;
     const COMPLETE_STATUS     = 1;
     const ERROR_STATUS        = 2;
     /**@#- */

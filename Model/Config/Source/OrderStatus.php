@@ -24,6 +24,10 @@ class OrderStatus implements \Magento\Framework\Option\ArrayInterface
     {
         return [
             [
+                'value' => \Walkthechat\Walkthechat\Api\Data\OrderInterface::NEW_STATUS,
+                'label' => __('New'),
+            ],
+            [
                 'value' => \Walkthechat\Walkthechat\Api\Data\OrderInterface::COMPLETE_STATUS,
                 'label' => __('Complete'),
             ],
@@ -42,6 +46,7 @@ class OrderStatus implements \Magento\Framework\Option\ArrayInterface
     public function toArray()
     {
         return [
+            \Walkthechat\Walkthechat\Api\Data\OrderInterface::NEW_STATUS        => __('New'),
             \Walkthechat\Walkthechat\Api\Data\OrderInterface::COMPLETE_STATUS   => __('Complete'),
             \Walkthechat\Walkthechat\Api\Data\OrderInterface::ERROR_STATUS      => __('Error')
         ];

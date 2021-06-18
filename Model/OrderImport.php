@@ -100,6 +100,7 @@ class OrderImport implements \Walkthechat\Walkthechat\Api\OrderImportInterface
         $checkSignature = true
     ) {
         $logError = false;
+        $alreadyImported = false;
 
         try {
             $this->helper->validateProjectId($projectId);
@@ -130,9 +131,31 @@ class OrderImport implements \Walkthechat\Walkthechat\Api\OrderImportInterface
                 $checkSignature
             );
 
+            try {
+                $syncOrder = $this->orderRepository->getByWalkthechatId($id);
+                if ($syncOrder->getStatus() !== \Walkthechat\Walkthechat\Api\Data\OrderInterface::ERROR_STATUS) {
+                    $alreadyImported = true;
+                    throw new \Magento\Framework\Exception\AlreadyExistsException(
+                        __('Import already initiated.')
+                    );
+                }
+            } catch (\Magento\Framework\Exception\NoSuchEntityException $exception) {
+                $syncOrder = $this->orderFactory->create();
+                $syncOrder->setWalkthechatId($id);
+                $syncOrder->setWalkthechatName($name);
+                $syncOrder->setMessage(__('Import Started'));
+                $syncOrder->setStatus(\Walkthechat\Walkthechat\Api\Data\OrderInterface::NEW_STATUS);
+
+                $this->orderRepository->save($syncOrder);
+            }
+
             $order = $this->orderService->processImport($data);
 
-            $this->_saveOrder($id, $name, __('Order Imported'), \Walkthechat\Walkthechat\Api\Data\OrderInterface::COMPLETE_STATUS, $order->getEntityId());
+            $syncOrder->setMessage(__('Order Imported'));
+            $syncOrder->setStatus(\Walkthechat\Walkthechat\Api\Data\OrderInterface::COMPLETE_STATUS);
+            $syncOrder->setOrderId($order->getEntityId());
+
+            $this->orderRepository->save($syncOrder);
 
             return json_encode([
                 'error'    => false,
@@ -144,13 +167,26 @@ class OrderImport implements \Walkthechat\Walkthechat\Api\OrderImportInterface
             $errorMessage = $exception->getMessage();
         } catch (\Walkthechat\Walkthechat\Exception\InvalidMagentoInstanceException $exception) {
             $errorMessage = $exception->getMessage();
+        } catch (\Magento\Framework\Exception\AlreadyExistsException $exception) {
+            $errorMessage = $exception->getMessage();
         } catch (\Exception $exception) {
             $errorMessage = $exception->getMessage();
             $logError = true;
         }
 
-        if (strtolower($financialStatus) === 'paid') {
-            $this->_saveOrder($id, $name, $errorMessage, \Walkthechat\Walkthechat\Api\Data\OrderInterface::ERROR_STATUS);
+        if ($id && $name && strtolower($financialStatus) === 'paid' && !$alreadyImported) {
+            try {
+                $syncOrder = $this->orderRepository->getByWalkthechatId($id);
+            } catch (\Magento\Framework\Exception\NoSuchEntityException $exception) {
+                $syncOrder = $this->orderFactory->create();
+                $syncOrder->setWalkthechatId($id);
+                $syncOrder->setWalkthechatName($name);
+            }
+
+            $syncOrder->setMessage($errorMessage);
+            $syncOrder->setStatus(\Walkthechat\Walkthechat\Api\Data\OrderInterface::ERROR_STATUS);
+
+            $this->orderRepository->save($syncOrder);
         }
 
         if ($logError) {
@@ -165,24 +201,5 @@ class OrderImport implements \Walkthechat\Walkthechat\Api\OrderImportInterface
                 'order_id' => null,
             ]
         );
-    }
-
-    private function _saveOrder($id, $name, $message, $status, $orderId = null)
-    {
-        try {
-            $model = $this->orderRepository->getByWalkthechatId($id);
-        } catch (\Magento\Framework\Exception\NoSuchEntityException $exception) {
-            $model = $this->orderFactory->create();
-            $model->setWalkthechatId($id);
-            $model->setWalkthechatName($name);
-        }
-
-        $model->setMessage($message);
-        $model->setStatus($status);
-        if ($orderId) {
-            $model->setOrderId($orderId);
-        }
-
-        $this->orderRepository->save($model);
     }
 }
