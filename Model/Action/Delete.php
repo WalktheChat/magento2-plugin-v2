@@ -72,8 +72,6 @@ class Delete extends \Walkthechat\Walkthechat\Model\Action\AbstractAction
      */
     public function execute(\Walkthechat\Walkthechat\Api\Data\QueueInterface $queueItem)
     {
-        $this->queueProductRepository->delete(['id' => $queueItem->getWalkthechatId()]);
-
         /** @var \Magento\Catalog\Model\ResourceModel\Product\Collection $deleteProductCollection */
         $deleteProductCollection = $this->productCollectionFactory->create();
 
@@ -82,26 +80,16 @@ class Delete extends \Walkthechat\Walkthechat\Model\Action\AbstractAction
             $queueItem->getWalkthechatId()
         );
 
-        $productIds = [];
+        foreach ($deleteProductCollection as $product) {
+            $this->productRepository->save($product);
+        }
+
+        $this->queueProductRepository->delete(['id' => $queueItem->getWalkthechatId()]);
 
         /** @var \Magento\Catalog\Api\Data\ProductInterface $product */
         foreach ($deleteProductCollection as $product) {
             $product->setCustomAttribute(\Walkthechat\Walkthechat\Helper\Data::ATTRIBUTE_CODE, null);
-
             $this->productRepository->save($product);
-
-            if ($product->getTypeId() === \Magento\ConfigurableProduct\Model\Product\Type\Configurable::TYPE_CODE) {
-                /** @var \Magento\Catalog\Model\Product[] $children */
-                $children = $product->getTypeInstance()->getUsedProducts($product);
-
-                if ($children) {
-                    foreach ($children as $child) {
-                        $productIds[] = $child->getId();
-                    }
-                }
-            } else {
-                $productIds[] = $product->getId();
-            }
         }
 
         return true;
