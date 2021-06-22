@@ -134,9 +134,14 @@ class ProcessQueue
                 foreach ($items as $item) {
                     $this->registry->register('walkthechat_current_queue_item_id', $item->getId());
 
-                    $this->queueService->sync($item);
-
-                    $this->registry->unregister('walkthechat_current_queue_item_id');
+                    try {
+                        $this->queueService->sync($item);
+                        $this->registry->unregister('walkthechat_current_queue_item_id');
+                    } catch (\Exception $exception) {
+                        $this->logger->error("WalkTheChat | Internal error occurred: {$exception->getMessage()}", $exception->getTrace());
+                        $this->registry->unregister('walkthechat_current_queue_item_id');
+                        continue;
+                    }
                 }
             }
         } catch (\Magento\Framework\Exception\FileSystemException $fileSystemException) {
