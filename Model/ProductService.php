@@ -343,10 +343,6 @@ class ProductService
             $data['bodyHtml'] = [
                 'en' => isset($mediaContentData['content']) && $mediaContentData['content'] ? $mediaContentData['content'] : $product->getDescription(),
             ];
-
-            $data['variants'][0]['title'] = [
-                'en' => $product->getName(),
-            ];
         }
 
         if ($product->getTypeId() === \Magento\ConfigurableProduct\Model\Product\Type\Configurable::TYPE_CODE) {
@@ -428,7 +424,7 @@ class ProductService
                 }
             }
         } else {
-            $data['variants'][] = [
+            $variant = [
                 'id'                => $product->getId(),
                 'inventoryQuantity' => $this->_getProductSaleableQty($product->getSku(), $stockId),
                 'weight'            => $product->getWeight(),
@@ -439,6 +435,12 @@ class ProductService
                 'visibility'        => $productVisibility,
                 'taxable'           => (bool)$product->getTaxClassId(),
             ];
+
+            if ($isNew) {
+                $variant['title'] = ['en' => $product->getName()];
+            }
+
+            $data['variants'][] = $variant;
         }
 
         return $data;
