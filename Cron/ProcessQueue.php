@@ -72,21 +72,20 @@ class ProcessQueue
     const QUEUE_LOCK_FILE_CONTENT = 'This file was generated automatically by system to atomically prevent doubling of walkthechat entities. If this file extension is ".lock", then no queue items will be proceed';
 
     /**
-     * How many files would be proceed per cron request
-     *
-     * @var int
+     * @var \Walkthechat\Walkthechat\Helper\Data
      */
-    const QUEUE_ITEMS_PER_PROCESS = 10;
+    protected $helper;
 
     /**
      * ProcessQueue constructor.
      *
      * @param \Magento\Framework\App\State                    $state
-     * @param \Walkthechat\Walkthechat\Model\QueueService         $queueService
+     * @param \Walkthechat\Walkthechat\Model\QueueService     $queueService
      * @param \Magento\Framework\Registry                     $registry
      * @param \Magento\Framework\Filesystem                   $filesystem
      * @param \Magento\Framework\App\Filesystem\DirectoryList $directoryList
      * @param \Psr\Log\LoggerInterface                        $logger
+     * @param \Walkthechat\Walkthechat\Helper\Data            $helper
      */
     public function __construct(
         \Magento\Framework\App\State $state,
@@ -94,7 +93,8 @@ class ProcessQueue
         \Magento\Framework\Registry $registry,
         \Magento\Framework\Filesystem $filesystem,
         \Magento\Framework\App\Filesystem\DirectoryList $directoryList,
-        \Psr\Log\LoggerInterface $logger
+        \Psr\Log\LoggerInterface $logger,
+        \Walkthechat\Walkthechat\Helper\Data $helper
     ) {
         $this->state         = $state;
         $this->queueService  = $queueService;
@@ -102,6 +102,7 @@ class ProcessQueue
         $this->filesystem    = $filesystem;
         $this->directoryList = $directoryList;
         $this->logger        = $logger;
+        $this->helper        = $helper;
     }
 
     /**
@@ -129,7 +130,7 @@ class ProcessQueue
                 // after saving walkthechat_id into product, set flag not to execute observer methods
                 $this->registry->register('walkthechat_omit_update_action', true);
 
-                $items = $this->queueService->getNotProcessed(static::QUEUE_ITEMS_PER_PROCESS);
+                $items = $this->queueService->getNotProcessed($this->helper->getProductQueueBatch());
 
                 foreach ($items as $item) {
                     $this->registry->register('walkthechat_current_queue_item_id', $item->getId());

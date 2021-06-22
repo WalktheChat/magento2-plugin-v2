@@ -8,6 +8,8 @@
             </general>
             <sync>
                 <order_sync_active>1</order_sync_active>
+                <product_queue_batch>20</product_queue_batch>
+                <image_queue_batch>20</image_queue_batch>
             </sync>
         </walkthechat_settings>
         <carriers>
