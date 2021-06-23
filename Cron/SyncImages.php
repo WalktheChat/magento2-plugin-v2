@@ -32,13 +32,6 @@ class SyncImages
     const SYNC_IMAGES_LOCK_FILE_NAME_UNLOCKED = 'walkthechat_sync_images';
 
     /**
-     * How many images would be proceed per cron request
-     *
-     * @var int
-     */
-    const ITEMS_PER_PROCESS = 20;
-
-    /**
      * @var \Magento\Framework\App\State
      */
     protected $state;
@@ -236,7 +229,7 @@ class SyncImages
                     )
                     ->create();
 
-                $this->searchCriteria->setFilterGroups([$filterGroup])->setPageSize(self::ITEMS_PER_PROCESS);
+                $this->searchCriteria->setFilterGroups([$filterGroup])->setPageSize($this->helper->getImageQueueBatch());
 
                 $images = $this->imageSyncRepository->getList($this->searchCriteria)->getItems();
 

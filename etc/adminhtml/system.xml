@@ -48,6 +48,14 @@
                     <label>Enable Order and Inventory Synchronization?</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
+                <field id="product_queue_batch" translate="label" type="select" sortOrder="30" showInDefault="1">
+                    <label>Product Queue Batch</label>
+                    <source_model>Walkthechat\Walkthechat\Model\Config\Source\QueueBatch</source_model>
+                </field>
+                <field id="image_queue_batch" translate="label" type="select" sortOrder="40" showInDefault="1">
+                    <label>Image Queue Batch</label>
+                    <source_model>Walkthechat\Walkthechat\Model\Config\Source\QueueBatch</source_model>
+                </field>
             </group>
             <group id="currency" translate="label" sortOrder="30" showInDefault="1">
                 <label>Currency</label>

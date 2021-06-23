@@ -257,6 +257,26 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
+     * Return product queue batch from configuration
+     *
+     * @return string
+     */
+    public function getProductQueueBatch()
+    {
+        return $this->scopeConfig->getValue('walkthechat_settings/sync/product_queue_batch');
+    }
+
+    /**
+     * Return image queue batch from configuration
+     *
+     * @return string
+     */
+    public function getImageQueueBatch()
+    {
+        return $this->scopeConfig->getValue('walkthechat_settings/sync/image_queue_batch');
+    }
+
+    /**
      * Get URL for authorization
      *
      * @return string
