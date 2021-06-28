@@ -28,14 +28,9 @@ class ProductService
     protected $searchCriteriaBuilder;
 
     /**
-     * @var \Magento\InventorySalesApi\Api\StockResolverInterface
+     * @var \Magento\CatalogInventory\Model\Stock\StockItem
      */
-    protected $stockResolver;
-
-    /**
-     * @var \Magento\InventorySalesApi\Api\GetProductSalableQtyInterface
-     */
-    protected $getProductSalableQty;
+    protected $stockItem;
 
     /**
      * @var \Walkthechat\Walkthechat\Helper\Data
@@ -63,8 +58,7 @@ class ProductService
      * @param \Magento\Catalog\Model\ProductRepository                      $productRepository
      * @param \Magento\Framework\Api\SearchCriteriaBuilder                  $searchCriteriaBuilder
      * @param \Walkthechat\Walkthechat\Helper\Data                          $helper
-     * @param \Magento\InventorySalesApi\Api\StockResolverInterface         $stockResolver
-     * @param \Magento\InventorySalesApi\Api\GetProductSalableQtyInterface  $getProductSalableQty
+     * @param \Magento\CatalogInventory\Api\StockStateInterface         	$stockItem
      * @param \Walkthechat\Walkthechat\Model\QueueService                   $queueService
      * @param \Walkthechat\Walkthechat\Api\QueueRepositoryInterface         $queueRepository
      * @param \Magento\CatalogRule\Model\RuleFactory					    $ruleFactory
@@ -73,16 +67,14 @@ class ProductService
         \Magento\Catalog\Model\ProductRepository $productRepository,
         \Magento\Framework\Api\SearchCriteriaBuilder $searchCriteriaBuilder,
         \Walkthechat\Walkthechat\Helper\Data $helper,
-        \Magento\InventorySalesApi\Api\StockResolverInterface $stockResolver,
-        \Magento\InventorySalesApi\Api\GetProductSalableQtyInterface $getProductSalableQty,
+        \Magento\CatalogInventory\Api\StockStateInterface $stockItem,
         \Walkthechat\Walkthechat\Model\QueueService $queueService,
         \Walkthechat\Walkthechat\Api\QueueRepositoryInterface $queueRepository,
         \Magento\CatalogRule\Model\RuleFactory $ruleFactory
     ) {
         $this->productRepository     = $productRepository;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
-        $this->stockResolver         = $stockResolver;
-        $this->getProductSalableQty  = $getProductSalableQty;
+        $this->stockItem             = $stockItem;
         $this->helper                = $helper;
         $this->queueService          = $queueService;
         $this->queueRepository       = $queueRepository;
@@ -305,7 +297,6 @@ class ProductService
     {
         $rule =  $this->ruleFactory->create();
 
-        $stockId          = $this->stockResolver->execute(\Magento\InventorySalesApi\Api\Data\SalesChannelInterface::TYPE_WEBSITE, $this->helper->getWebsite()->getCode())->getStockId();
         $mainPrice        = $this->helper->convertPrice($product->getPrice());
         $mainSpecialPrice = null;
         if (!$product->getSpecialFromDate() && !$product->getSpecialToDate()) {
@@ -382,7 +373,7 @@ class ProductService
 
                     $data['variants'][$k] = [
                         'id'                => $child->getId(),
-                        'inventoryQuantity' => $this->_getProductSaleableQty($child->getSku(), $stockId),
+                        'inventoryQuantity' => $this->stockItem->getStockQty($child->getId()),
                         'weight'            => $child->getWeight(),
                         'requiresShipping'  => true,
                         'sku'               => $child->getSku(),
@@ -426,7 +417,7 @@ class ProductService
         } else {
             $variant = [
                 'id'                => $product->getId(),
-                'inventoryQuantity' => $this->_getProductSaleableQty($product->getSku(), $stockId),
+                'inventoryQuantity' => $this->stockItem->getStockQty($product->getId()),
                 'weight'            => $product->getWeight(),
                 'requiresShipping'  => true,
                 'sku'               => $product->getSku(),
