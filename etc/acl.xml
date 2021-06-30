@@ -9,6 +9,13 @@
 					<resource id="Walkthechat_Walkthechat::logs" title="logs" sortOrder="150"/>
 				</resource>
 			</resource>
+			<resource id="Magento_Backend::stores">
+				<resource id="Magento_Backend::stores_settings">
+					<resource id="Magento_Config::config">
+						<resource id="Walkthechat_Walkthechat::config_settings" title="Walkthechat" translate="title" sortOrder="80"/>
+					</resource>
+				</resource>
+			</resource>
 		</resources>
 	</acl>
 </config>
