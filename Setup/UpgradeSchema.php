@@ -65,6 +65,10 @@ class UpgradeSchema implements \Magento\Framework\Setup\UpgradeSchemaInterface
         if (version_compare($context->getVersion(), '1.5.0', '<')) {
             $this->createOrderTable($installer);
         }
+
+        if (version_compare($context->getVersion(), '1.6.0', '<')) {
+            $this->createProductTable($installer);
+        }
     }
 
     /**
@@ -547,6 +551,102 @@ class UpgradeSchema implements \Magento\Framework\Setup\UpgradeSchemaInterface
                     \Magento\Framework\DB\Ddl\Table::ACTION_CASCADE
                 )
                 ->setComment('WalkTheChat Order Table');
+
+            $installer->getConnection()->createTable($table);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Creates product table
+     *
+     * @param \Magento\Framework\Setup\SchemaSetupInterface $installer
+     *
+     * @return $this
+     * @throws \Zend_Db_Exception
+     */
+    protected function createProductTable(\Magento\Framework\Setup\SchemaSetupInterface $installer)
+    {
+        if (!$installer->tableExists($installer->getTable(\Walkthechat\Walkthechat\Model\ResourceModel\Product::TABLE_NAME))) {
+            $table = $installer
+                ->getConnection()
+                ->newTable($installer->getTable(\Walkthechat\Walkthechat\Model\ResourceModel\Product::TABLE_NAME))
+                ->addColumn(
+                    \Walkthechat\Walkthechat\Api\Data\ProductInterface::ID,
+                    \Magento\Framework\DB\Ddl\Table::TYPE_INTEGER,
+                    null,
+                    [
+                        'identity' => true,
+                        'unsigned' => true,
+                        'nullable' => false,
+                        'primary'  => true,
+                    ],
+                    'Entity ID'
+                )
+                ->addColumn(
+                    \Walkthechat\Walkthechat\Api\Data\ProductInterface::PRODUCT_ID,
+                    \Magento\Framework\DB\Ddl\Table::TYPE_INTEGER,
+                    null,
+                    [
+                        'nullable' => false,
+                        'unsigned' => true
+                    ],
+                    'Magento Product Id'
+                )
+                ->addColumn(
+                    \Walkthechat\Walkthechat\Api\Data\ProductInterface::CREATED_AT,
+                    \Magento\Framework\DB\Ddl\Table::TYPE_TIMESTAMP,
+                    null,
+                    [
+                        'nullable' => false,
+                        'default'  => \Magento\Framework\DB\Ddl\Table::TIMESTAMP_INIT,
+                    ],
+                    'Created At'
+                )
+                ->addColumn(
+                    \Walkthechat\Walkthechat\Api\Data\ProductInterface::UPDATED_AT,
+                    \Magento\Framework\DB\Ddl\Table::TYPE_TIMESTAMP,
+                    null,
+                    [
+                        'nullable' => false,
+                        'default'  => \Magento\Framework\DB\Ddl\Table::TIMESTAMP_INIT_UPDATE,
+                    ],
+                    'Updated At'
+                )
+                ->addColumn(
+                    \Walkthechat\Walkthechat\Api\Data\ProductInterface::STATUS,
+                    \Magento\Framework\DB\Ddl\Table::TYPE_SMALLINT,
+                    null,
+                    [
+                        'nullable' => false,
+                        'unsigned' => true,
+                        'length'   => null,
+                    ],
+                    'Status'
+                )
+                ->addColumn(
+                    \Walkthechat\Walkthechat\Api\Data\ProductInterface::MESSAGE,
+                    \Magento\Framework\DB\Ddl\Table::TYPE_TEXT,
+                    null,
+                    [
+                        'nullable' => true,
+                    ],
+                    'Message'
+                )
+                ->addForeignKey(
+                    $installer->getFkName(
+                        \Walkthechat\Walkthechat\Model\ResourceModel\Product::TABLE_NAME,
+                        \Walkthechat\Walkthechat\Api\Data\ProductInterface::PRODUCT_ID,
+                        $installer->getTable('catalog_product_entity'),
+                        'entity_id'
+                    ),
+                    \Walkthechat\Walkthechat\Api\Data\ProductInterface::PRODUCT_ID,
+                    $installer->getTable('catalog_product_entity'),
+                    'entity_id',
+                    \Magento\Framework\DB\Ddl\Table::ACTION_CASCADE
+                )
+                ->setComment('WalkTheChat Product Table');
 
             $installer->getConnection()->createTable($table);
         }

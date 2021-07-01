@@ -48,6 +48,16 @@ class QueueService
     protected $filterBuilder;
 
     /**
+     * @var \Walkthechat\Walkthechat\Api\ProductRepositoryInterface
+     */
+    protected $syncProductRepository;
+
+    /**
+     * @var \Walkthechat\Walkthechat\Api\Data\ProductInterfaceFactory
+     */
+    protected $syncProductFactory;
+
+    /**
      * @var \Psr\Log\LoggerInterface
      */
     protected $logger;
@@ -60,6 +70,8 @@ class QueueService
      * @param \Magento\Framework\Api\SearchCriteriaBuilder $searchCriteriaBuilder
      * @param \Magento\Framework\Api\Search\FilterGroupBuilder $filterGroupBuilder
      * @param \Magento\Framework\Api\FilterBuilder $filterBuilder
+     * @param \Walkthechat\Walkthechat\Api\ProductRepositoryInterface $syncProductRepository
+     * @param \Walkthechat\Walkthechat\Api\Data\ProductInterfaceFactory $syncProductFactory
      * @param \Psr\Log\LoggerInterface $logger
      */
     public function __construct(
@@ -69,6 +81,8 @@ class QueueService
         \Magento\Framework\Api\SearchCriteriaBuilder $searchCriteriaBuilder,
         \Magento\Framework\Api\Search\FilterGroupBuilder $filterGroupBuilder,
         \Magento\Framework\Api\FilterBuilder $filterBuilder,
+        \Walkthechat\Walkthechat\Api\ProductRepositoryInterface $syncProductRepository,
+        \Walkthechat\Walkthechat\Api\Data\ProductInterfaceFactory $syncProductFactory,
         \Psr\Log\LoggerInterface $logger
     ) {
         $this->date                  = $date;
@@ -77,6 +91,8 @@ class QueueService
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
         $this->filterGroupBuilder    = $filterGroupBuilder;
         $this->filterBuilder         = $filterBuilder;
+        $this->syncProductRepository = $syncProductRepository;
+        $this->syncProductFactory    = $syncProductFactory;
         $this->logger                = $logger;
     }
 
@@ -169,7 +185,17 @@ class QueueService
      */
     public function sync(\Walkthechat\Walkthechat\Api\Data\QueueInterface $item)
     {
+        if ($item->getProductId()) {
+            try {
+                $syncProduct = $this->syncProductRepository->getByProductId($item->getProductId());
+            } catch (\Magento\Framework\Exception\NoSuchEntityException $exception) {
+                $syncProduct = $this->syncProductFactory->create();
+                $syncProduct->setProductId($item->getProductId());
+            }
+        }
+
         $action = $this->actionFactory->create($item->getAction());
+        $error = null;
 
         try {
             $isSuccess = $action->execute($item);
@@ -177,6 +203,17 @@ class QueueService
             if ($isSuccess) {
                 $item->setProcessedAt($this->date->gmtDate());
                 $item->setStatus(\Walkthechat\Walkthechat\Api\Data\QueueInterface::COMPLETE_STATUS);
+
+                if ($item->getProductId()) {
+                    if ($item->getAction() == \Walkthechat\Walkthechat\Model\Action\Delete::ACTION) {
+                        $this->syncProductRepository->delete($syncProduct);
+                    } else {
+                        $syncProduct->setMessage('');
+                        $syncProduct->setStatus(\Walkthechat\Walkthechat\Api\Data\ProductInterface::COMPLETE_STATUS);
+
+                        $this->syncProductRepository->save($syncProduct);
+                    }
+                }
             }
         } catch (\Zend\Http\Client\Exception\RuntimeException $runtimeException) {
             $item->setStatus(\Walkthechat\Walkthechat\Api\Data\QueueInterface::API_ERROR_STATUS);
@@ -184,6 +221,8 @@ class QueueService
             $this->logger->error(
                 "WalkTheChat | Bad response when trying to proceed the queue item with ID: #{$item->getId()}. Please check logs in admin panel (WalkTheChat -> Logs) for more details."
             );
+
+            $error = 'Bad response when trying to proceed the queue item with ID: #' . $item->getId();
         } catch (\Exception $exception) {
             $item->setStatus(\Walkthechat\Walkthechat\Api\Data\QueueInterface::INTERNAL_ERROR_STATUS);
 
@@ -191,6 +230,15 @@ class QueueService
                 "WalkTheChat | Internal error occurred: {$exception->getMessage()}",
                 $exception->getTrace()
             );
+
+            $error = 'Internal error: ' . $exception->getMessage();
+        }
+
+        if ($item->getProductId() && $error) {
+            $syncProduct->setMessage($error);
+            $syncProduct->setStatus(\Walkthechat\Walkthechat\Api\Data\ProductInterface::ERROR_STATUS);
+
+            $this->syncProductRepository->save($syncProduct);
         }
 
         $this->queueRepository->save($item);

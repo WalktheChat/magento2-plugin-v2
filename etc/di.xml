@@ -2,13 +2,16 @@
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
     <preference for="Walkthechat\Walkthechat\Api\QueueRepositoryInterface" type="Walkthechat\Walkthechat\Model\QueueRepository" />
     <preference for="Walkthechat\Walkthechat\Api\OrderRepositoryInterface" type="Walkthechat\Walkthechat\Model\OrderRepository" />
+    <preference for="Walkthechat\Walkthechat\Api\ProductRepositoryInterface" type="Walkthechat\Walkthechat\Model\ProductRepository" />
     <preference for="Walkthechat\Walkthechat\Api\ImageSyncRepositoryInterface" type="Walkthechat\Walkthechat\Model\ImageSyncRepository" />
     <preference for="Walkthechat\Walkthechat\Api\ContentMediaRepositoryInterface" type="Walkthechat\Walkthechat\Model\ContentMediaRepository" />
     <preference for="Walkthechat\Walkthechat\Api\Data\QueueInterface" type="Walkthechat\Walkthechat\Model\Queue" />
     <preference for="Walkthechat\Walkthechat\Api\Data\OrderInterface" type="Walkthechat\Walkthechat\Model\Order" />
+    <preference for="Walkthechat\Walkthechat\Api\Data\ProductInterface" type="Walkthechat\Walkthechat\Model\Product" />
     <preference for="Walkthechat\Walkthechat\Api\Data\ApiLogInterface" type="Walkthechat\Walkthechat\Model\ApiLog" />
     <preference for="Walkthechat\Walkthechat\Api\ApiLogRepositoryInterface" type="Walkthechat\Walkthechat\Model\ApiLogRepository" />
     <preference for="Walkthechat\Walkthechat\Api\Data\QueueSearchResultsInterface" type="Walkthechat\Walkthechat\Model\QueueSearchResults" />
+    <preference for="Walkthechat\Walkthechat\Api\Data\ProductSearchResultsInterface" type="Walkthechat\Walkthechat\Model\ProductSearchResults" />
     <preference for="Walkthechat\Walkthechat\Api\Data\ImageSyncSearchResultsInterface" type="Walkthechat\Walkthechat\Model\ImageSyncSearchResults" />
     <preference for="Walkthechat\Walkthechat\Api\Data\ImageSyncInterface" type="Walkthechat\Walkthechat\Model\ImageSync" />
     <preference for="Walkthechat\Walkthechat\Api\Data\ContentMediaSearchResultsInterface" type="Walkthechat\Walkthechat\Model\ContentMediaSearchResults" />
@@ -20,6 +23,7 @@
             <argument name="collections" xsi:type="array">
                 <item name="wtc_walkthechat_queue_grid_data_source" xsi:type="string">Walkthechat\Walkthechat\Model\ResourceModel\Queue\Grid\Collection</item>
                 <item name="wtc_walkthechat_order_grid_data_source" xsi:type="string">Walkthechat\Walkthechat\Model\ResourceModel\Order\Grid\Collection</item>
+                <item name="wtc_walkthechat_product_grid_data_source" xsi:type="string">Walkthechat\Walkthechat\Model\ResourceModel\Product\Grid\Collection</item>
                 <item name="wtc_walkthechat_api_log_grid_data_source" xsi:type="string">Walkthechat\Walkthechat\Model\ResourceModel\ApiLog\Grid\Collection</item>
             </argument>
         </arguments>
@@ -67,6 +71,31 @@
     </virtualType>
 
     <virtualType name="WalkthechatOrderGridFilterPool" type="Magento\Framework\View\Element\UiComponent\DataProvider\FilterPool">
+        <arguments>
+            <argument name="appliers" xsi:type="array">
+                <item name="regular" xsi:type="object">Magento\Framework\View\Element\UiComponent\DataProvider\RegularFilter</item>
+                <item name="fulltext" xsi:type="object">Magento\Framework\View\Element\UiComponent\DataProvider\FulltextFilter</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <type name="Walkthechat\Walkthechat\Model\ResourceModel\Product\Grid\Collection">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">wtc_walkthechat_product</argument>
+            <argument name="eventPrefix" xsi:type="string">wtc_walkthechat_product_grid_collection</argument>
+            <argument name="eventObject" xsi:type="string">wtc_walkthechat_product_grid_collection</argument>
+            <argument name="resourceModel" xsi:type="string">Walkthechat\Walkthechat\Model\ResourceModel\Product</argument>
+        </arguments>
+    </type>
+
+    <virtualType name="WalkthechatProductGridDataProvider" type="Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider">
+        <arguments>
+            <argument name="collection" xsi:type="object" shared="false">Walkthechat\Walkthechat\Model\ResourceModel\Product\Collection</argument>
+            <argument name="filterPool" xsi:type="object" shared="false">WalkthechatProductGridFilterPool</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="WalkthechatProductGridFilterPool" type="Magento\Framework\View\Element\UiComponent\DataProvider\FilterPool">
         <arguments>
             <argument name="appliers" xsi:type="array">
                 <item name="regular" xsi:type="object">Magento\Framework\View\Element\UiComponent\DataProvider\RegularFilter</item>

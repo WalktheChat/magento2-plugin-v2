@@ -133,7 +133,7 @@ class OrderImport implements \Walkthechat\Walkthechat\Api\OrderImportInterface
 
             try {
                 $syncOrder = $this->orderRepository->getByWalkthechatId($id);
-                if ($syncOrder->getStatus() !== \Walkthechat\Walkthechat\Api\Data\OrderInterface::ERROR_STATUS) {
+                if ($syncOrder->getStatus() != \Walkthechat\Walkthechat\Api\Data\OrderInterface::ERROR_STATUS) {
                     $alreadyImported = true;
                     throw new \Magento\Framework\Exception\AlreadyExistsException(
                         __('Import already initiated.')

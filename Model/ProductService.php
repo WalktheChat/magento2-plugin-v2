@@ -48,6 +48,16 @@ class ProductService
     private $queueRepository;
 
     /**
+     * @var \Walkthechat\Walkthechat\Api\ProductRepositoryInterface
+     */
+    private $syncProductRepository;
+
+    /**
+     * @var \Walkthechat\Walkthechat\Api\Data\ProductInterfaceFactory
+     */
+    private $syncProductFactory;
+
+    /**
      * @var \Magento\CatalogRule\Model\RuleFactory
      */
     private $ruleFactory;
@@ -61,6 +71,8 @@ class ProductService
      * @param \Magento\CatalogInventory\Api\StockStateInterface         	$stockItem
      * @param \Walkthechat\Walkthechat\Model\QueueService                   $queueService
      * @param \Walkthechat\Walkthechat\Api\QueueRepositoryInterface         $queueRepository
+     * @param \Walkthechat\Walkthechat\Api\ProductRepositoryInterface       $syncProductRepository
+	 * @param \Walkthechat\Walkthechat\Api\Data\ProductInterfaceFactory     $syncProductFactory
      * @param \Magento\CatalogRule\Model\RuleFactory					    $ruleFactory
      */
     public function __construct(
@@ -70,6 +82,8 @@ class ProductService
         \Magento\CatalogInventory\Api\StockStateInterface $stockItem,
         \Walkthechat\Walkthechat\Model\QueueService $queueService,
         \Walkthechat\Walkthechat\Api\QueueRepositoryInterface $queueRepository,
+        \Walkthechat\Walkthechat\Api\ProductRepositoryInterface $syncProductRepository,
+        \Walkthechat\Walkthechat\Api\Data\ProductInterfaceFactory $syncProductFactory,
         \Magento\CatalogRule\Model\RuleFactory $ruleFactory
     ) {
         $this->productRepository     = $productRepository;
@@ -78,6 +92,8 @@ class ProductService
         $this->helper                = $helper;
         $this->queueService          = $queueService;
         $this->queueRepository       = $queueRepository;
+        $this->syncProductRepository = $syncProductRepository;
+        $this->syncProductFactory    = $syncProductFactory;
         $this->ruleFactory           = $ruleFactory;
     }
 
@@ -203,6 +219,20 @@ class ProductService
 
         try {
             $this->queueRepository->bulkSave($bulkData);
+
+            foreach ($bulkData as $data) {
+                try {
+                    $syncProduct = $this->syncProductRepository->getByProductId($data['product_id']);
+                } catch (\Magento\Framework\Exception\NoSuchEntityException $exception) {
+                    $syncProduct = $this->syncProductFactory->create();
+                    $syncProduct->setProductId($data['product_id']);
+                }
+
+                $syncProduct->setMessage($data['action'] == \Walkthechat\Walkthechat\Model\Action\Add::ACTION ? 'Adding data' : 'Updating data');
+                $syncProduct->setStatus(\Walkthechat\Walkthechat\Api\Data\ProductInterface::QUEUE_STATUS);
+
+                $this->syncProductRepository->save($syncProduct);
+            }
         } catch (\Magento\Framework\Exception\CouldNotSaveException $exception) {
             if (null !== $messageManager) {
                 $messageManager->addWarningMessage(
@@ -256,6 +286,20 @@ class ProductService
 
         try {
             $this->queueRepository->bulkSave($bulkData);
+
+            foreach ($bulkData as $data) {
+                try {
+                    $syncProduct = $this->syncProductRepository->getByProductId($data['product_id']);
+                } catch (\Magento\Framework\Exception\NoSuchEntityException $exception) {
+                    $syncProduct = $this->syncProductFactory->create();
+                    $syncProduct->setProductId($data['product_id']);
+                }
+
+                $syncProduct->setMessage('Deleting data');
+                $syncProduct->setStatus(\Walkthechat\Walkthechat\Api\Data\ProductInterface::QUEUE_STATUS);
+
+                $this->syncProductRepository->save($syncProduct);
+            }
         } catch (\Magento\Framework\Exception\CouldNotSaveException $exception) {
             if (null !== $messageManager) {
                 $messageManager->addWarningMessage(
