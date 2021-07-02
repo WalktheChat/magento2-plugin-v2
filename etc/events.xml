@@ -18,4 +18,7 @@
     <event name="sales_order_shipment_save_after">
         <observer name="walkthechat_sales_order_shipment_save_after" instance="Walkthechat\Walkthechat\Observer\SalesOrderSaveAfter" />
     </event>
+    <event name="sales_order_creditmemo_refund">
+        <observer name="walkthechat_sales_order_creditmemo_refund" instance="Walkthechat\Walkthechat\Observer\SalesOrderCreditmemoRefund" />
+    </event>
 </config>
