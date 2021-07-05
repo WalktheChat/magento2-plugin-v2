@@ -595,7 +595,7 @@ class UpgradeSchema implements \Magento\Framework\Setup\UpgradeSchemaInterface
                     'Product Id'
                 )
                 ->addColumn(
-                    \Walkthechat\Walkthechat\Api\Data\ProductInterface::WALKTHECHAT_ID,
+                    \Walkthechat\Walkthechat\Api\Data\InventoryInterface::WALKTHECHAT_ID,
                     \Magento\Framework\DB\Ddl\Table::TYPE_TEXT,
                     255,
                     [
