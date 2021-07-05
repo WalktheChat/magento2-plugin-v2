@@ -76,6 +76,10 @@ abstract class AbstractService
 
         $headers['x-access-token'] = $this->helper->getToken();
 
+        if (isset($headers['x-project-id'])) {
+            $headers['x-project-id'] = $this->helper->getProjectId();
+        }
+
         $path = $resource->getPath();
 
         // id to represent for logging
