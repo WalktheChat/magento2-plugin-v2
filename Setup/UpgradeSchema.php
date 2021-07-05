@@ -65,6 +65,10 @@ class UpgradeSchema implements \Magento\Framework\Setup\UpgradeSchemaInterface
         if (version_compare($context->getVersion(), '1.5.0', '<')) {
             $this->createOrderTable($installer);
         }
+
+        if (version_compare($context->getVersion(), '1.6.0', '<')) {
+            $this->createInventoryTable($installer);
+        }
     }
 
     /**
@@ -547,6 +551,82 @@ class UpgradeSchema implements \Magento\Framework\Setup\UpgradeSchemaInterface
                     \Magento\Framework\DB\Ddl\Table::ACTION_CASCADE
                 )
                 ->setComment('WalkTheChat Order Table');
+
+            $installer->getConnection()->createTable($table);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Creates inventory table
+     *
+     * @param \Magento\Framework\Setup\SchemaSetupInterface $installer
+     *
+     * @return $this
+     * @throws \Zend_Db_Exception
+     */
+    protected function createInventoryTable(\Magento\Framework\Setup\SchemaSetupInterface $installer)
+    {
+        if (!$installer->tableExists($installer->getTable(\Walkthechat\Walkthechat\Model\ResourceModel\Inventory::TABLE_NAME))) {
+            $table = $installer
+                ->getConnection()
+                ->newTable($installer->getTable(\Walkthechat\Walkthechat\Model\ResourceModel\Inventory::TABLE_NAME))
+                ->addColumn(
+                    \Walkthechat\Walkthechat\Api\Data\InventoryInterface::ID,
+                    \Magento\Framework\DB\Ddl\Table::TYPE_INTEGER,
+                    null,
+                    [
+                        'identity' => true,
+                        'unsigned' => true,
+                        'nullable' => false,
+                        'primary'  => true,
+                    ],
+                    'Entity ID'
+                )
+                ->addColumn(
+                    \Walkthechat\Walkthechat\Api\Data\InventoryInterface::PRODUCT_ID,
+                    \Magento\Framework\DB\Ddl\Table::TYPE_INTEGER,
+                    null,
+                    [
+                        'nullable' => false,
+                        'unsigned' => true
+                    ],
+                    'Product Id'
+                )
+                ->addColumn(
+                    \Walkthechat\Walkthechat\Api\Data\ProductInterface::WALKTHECHAT_ID,
+                    \Magento\Framework\DB\Ddl\Table::TYPE_TEXT,
+                    255,
+                    [
+                        'nullable' => true,
+                        'default'  => null,
+                    ],
+                    'WalkTheChat Id'
+                )
+                ->addColumn(
+                    \Walkthechat\Walkthechat\Api\Data\InventoryInterface::QTY,
+                    \Magento\Framework\DB\Ddl\Table::TYPE_INTEGER,
+                    null,
+                    [
+                        'nullable' => false,
+                        'unsigned' => true
+                    ],
+                    'Qty'
+                )
+                ->addForeignKey(
+                    $installer->getFkName(
+                        \Walkthechat\Walkthechat\Model\ResourceModel\Inventory::TABLE_NAME,
+                        \Walkthechat\Walkthechat\Api\Data\InventoryInterface::PRODUCT_ID,
+                        $installer->getTable('catalog_product_entity'),
+                        'entity_id'
+                    ),
+                    \Walkthechat\Walkthechat\Api\Data\InventoryInterface::PRODUCT_ID,
+                    $installer->getTable('catalog_product_entity'),
+                    'entity_id',
+                    \Magento\Framework\DB\Ddl\Table::ACTION_CASCADE
+                )
+                ->setComment('WalkTheChat Inventory Table');
 
             $installer->getConnection()->createTable($table);
         }
