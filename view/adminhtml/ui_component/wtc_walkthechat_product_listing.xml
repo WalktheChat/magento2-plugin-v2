@@ -27,6 +27,13 @@
                 <item name="url" xsi:type="string">*/*/export</item>
                 <item name="sort_order" xsi:type="string">300</item>
             </item>
+            <item name="sync_inventory" xsi:type="array">
+                <item name="name" xsi:type="string">sync_inventory</item>
+                <item name="label" xsi:type="string" translate="true">Resync Inventory</item>
+                <item name="class" xsi:type="string">primary</item>
+                <item name="url" xsi:type="string">*/product/inventory</item>
+                <item name="sort_order" xsi:type="string">400</item>
+            </item>
         </item>
     </argument>
     <settings>

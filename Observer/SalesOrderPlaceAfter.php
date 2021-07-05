@@ -43,26 +43,42 @@ class SalesOrderPlaceAfter implements \Magento\Framework\Event\ObserverInterface
     protected $registry;
 
     /**
+     * @var \Magento\Catalog\Model\ProductRepository
+     */
+    protected $productRepository;
+
+    /**
+     * @var \Magento\ConfigurableProduct\Model\ResourceModel\Product\Type\Configurable
+     */
+    protected $configurableProductType;
+
+    /**
      * CatalogProductSaveAfter constructor.
      *
      * @param \Walkthechat\Walkthechat\Api\Data\QueueInterfaceFactory $queueFactory
      * @param \Walkthechat\Walkthechat\Model\QueueRepository          $queueRepository
      * @param \Walkthechat\Walkthechat\Helper\Data                    $helper
      * @param \Walkthechat\Walkthechat\Model\QueueService             $queueService
-     * @param \Magento\Framework\Registry                         $registry
+     * @param \Magento\Framework\Registry                             $registry
+     * @param \Magento\Catalog\Model\ProductRepository                $productRepository
+     * @param \Magento\ConfigurableProduct\Model\ResourceModel\Product\Type\Configurable $configurableProductType
      */
     public function __construct(
         \Walkthechat\Walkthechat\Api\Data\QueueInterfaceFactory $queueFactory,
         \Walkthechat\Walkthechat\Model\QueueRepository $queueRepository,
         \Walkthechat\Walkthechat\Helper\Data $helper,
         \Walkthechat\Walkthechat\Model\QueueService $queueService,
-        \Magento\Framework\Registry $registry
+        \Magento\Framework\Registry $registry,
+        \Magento\Catalog\Model\ProductRepository $productRepository,
+        \Magento\ConfigurableProduct\Model\ResourceModel\Product\Type\Configurable $configurableProductType
     ) {
-        $this->queueFactory    = $queueFactory;
-        $this->queueRepository = $queueRepository;
-        $this->helper          = $helper;
-        $this->queueService    = $queueService;
-        $this->registry        = $registry;
+        $this->queueFactory             = $queueFactory;
+        $this->queueRepository          = $queueRepository;
+        $this->helper                   = $helper;
+        $this->queueService             = $queueService;
+        $this->registry                 = $registry;
+        $this->productRepository        = $productRepository;
+        $this->configurableProductType  = $configurableProductType;
     }
 
     /**
@@ -89,6 +105,15 @@ class SalesOrderPlaceAfter implements \Magento\Framework\Event\ObserverInterface
                 foreach ($order->getAllItems() as $item) {
                     $product       = $item->getProduct();
                     $walkTheChatId = $this->helper->getWalkTheChatAttributeValue($product);
+
+                    if (!$walkTheChatId) {
+                        $parentIds = $this->configurableProductType->getParentIdsByChild($product->getId());
+
+                        if (count($parentIds)) {
+                            $product = $this->productRepository->getById($parentIds[0]);
+                            $walkTheChatId = $this->helper->getWalkTheChatAttributeValue($product);
+                        }
+                    }
 
                     if (
                         $walkTheChatId
