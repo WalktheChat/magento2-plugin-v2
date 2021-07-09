@@ -74,8 +74,8 @@ class Stats extends \Magento\Backend\App\Action
             'resync_status' => $this->helper->getInventorySyncStatus() ? __('Processing') : __('Idle'),
             'synced_products' => $syncedProducts,
             'exported_products' => $syncedProducts + $this->queueService->countNewNotProcessed(),
-            'synced_images' => $this->imageService->getExportedImages()->getTotalCount(),
-            'exported_images' => $this->imageService->getSyncedImages()->getTotalCount()
+            'synced_images' => $this->imageService->getSyncedImages()->getTotalCount(),
+            'exported_images' => $this->imageService->getExportedImages()->getTotalCount()
         ];
 
         $this->getResponse()->representJson($this->jsonEncoder->encode($response));
