@@ -180,14 +180,15 @@ class OrderService
      */
     public function processImport($data)
     {
-        $this->registry->register('walkthechat_order_import', true);
+        if (is_null($this->registry->registry('walkthechat_order_import'))) {
+            $this->registry->register('walkthechat_order_import', true);
+        }
 
         $quote = $this->initQuote($data);
 
         $this->addProductsIntoQuote($quote, $data);
         $this->proceedQuote($quote, $data);
 
-        $quote = $this->cartRepository->get($quote->getId());
         $orderId = $this->cartManagement->placeOrder($quote->getId());
 
         if ($orderId) {
@@ -395,6 +396,7 @@ class OrderService
 
         $quote = $this->cartRepository->get($cartId);
 
+        $quote->removeAllItems();
 
         if (!$customer->getId()) {
             $quote->setCustomerEmail($data['id'].'@walkthechat.com');
