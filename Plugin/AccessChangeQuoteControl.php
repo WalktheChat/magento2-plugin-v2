@@ -21,11 +21,21 @@ class AccessChangeQuoteControl
     private $changeQuoteControl;
 
     /**
-     * @param \Magento\Quote\Api\ChangeQuoteControlInterface $changeQuoteControl
+     * @var \Magento\Framework\Registry
      */
-    public function __construct(\Magento\Quote\Api\ChangeQuoteControlInterface $changeQuoteControl)
+    protected $registry;
+
+    /**
+     * @param \Magento\Quote\Api\ChangeQuoteControlInterface $changeQuoteControl
+     * @param \Magento\Framework\Registry $registry
+     */
+    public function __construct(
+        \Magento\Quote\Api\ChangeQuoteControlInterface $changeQuoteControl,
+        \Magento\Framework\Registry $registry
+    )
     {
-        $this->changeQuoteControl = $changeQuoteControl;
+        $this->changeQuoteControl   = $changeQuoteControl;
+        $this->registry             = $registry;
     }
 
     /**
@@ -38,7 +48,7 @@ class AccessChangeQuoteControl
      */
     public function beforeSave(\Magento\Quote\Api\CartRepositoryInterface $subject, \Magento\Quote\Api\Data\CartInterface $quote): void
     {
-        if (!$quote->getWalkthechatId() && !$this->changeQuoteControl->isAllowed($quote)) {
+        if (!$this->registry->registry('walkthechat_order_import') && !$this->changeQuoteControl->isAllowed($quote)) {
             throw new \Magento\Framework\Exception\StateException(__("Invalid state change requested"));
         }
     }

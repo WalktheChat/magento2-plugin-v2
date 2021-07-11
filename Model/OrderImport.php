@@ -133,7 +133,7 @@ class OrderImport implements \Walkthechat\Walkthechat\Api\OrderImportInterface
 
             try {
                 $syncOrder = $this->orderRepository->getByWalkthechatId($id);
-                if ($syncOrder->getStatus() !== \Walkthechat\Walkthechat\Api\Data\OrderInterface::ERROR_STATUS) {
+                if ($syncOrder->getStatus() != \Walkthechat\Walkthechat\Api\Data\OrderInterface::ERROR_STATUS) {
                     $alreadyImported = true;
                     throw new \Magento\Framework\Exception\AlreadyExistsException(
                         __('Import already initiated.')
@@ -149,17 +149,17 @@ class OrderImport implements \Walkthechat\Walkthechat\Api\OrderImportInterface
                 $this->orderRepository->save($syncOrder);
             }
 
-            $order = $this->orderService->processImport($data);
+            $orderId = $this->orderService->processImport($data);
 
             $syncOrder->setMessage(__('Order Imported'));
             $syncOrder->setStatus(\Walkthechat\Walkthechat\Api\Data\OrderInterface::COMPLETE_STATUS);
-            $syncOrder->setOrderId($order->getEntityId());
+            $syncOrder->setOrderId($orderId);
 
             $this->orderRepository->save($syncOrder);
 
             return json_encode([
                 'error'    => false,
-                'order_id' => $order->getEntityId(),
+                'order_id' => $orderId,
             ]);
         } catch (\Magento\Framework\Exception\ValidatorException $exception) {
             $errorMessage = $exception->getMessage();
