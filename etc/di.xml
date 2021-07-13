@@ -17,6 +17,7 @@
     <preference for="Walkthechat\Walkthechat\Api\Data\InventorySearchResultsInterface" type="Walkthechat\Walkthechat\Model\InventorySearchResults" />
     <preference for="Walkthechat\Walkthechat\Api\Data\ContentMediaInterface" type="Walkthechat\Walkthechat\Model\ContentMedia" />
     <preference for="Walkthechat\Walkthechat\Api\OrderImportInterface" type="Walkthechat\Walkthechat\Model\OrderImport" />
+    <preference for="Magento\CatalogInventory\Model\Quote\Item\QuantityValidator\QuoteItemQtyList" type="Walkthechat\Walkthechat\Model\Quote\Item\QuantityValidator\QuoteItemQtyList" />
 
     <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
         <arguments>
