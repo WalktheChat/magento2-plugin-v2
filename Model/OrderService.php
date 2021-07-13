@@ -688,7 +688,7 @@ class OrderService
         $address = $data['deliveryAddress'];
 
         return [
-            'firstname'            => mb_substr($address['name'], 1),
+            'firstname'            => mb_strlen($address['name']) == 1 ? $address['name'] : mb_substr($address['name'], 1),
             'lastname'             => mb_substr($address['name'], 0, 1),
             'street'               => $address['address'].', '.$address['district'],
             'city'                 => $address['city'],
