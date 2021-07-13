@@ -389,14 +389,18 @@ class OrderService
         }
 
         if ($customer->getId()) {
+            try {
+                $quote = $this->cartRepository->getActiveForCustomer($customer->getId());
+                $this->cartRepository->delete($quote);
+            } catch (\Magento\Framework\Exception\NoSuchEntityException $e) {
+            }
+
             $cartId = $this->cartManagement->createEmptyCartForCustomer($customer->getId());
         } else {
             $cartId = $this->cartManagement->createEmptyCart();
         }
 
         $quote = $this->cartRepository->get($cartId);
-
-        $quote->removeAllItems();
 
         if (!$customer->getId()) {
             $quote->setCustomerEmail($data['id'].'@walkthechat.com');
