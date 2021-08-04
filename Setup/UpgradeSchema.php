@@ -69,6 +69,10 @@ class UpgradeSchema implements \Magento\Framework\Setup\UpgradeSchemaInterface
         if (version_compare($context->getVersion(), '1.6.0', '<')) {
             $this->createInventoryTable($installer);
         }
+        
+        if (version_compare($context->getVersion(), '1.7.0', '<')) {
+            $this->addVisibilityToInventoryTable($installer);
+        }
     }
 
     /**
@@ -632,5 +636,31 @@ class UpgradeSchema implements \Magento\Framework\Setup\UpgradeSchemaInterface
         }
 
         return $this;
+    }
+    
+    /**
+     * Add visibility to inventory table
+     *
+     * @param \Magento\Framework\Setup\SchemaSetupInterface $installer
+     *
+     * @return $this
+     * @throws \Zend_Db_Exception
+     */
+    public function addVisibilityToInventoryTable(\Magento\Framework\Setup\SchemaSetupInterface $installer)
+    {
+        $connection = $installer->getConnection();
+        
+        if (!$connection->tableColumnExists($installer->getTable(\Walkthechat\Walkthechat\Model\ResourceModel\Inventory::TABLE_NAME), \Walkthechat\Walkthechat\Api\Data\InventoryInterface::VISIBILITY)) {
+            $connection->addColumn(
+                $installer->getTable(\Walkthechat\Walkthechat\Model\ResourceModel\Inventory::TABLE_NAME),
+                \Walkthechat\Walkthechat\Api\Data\InventoryInterface::VISIBILITY,
+                [
+                    'type'     => \Magento\Framework\DB\Ddl\Table::TYPE_INTEGER,
+                    'nullable' => false,
+                    'unsigned' => true,
+                    'comment'  => 'Visibility',
+                ]
+                );
+        }
     }
 }

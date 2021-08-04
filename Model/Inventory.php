@@ -72,4 +72,20 @@ class Inventory extends \Magento\Framework\Model\AbstractModel implements \Walkt
     {
         return $this->setData(self::QTY, $qty);
     }
+    
+    /**
+     * @inheritdoc}
+     */
+    public function getVisibility()
+    {
+        return $this->getData(self::VISIBILITY);
+    }
+    
+    /**
+     * @inheritdoc}
+     */
+    public function setVisibility($visibility)
+    {
+        return $this->setData(self::VISIBILITY, $visibility);
+    }
 }

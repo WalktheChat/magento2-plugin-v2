@@ -156,7 +156,8 @@ class SyncInventory
                             $ids[] = $item->getId();
                             $data[$item->getWalkthechatId()][] = [
                                 'id' => $item->getProductId(),
-                                'inventoryQuantity' => $item->getQty()
+                                'inventoryQuantity' => $item->getQty(),
+                                'visibility' => (bool)$item->getVisibility()
                             ];
                         }
 
