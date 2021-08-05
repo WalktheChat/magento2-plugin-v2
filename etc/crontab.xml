@@ -13,5 +13,8 @@
         <job name="walkthechat_sync_orders" instance="Walkthechat\Walkthechat\Cron\SyncOrders" method="execute">
             <schedule>0 * * * *</schedule>
         </job>
+        <job name="walkthechat_check_lock_files" instance="Walkthechat\Walkthechat\Cron\CheckLockFiles" method="execute">
+            <schedule>*/5 * * * *</schedule>
+        </job>
     </group>
 </config>
