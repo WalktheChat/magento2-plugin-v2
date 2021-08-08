@@ -216,6 +216,19 @@ class ImageService
 
         return false;
     }
+    
+    /**
+     * Add images to wtc
+     *
+     * @param array $urls
+     * @return mixed
+     */
+    public function addImages(array $urls)
+    {
+        $response = $this->requestImagesRepository->backgroundUpload($urls);
+        
+        return $response;
+    }
 
     /**
      * Prepare product images
@@ -312,6 +325,7 @@ class ImageService
                     $imagesData['_syncImageData'][] = [
                         'product_id' => $product->getId(),
                         'image_id'   => $productGalleryImage->getId(),
+                        'image_url'  => $productGalleryImage->getUrl(),
                         'image_data' => ''
                     ];
                 }
