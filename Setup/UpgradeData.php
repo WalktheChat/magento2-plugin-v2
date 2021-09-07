@@ -11,7 +11,7 @@
 namespace Walkthechat\Walkthechat\Setup;
 
 /**
- * Class InstallData
+ * Class UpgradeData
  *
  * @package Walkthechat\Walkthechat\Setup
  */
@@ -67,7 +67,11 @@ class UpgradeData implements \Magento\Framework\Setup\UpgradeDataInterface
 		\Magento\Framework\Setup\ModuleDataSetupInterface $setup, 
 		\Magento\Framework\Setup\ModuleContextInterface $context
 	) {
-		if (version_compare($context->getVersion(), '1.6.0', '<')) {
+	    if (version_compare($context->getVersion(), '1.6.1', '<')) {
+	        $this->queueService->deleteNotExisting();
+	    }
+	    
+		if (version_compare($context->getVersion(), '1.6.2', '<')) {
 			foreach ($this->productService->getSyncedProducts()->getItems() as $product) {
 				try {
 					$syncProduct = $this->syncProductRepository->getByProductId($product->getId());

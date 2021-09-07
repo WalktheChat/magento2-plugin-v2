@@ -56,6 +56,10 @@
                     <label>Image Queue Batch</label>
                     <source_model>Walkthechat\Walkthechat\Model\Config\Source\QueueBatch</source_model>
                 </field>
+                <field id="inventory_batch" translate="label" type="select" sortOrder="50" showInDefault="1">
+                    <label>Inventory Batch</label>
+                    <source_model>Walkthechat\Walkthechat\Model\Config\Source\QueueBatch</source_model>
+                </field>
             </group>
             <group id="currency" translate="label" sortOrder="30" showInDefault="1">
                 <label>Currency</label>

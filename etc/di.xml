@@ -5,9 +5,11 @@
     <preference for="Walkthechat\Walkthechat\Api\ProductRepositoryInterface" type="Walkthechat\Walkthechat\Model\ProductRepository" />
     <preference for="Walkthechat\Walkthechat\Api\ImageSyncRepositoryInterface" type="Walkthechat\Walkthechat\Model\ImageSyncRepository" />
     <preference for="Walkthechat\Walkthechat\Api\ContentMediaRepositoryInterface" type="Walkthechat\Walkthechat\Model\ContentMediaRepository" />
+    <preference for="Walkthechat\Walkthechat\Api\InventoryRepositoryInterface" type="Walkthechat\Walkthechat\Model\InventoryRepository" />
     <preference for="Walkthechat\Walkthechat\Api\Data\QueueInterface" type="Walkthechat\Walkthechat\Model\Queue" />
     <preference for="Walkthechat\Walkthechat\Api\Data\OrderInterface" type="Walkthechat\Walkthechat\Model\Order" />
     <preference for="Walkthechat\Walkthechat\Api\Data\ProductInterface" type="Walkthechat\Walkthechat\Model\Product" />
+    <preference for="Walkthechat\Walkthechat\Api\Data\InventoryInterface" type="Walkthechat\Walkthechat\Model\Inventory" />
     <preference for="Walkthechat\Walkthechat\Api\Data\ApiLogInterface" type="Walkthechat\Walkthechat\Model\ApiLog" />
     <preference for="Walkthechat\Walkthechat\Api\ApiLogRepositoryInterface" type="Walkthechat\Walkthechat\Model\ApiLogRepository" />
     <preference for="Walkthechat\Walkthechat\Api\Data\QueueSearchResultsInterface" type="Walkthechat\Walkthechat\Model\QueueSearchResults" />
@@ -15,8 +17,10 @@
     <preference for="Walkthechat\Walkthechat\Api\Data\ImageSyncSearchResultsInterface" type="Walkthechat\Walkthechat\Model\ImageSyncSearchResults" />
     <preference for="Walkthechat\Walkthechat\Api\Data\ImageSyncInterface" type="Walkthechat\Walkthechat\Model\ImageSync" />
     <preference for="Walkthechat\Walkthechat\Api\Data\ContentMediaSearchResultsInterface" type="Walkthechat\Walkthechat\Model\ContentMediaSearchResults" />
+    <preference for="Walkthechat\Walkthechat\Api\Data\InventorySearchResultsInterface" type="Walkthechat\Walkthechat\Model\InventorySearchResults" />
     <preference for="Walkthechat\Walkthechat\Api\Data\ContentMediaInterface" type="Walkthechat\Walkthechat\Model\ContentMedia" />
     <preference for="Walkthechat\Walkthechat\Api\OrderImportInterface" type="Walkthechat\Walkthechat\Model\OrderImport" />
+    <preference for="Magento\CatalogInventory\Model\Quote\Item\QuantityValidator\QuoteItemQtyList" type="Walkthechat\Walkthechat\Model\Quote\Item\QuantityValidator\QuoteItemQtyList" />
 
     <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
         <arguments>

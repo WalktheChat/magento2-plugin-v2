@@ -18,6 +18,11 @@ namespace Walkthechat\Walkthechat\Model;
 class QueueService
 {
     /**
+     * @var \Magento\Catalog\Model\ProductRepository
+     */
+    protected $productRepository;
+    
+    /**
      * @var \Magento\Framework\Stdlib\DateTime\DateTime
      */
     protected $date;
@@ -61,9 +66,15 @@ class QueueService
      * @var \Psr\Log\LoggerInterface
      */
     protected $logger;
+    
+    /**
+     * @var \Walkthechat\Walkthechat\Helper\Data
+     */
+    protected $helper;
 
     /**
      * QueueService constructor.
+     * @param \Magento\Catalog\Model\ProductRepository
      * @param \Magento\Framework\Stdlib\DateTime\DateTime $date
      * @param \Walkthechat\Walkthechat\Api\QueueRepositoryInterface $queueRepository
      * @param ActionFactory $actionFactory
@@ -73,8 +84,10 @@ class QueueService
      * @param \Walkthechat\Walkthechat\Api\ProductRepositoryInterface $syncProductRepository
      * @param \Walkthechat\Walkthechat\Api\Data\ProductInterfaceFactory $syncProductFactory
      * @param \Psr\Log\LoggerInterface $logger
+     * @param \Walkthechat\Walkthechat\Helper\Data $helper
      */
     public function __construct(
+        \Magento\Catalog\Model\ProductRepository $productRepository,
         \Magento\Framework\Stdlib\DateTime\DateTime $date,
         \Walkthechat\Walkthechat\Api\QueueRepositoryInterface $queueRepository,
         \Walkthechat\Walkthechat\Model\ActionFactory $actionFactory,
@@ -83,8 +96,10 @@ class QueueService
         \Magento\Framework\Api\FilterBuilder $filterBuilder,
         \Walkthechat\Walkthechat\Api\ProductRepositoryInterface $syncProductRepository,
         \Walkthechat\Walkthechat\Api\Data\ProductInterfaceFactory $syncProductFactory,
-        \Psr\Log\LoggerInterface $logger
+        \Psr\Log\LoggerInterface $logger,
+        \Walkthechat\Walkthechat\Helper\Data $helper
     ) {
+        $this->productRepository     = $productRepository;
         $this->date                  = $date;
         $this->queueRepository       = $queueRepository;
         $this->actionFactory         = $actionFactory;
@@ -94,6 +109,7 @@ class QueueService
         $this->syncProductRepository = $syncProductRepository;
         $this->syncProductFactory    = $syncProductFactory;
         $this->logger                = $logger;
+        $this->helper                = $helper;
     }
 
     /**
@@ -164,16 +180,59 @@ class QueueService
      */
     public function isDuplicate($id, $action, $idField)
     {
+        if ($action == \Walkthechat\Walkthechat\Model\Action\Update::ACTION) {
+            $this->searchCriteriaBuilder->addFilter('action', \Walkthechat\Walkthechat\Model\Action\Delete::ACTION);
+            $this->searchCriteriaBuilder->addFilter($idField, $id);
+            $this->searchCriteriaBuilder->addFilter('processed_at', true, 'null');
+            
+            /** @var \Magento\Framework\Api\SearchCriteriaInterface $searchCriteria */
+            $searchCriteria = $this->searchCriteriaBuilder->create();
+            
+            if ($this->queueRepository->getList($searchCriteria)->getItems()) {
+                return true;
+            }
+        } 
+        
         $this->searchCriteriaBuilder->addFilter('action', $action);
         $this->searchCriteriaBuilder->addFilter($idField, $id);
         $this->searchCriteriaBuilder->addFilter('processed_at', true, 'null');
-
+        
         /** @var \Magento\Framework\Api\SearchCriteriaInterface $searchCriteria */
         $searchCriteria = $this->searchCriteriaBuilder->create();
 
         $results = $this->queueRepository->getList($searchCriteria);
 
         return (bool)$results->getItems();
+    }
+    
+    
+    public function deleteNotExisting()
+    {
+        $this->searchCriteriaBuilder->addFilter('action', \Walkthechat\Walkthechat\Model\Action\Update::ACTION);
+        $this->searchCriteriaBuilder->addFilter('processed_at', true, 'null');
+        
+        /** @var \Magento\Framework\Api\SearchCriteriaInterface $searchCriteria */
+        $searchCriteria = $this->searchCriteriaBuilder->create();
+        
+        foreach ($this->queueRepository->getList($searchCriteria)->getItems() as $item) {
+            if ($item->getProductId()) {
+                $exists = false;
+                
+                $product = $this->productRepository->getById($item->getProductId(), false, $this->helper->getStore()->getId());
+
+                if ($product->getId()) {
+                    $walkTheChatId = $this->helper->getWalkTheChatAttributeValue($product);
+                    
+                    if ($walkTheChatId) {
+                        $exists = true;
+                    }
+                }
+                
+                if (!$exists) {
+                    $item->delete();
+                }
+            }
+        }
     }
 
     /**

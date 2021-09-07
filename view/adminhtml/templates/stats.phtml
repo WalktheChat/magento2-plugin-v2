@@ -1,9 +1,29 @@
+<script type="text/x-magento-init">
+    {
+        "*": {
+            "Walkthechat_Walkthechat/js/stats": {
+                "url": "<?= $block->getStatsUrl() ?>"
+            }
+        }
+    }
+</script>
+
+<div class="action delete">
+    <table class="admin__table-secondary">
+        <tbody>
+        <tr>
+            <th><?php echo __('Product Resync Status') ?>:</th>
+            <td id="walkthechat_dashboard_stats_resync_status">-</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
 <div class="action delete">
     <table class="admin__table-secondary">
         <tbody>
         <tr>
             <th><?php echo __('Exported Products') ?>:</th>
-            <td><?php echo $this->getSyncedProducts() ?> / <?php echo $this->getExportedProducts() ?></td>
+            <td><span id="walkthechat_dashboard_stats_synced_products">-</span> / <span id="walkthechat_dashboard_stats_exported_products">-</span></td>
         </tr>
         </tbody>
     </table>
@@ -13,7 +33,7 @@
         <tbody>
         <tr>
             <th><?php echo __('Exported Images') ?>:</th>
-            <td><?php echo $this->getSyncedImages() ?> / <?php echo $this->getExportedImages() ?></td>
+            <td><span id="walkthechat_dashboard_stats_synced_images">-</span> / <span id="walkthechat_dashboard_stats_exported_images">-</span></td>
         </tr>
         </tbody>
     </table>

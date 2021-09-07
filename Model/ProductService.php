@@ -40,12 +40,12 @@ class ProductService
     /**
      * @var \Walkthechat\Walkthechat\Model\QueueService
      */
-    private $queueService;
+    protected $queueService;
 
     /**
      * @var \Walkthechat\Walkthechat\Api\QueueRepositoryInterface
      */
-    private $queueRepository;
+    protected $queueRepository;
 
     /**
      * @var \Walkthechat\Walkthechat\Api\ProductRepositoryInterface
@@ -60,7 +60,12 @@ class ProductService
     /**
      * @var \Magento\CatalogRule\Model\RuleFactory
      */
-    private $ruleFactory;
+    protected $ruleFactory;
+
+    /**
+     * @var \Magento\ConfigurableProduct\Model\Product\Type\Configurable
+     */
+    protected $configurable;
 
     /**
      * ProductService constructor.
@@ -68,12 +73,13 @@ class ProductService
      * @param \Magento\Catalog\Model\ProductRepository                      $productRepository
      * @param \Magento\Framework\Api\SearchCriteriaBuilder                  $searchCriteriaBuilder
      * @param \Walkthechat\Walkthechat\Helper\Data                          $helper
-     * @param \Magento\CatalogInventory\Api\StockStateInterface         	$stockItem
+     * @param \Magento\CatalogInventory\Api\StockStateInterface             $stockItem
      * @param \Walkthechat\Walkthechat\Model\QueueService                   $queueService
      * @param \Walkthechat\Walkthechat\Api\QueueRepositoryInterface         $queueRepository
      * @param \Walkthechat\Walkthechat\Api\ProductRepositoryInterface       $syncProductRepository
 	 * @param \Walkthechat\Walkthechat\Api\Data\ProductInterfaceFactory     $syncProductFactory
      * @param \Magento\CatalogRule\Model\RuleFactory					    $ruleFactory
+     * @param \Magento\ConfigurableProduct\Model\Product\Type\Configurable  $configurable
      */
     public function __construct(
         \Magento\Catalog\Model\ProductRepository $productRepository,
@@ -84,7 +90,8 @@ class ProductService
         \Walkthechat\Walkthechat\Api\QueueRepositoryInterface $queueRepository,
         \Walkthechat\Walkthechat\Api\ProductRepositoryInterface $syncProductRepository,
         \Walkthechat\Walkthechat\Api\Data\ProductInterfaceFactory $syncProductFactory,
-        \Magento\CatalogRule\Model\RuleFactory $ruleFactory
+        \Magento\CatalogRule\Model\RuleFactory $ruleFactory,
+        \Magento\ConfigurableProduct\Model\Product\Type\Configurable $configurable
     ) {
         $this->productRepository     = $productRepository;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
@@ -95,6 +102,7 @@ class ProductService
         $this->syncProductRepository = $syncProductRepository;
         $this->syncProductFactory    = $syncProductFactory;
         $this->ruleFactory           = $ruleFactory;
+        $this->configurable          = $configurable;
     }
 
     /**
@@ -494,5 +502,39 @@ class ProductService
             $qty = 0;
         }
         return $qty;
+    }
+
+    /**
+     * Prepare inventory data
+     *
+     * @return array
+     */
+    public function prepareInventoryData()
+    {
+        $data = [];
+        $products = $this->getSyncedProducts();
+
+        foreach ($products->getItems() as $product) {
+            $walkthechatId = $this->helper->getWalkTheChatAttributeValue($product);
+
+            if ($product->getTypeId() === \Magento\ConfigurableProduct\Model\Product\Type\Configurable::TYPE_CODE) {
+                $children = $this->configurable->getChildrenIds($product->getId());
+                foreach ($children[0] as $id) {
+                    $data[] = [
+                        'product_id' => $id,
+                        'walkthechat_id' => $walkthechatId,
+                        'qty' => $this->stockItem->getStockQty($id)
+                    ];
+                }
+            } else {
+                $data[] = [
+                    'product_id' => $product->getId(),
+                    'walkthechat_id' => $walkthechatId,
+                    'qty' => $this->stockItem->getStockQty($product->getId())
+                ];
+            }
+        }
+
+        return $data;
     }
 }

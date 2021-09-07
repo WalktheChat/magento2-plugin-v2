@@ -8,11 +8,11 @@
 					<resource id="Walkthechat_Walkthechat::configuration" title="configuration" sortOrder="100"/>
 					<resource id="Walkthechat_Walkthechat::logs" title="logs" sortOrder="150"/>
 				</resource>
-			</resource>
-			<resource id="Magento_Backend::stores">
-				<resource id="Magento_Backend::stores_settings">
-					<resource id="Magento_Config::config">
-						<resource id="Walkthechat_Walkthechat::config_settings" title="Walkthechat" translate="title" sortOrder="80"/>
+				<resource id="Magento_Backend::stores">
+					<resource id="Magento_Backend::stores_settings">
+						<resource id="Magento_Config::config">
+							<resource id="Walkthechat_Walkthechat::config_settings" title="Walkthechat" translate="title" sortOrder="80"/>
+						</resource>
 					</resource>
 				</resource>
 			</resource>

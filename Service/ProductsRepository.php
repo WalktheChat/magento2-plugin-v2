@@ -38,12 +38,18 @@ class ProductsRepository extends AbstractService
     protected $productUpdateResource;
 
     /**
+     * @var Resource\Products\Variants\Inventory
+     */
+    protected $productInventoryResource;
+
+    /**
      * {@inheritdoc}
      *
      * @param \Walkthechat\Walkthechat\Service\Resource\Products\Create $productCreateResource
      * @param \Walkthechat\Walkthechat\Service\Resource\Products\Delete $productDeleteResource
      * @param \Walkthechat\Walkthechat\Service\Resource\Products\Find   $productFindResource
      * @param \Walkthechat\Walkthechat\Service\Resource\Products\Update $productUpdateResource
+     * @param \Walkthechat\Walkthechat\Service\Resource\Products\Variants\Inventory $productInventoryResource
      */
     public function __construct(
         \Walkthechat\Walkthechat\Service\Client $serviceClient,
@@ -53,12 +59,14 @@ class ProductsRepository extends AbstractService
         \Walkthechat\Walkthechat\Service\Resource\Products\Create $productCreateResource,
         \Walkthechat\Walkthechat\Service\Resource\Products\Delete $productDeleteResource,
         \Walkthechat\Walkthechat\Service\Resource\Products\Find $productFindResource,
-        \Walkthechat\Walkthechat\Service\Resource\Products\Update $productUpdateResource
+        \Walkthechat\Walkthechat\Service\Resource\Products\Update $productUpdateResource,
+        \Walkthechat\Walkthechat\Service\Resource\Products\Variants\Inventory $productInventoryResource
     ) {
-        $this->productCreateResource = $productCreateResource;
-        $this->productDeleteResource = $productDeleteResource;
-        $this->productFindResource   = $productFindResource;
-        $this->productUpdateResource = $productUpdateResource;
+        $this->productCreateResource    = $productCreateResource;
+        $this->productDeleteResource    = $productDeleteResource;
+        $this->productFindResource      = $productFindResource;
+        $this->productUpdateResource    = $productUpdateResource;
+        $this->productInventoryResource = $productInventoryResource;
 
         parent::__construct(
             $serviceClient,
@@ -118,5 +126,18 @@ class ProductsRepository extends AbstractService
     public function update($data)
     {
         return $this->request($this->productUpdateResource, $data);
+    }
+
+    /**
+     * Update inventory
+     *
+     * @param $data
+     *
+     * @return mixed
+     * @throws \Zend_Http_Client_Exception
+     */
+    public function updateInventory($data)
+    {
+        return $this->request($this->productInventoryResource, $data);
     }
 }

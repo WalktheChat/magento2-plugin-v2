@@ -23,9 +23,9 @@ class OrderService
     protected $storeManager;
 
     /**
-     * @var \Magento\Quote\Model\QuoteFactory
+     * @var \Magento\Quote\Api\CartManagementInterface
      */
-    protected $quoteFactory;
+    protected $cartManagement;
 
     /**
      * @var \Magento\Quote\Model\QuoteManagement \
@@ -116,12 +116,12 @@ class OrderService
      * OrderService constructor.
      *
      * @param \Magento\Store\Model\StoreManagerInterface      $storeManager
-     * @param \Magento\Quote\Model\QuoteFactory               $quoteFactory
+     * @param \Magento\Quote\Api\CartManagementInterface      $cartManagement
      * @param \Magento\Quote\Model\QuoteManagement            $quoteManagement
      * @param \Magento\Sales\Model\OrderRepository            $orderRepository
      * @param \Magento\Catalog\Model\ProductRepository        $productRepository
      * @param \Magento\Framework\Registry                     $registry
-     * @param \Walkthechat\Walkthechat\Helper\Data                $helper
+     * @param \Walkthechat\Walkthechat\Helper\Data            $helper
      * @param \Magento\Sales\Api\OrderItemRepositoryInterface $orderItemRepository
      * @param \Magento\Quote\Api\CartRepositoryInterface      $cartRepository
      * @param \Magento\ConfigurableProduct\Model\ResourceModel\Product\Type\Configurable $configurableProductType
@@ -134,7 +134,7 @@ class OrderService
      */
     public function __construct(
         \Magento\Store\Model\StoreManagerInterface $storeManager,
-        \Magento\Quote\Model\QuoteFactory $quoteFactory,
+        \Magento\Quote\Api\CartManagementInterface $cartManagement,
         \Magento\Quote\Model\QuoteManagement $quoteManagement,
         \Magento\Sales\Model\OrderRepository $orderRepository,
         \Magento\Catalog\Model\ProductRepository $productRepository,
@@ -151,7 +151,7 @@ class OrderService
         \Magento\Framework\Serialize\Serializer\Json $serializer = null
     ) {
         $this->storeManager        = $storeManager;
-        $this->quoteFactory        = $quoteFactory;
+        $this->cartManagement      = $cartManagement;
         $this->quoteManagement     = $quoteManagement;
         $this->orderRepository     = $orderRepository;
         $this->productRepository   = $productRepository;
@@ -159,7 +159,7 @@ class OrderService
         $this->helper              = $helper;
         $this->orderItemRepository = $orderItemRepository;
         $this->cartRepository      = $cartRepository;
-        $this->configurableProductType  = $configurableProductType;
+        $this->configurableProductType = $configurableProductType;
         $this->customerFactory     = $customerFactory;
         $this->customerRepository  = $customerRepository;
         $this->mathRandom          = $mathRandom;
@@ -174,20 +174,25 @@ class OrderService
      *
      * @param $data
      *
-     * @return \Magento\Sales\Api\Data\OrderInterface
+     * @return int
      * @throws \Walkthechat\Walkthechat\Exception\NotSynchronizedProductException
      * @throws \Magento\Framework\Exception\LocalizedException
      */
     public function processImport($data)
     {
+        if (is_null($this->registry->registry('walkthechat_order_import'))) {
+            $this->registry->register('walkthechat_order_import', true);
+        }
+
         $quote = $this->initQuote($data);
 
         $this->addProductsIntoQuote($quote, $data);
         $this->proceedQuote($quote, $data);
 
-        $order = $this->quoteManagement->submit($quote);
+        $orderId = $this->cartManagement->placeOrder($quote->getId());
 
-        if ($order instanceof \Magento\Sales\Api\Data\OrderInterface) {
+        if ($orderId) {
+            $order = $this->orderRepository->get($orderId);
             $this->setOrderTotals($order, $quote);
 
             $order->getPayment()->setAdditionalInformation('provider', $data['payment']['provider']);
@@ -219,7 +224,7 @@ class OrderService
             }
         }
 
-        return $order;
+        return $orderId;
     }
 
     /**
@@ -362,19 +367,11 @@ class OrderService
     {
         $store = $this->storeManager->getStore();
 
-        /** @var \Magento\Quote\Model\Quote $quote */
-        $quote = $this->quoteFactory->create();
-
-        $quote->setCheckoutMethod(\Magento\Quote\Api\CartManagementInterface::METHOD_GUEST);
-
-        $quote->setStore($store);
-        $quote->setWalkthechatId($data['id']);
-        $quote->setCurrency();
-
         $addressData = $this->prepareAddressData($data);
 
+        $customer = $this->customerFactory->create();
+
         if ($data['email']) {
-            $customer = $this->customerFactory->create();
             $customer->setWebsiteId($store->getWebsiteId());
             $customer->loadByEmail($data['email']);
 
@@ -389,9 +386,23 @@ class OrderService
             }
 
             $customer = $this->customerRepository->getById($customer->getEntityId());
-            $quote->assignCustomer($customer);
+        }
+
+        if ($customer->getId()) {
+            try {
+                $quote = $this->cartRepository->getActiveForCustomer($customer->getId());
+                $this->cartRepository->delete($quote);
+            } catch (\Magento\Framework\Exception\NoSuchEntityException $e) {
+            }
+
+            $cartId = $this->cartManagement->createEmptyCartForCustomer($customer->getId());
         } else {
-            $quote->setCustomerIsGuest(true);
+            $cartId = $this->cartManagement->createEmptyCart();
+        }
+
+        $quote = $this->cartRepository->get($cartId);
+
+        if (!$customer->getId()) {
             $quote->setCustomerEmail($data['id'].'@walkthechat.com');
         }
 
@@ -546,6 +557,7 @@ class OrderService
         }
 
         $quote->setPaymentMethod($paymentMethod);
+        $quote->setInventoryProcessed(false);
 
         $quote
             ->getPayment()
@@ -676,7 +688,7 @@ class OrderService
         $address = $data['deliveryAddress'];
 
         return [
-            'firstname'            => mb_substr($address['name'], 1),
+            'firstname'            => mb_strlen($address['name']) == 1 ? $address['name'] : mb_substr($address['name'], 1),
             'lastname'             => mb_substr($address['name'], 0, 1),
             'street'               => $address['address'].', '.$address['district'],
             'city'                 => $address['city'],

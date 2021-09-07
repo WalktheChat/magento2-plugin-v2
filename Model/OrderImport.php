@@ -46,6 +46,11 @@ class OrderImport implements \Walkthechat\Walkthechat\Api\OrderImportInterface
     protected $orderRepository;
 
     /**
+     * @var \Magento\Framework\Stdlib\DateTime\DateTime
+     */
+    protected $date;
+
+    /**
      * OrderImport constructor.
      *
      * @param \Walkthechat\Walkthechat\Model\Import\RequestValidator  $requestValidator
@@ -54,6 +59,7 @@ class OrderImport implements \Walkthechat\Walkthechat\Api\OrderImportInterface
      * @param \Walkthechat\Walkthechat\Helper\Data                    $helper
      * @param \Walkthechat\Walkthechat\Api\Data\OrderInterfaceFactory $orderFactory
      * @param \Walkthechat\Walkthechat\Api\OrderRepositoryInterface   $orderRepository
+     * @param \Magento\Framework\Stdlib\DateTime\DateTime             $date
      */
     public function __construct(
         \Walkthechat\Walkthechat\Model\Import\RequestValidator $requestValidator,
@@ -61,7 +67,8 @@ class OrderImport implements \Walkthechat\Walkthechat\Api\OrderImportInterface
         \Psr\Log\LoggerInterface $logger,
         \Walkthechat\Walkthechat\Helper\Data $helper,
         \Walkthechat\Walkthechat\Api\Data\OrderInterfaceFactory $orderFactory,
-        \Walkthechat\Walkthechat\Api\OrderRepositoryInterface $orderRepository
+        \Walkthechat\Walkthechat\Api\OrderRepositoryInterface $orderRepository,
+        \Magento\Framework\Stdlib\DateTime\DateTime $date
     ) {
         $this->requestValidator = $requestValidator;
         $this->orderService     = $orderService;
@@ -69,6 +76,7 @@ class OrderImport implements \Walkthechat\Walkthechat\Api\OrderImportInterface
         $this->helper           = $helper;
         $this->orderFactory     = $orderFactory;
         $this->orderRepository  = $orderRepository;
+        $this->date             = $date;
     }
 
     /**
@@ -149,17 +157,17 @@ class OrderImport implements \Walkthechat\Walkthechat\Api\OrderImportInterface
                 $this->orderRepository->save($syncOrder);
             }
 
-            $order = $this->orderService->processImport($data);
+            $orderId = $this->orderService->processImport($data);
 
             $syncOrder->setMessage(__('Order Imported'));
             $syncOrder->setStatus(\Walkthechat\Walkthechat\Api\Data\OrderInterface::COMPLETE_STATUS);
-            $syncOrder->setOrderId($order->getEntityId());
+            $syncOrder->setOrderId($orderId);
 
             $this->orderRepository->save($syncOrder);
 
             return json_encode([
                 'error'    => false,
-                'order_id' => $order->getEntityId(),
+                'order_id' => $orderId,
             ]);
         } catch (\Magento\Framework\Exception\ValidatorException $exception) {
             $errorMessage = $exception->getMessage();
@@ -184,6 +192,7 @@ class OrderImport implements \Walkthechat\Walkthechat\Api\OrderImportInterface
             }
 
             $syncOrder->setMessage($errorMessage);
+            $syncOrder->setUpdatedAt($this->date->gmtDate());
             $syncOrder->setStatus(\Walkthechat\Walkthechat\Api\Data\OrderInterface::ERROR_STATUS);
 
             $this->orderRepository->save($syncOrder);

@@ -53,6 +53,16 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     protected $storeManager;
 
     /**
+     * @var \Magento\Framework\App\Config\Storage\WriterInterface
+     */
+    protected $configWriter;
+
+    /**
+     * @var \Magento\Framework\App\Cache\TypeListInterface
+     */
+    protected $cacheTypeList;
+
+    /**
      * Constructor
      *
      * @param \Magento\Framework\App\Helper\Context $context
@@ -60,18 +70,24 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
      * @param \Magento\Backend\Model\UrlInterface $urlBackendBuilder
      * @param \Magento\Directory\Model\RegionFactory $regionFactory
      * @param \Magento\Store\Model\StoreManagerInterface $storeManager
+     * @param \Magento\Framework\App\Config\Storage\WriterInterface $configWriter
+     * @param \Magento\Framework\App\Cache\TypeListInterface $cacheTypeList
      */
     public function __construct(
         \Magento\Framework\App\Helper\Context $context,
         \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig,
         \Magento\Backend\Model\UrlInterface $urlBackendBuilder,
         \Magento\Directory\Model\RegionFactory $regionFactory,
-        \Magento\Store\Model\StoreManagerInterface $storeManager
+        \Magento\Store\Model\StoreManagerInterface $storeManager,
+        \Magento\Framework\App\Config\Storage\WriterInterface $configWriter,
+        \Magento\Framework\App\Cache\TypeListInterface $cacheTypeList
     ) {
         $this->scopeConfig       = $scopeConfig;
         $this->urlBackendBuilder = $urlBackendBuilder;
         $this->regionFactory     = $regionFactory;
         $this->storeManager      = $storeManager;
+        $this->configWriter      = $configWriter;
+        $this->cacheTypeList     = $cacheTypeList;
 
         parent::__construct($context);
     }
@@ -277,6 +293,16 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
+     * Return inventory batch from configuration
+     *
+     * @return string
+     */
+    public function getInventoryBatch()
+    {
+        return $this->scopeConfig->getValue('walkthechat_settings/sync/inventory_batch');
+    }
+
+    /**
      * Get URL for authorization
      *
      * @return string
@@ -448,5 +474,26 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
         }
 
         return $regionId;
+    }
+
+    /**
+     * Return inventory sync status
+     *
+     * @return string
+     */
+    public function getInventorySyncStatus()
+    {
+        return $this->scopeConfig->getValue('walkthechat_settings/sync/inventory');
+    }
+
+    /**
+     * Set inventory sync status
+     *
+     * @param $status
+     */
+    public function setInventorySyncStatus($status)
+    {
+        $this->configWriter->save('walkthechat_settings/sync/inventory', $status);
+        $this->cacheTypeList->cleanType(\Magento\Framework\App\Cache\Type\Config::TYPE_IDENTIFIER);
     }
 }
