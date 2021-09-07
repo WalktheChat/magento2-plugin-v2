@@ -22,6 +22,7 @@ interface ImageSyncInterface
     const PRODUCT_ID = 'product_id';
     const IMAGE_ID   = 'image_id';
     const IMAGE_DATA = 'image_data';
+    const IMAGE_URL  = 'image_url';
     /**@#- */
 
     /**
@@ -87,4 +88,20 @@ interface ImageSyncInterface
      * @return \Walkthechat\Walkthechat\Api\Data\ImageSyncInterface
      */
     public function setImageData($imageData);
+    
+    /**
+     * Return image url
+     *
+     * @return string
+     */
+    public function getImageUrl();
+    
+    /**
+     * Set image url
+     *
+     * @param string $imageUrl
+     *
+     * @return \Walkthechat\Walkthechat\Api\Data\ImageSyncInterface
+     */
+    public function setImageUrl($imageUrl);
 }
