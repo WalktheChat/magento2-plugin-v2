@@ -76,6 +76,16 @@ class ImageService
     protected $productService;
 
     /**
+     * @var \Magento\Catalog\Model\ProductRepository
+     */
+    protected $productRepository;
+    
+    /**
+     * @var \Walkthechat\Walkthechat\Api\Data\ImageSyncInterfaceFactory
+     */
+    protected $imageSyncFactory;
+    
+    /**
      * ImageService constructor.
      * @param \Walkthechat\Walkthechat\Service\ImagesRepository $requestImagesRepository
      * @param \Walkthechat\Walkthechat\Api\ImageSyncRepositoryInterface $imageSyncRepository
@@ -89,6 +99,8 @@ class ImageService
      * @param \Magento\Catalog\Model\Product\Gallery\GalleryManagement $galleryManagement
      * @param \Magento\Catalog\Model\Product\Media\Config $catalogProductMediaConfig
      * @param \Walkthechat\Walkthechat\Model\ProductService $productService
+     * @param \Magento\Catalog\Model\ProductRepository $productRepository
+     * @param \Walkthechat\Walkthechat\Api\Data\ImageSyncInterfaceFactory $imageSyncFactory
      */
     public function __construct(
         \Walkthechat\Walkthechat\Service\ImagesRepository $requestImagesRepository,
@@ -102,7 +114,9 @@ class ImageService
         \Magento\Framework\Filesystem $filesystem,
         \Magento\Catalog\Model\Product\Gallery\GalleryManagement $galleryManagement,
         \Magento\Catalog\Model\Product\Media\Config $catalogProductMediaConfig,
-        \Walkthechat\Walkthechat\Model\ProductService $productService
+        \Walkthechat\Walkthechat\Model\ProductService $productService,
+        \Magento\Catalog\Model\ProductRepository $productRepository,
+        \Walkthechat\Walkthechat\Api\Data\ImageSyncInterfaceFactory $imageSyncFactory
     ) {
         $this->requestImagesRepository = $requestImagesRepository;
         $this->imageSyncRepository     = $imageSyncRepository;
@@ -116,6 +130,8 @@ class ImageService
         $this->galleryManagement       = $galleryManagement;
         $this->catalogProductMediaConfig = $catalogProductMediaConfig;
         $this->productService          = $productService;
+        $this->productRepository       = $productRepository;
+        $this->imageSyncFactory        = $imageSyncFactory;
     }
 
     /**
@@ -394,5 +410,43 @@ class ImageService
         }
 
         return $contentMediaData;
+    }
+    
+    /**
+     * @return mixed
+     */
+    public function updateImagesWithEmptyUrl()
+    {    
+        $filterGroup = $this->filterGroupBuilder
+            ->addFilter(
+                $this->filterBuilder
+                    ->setField('image_url')
+                    ->setConditionType('null')
+                    ->create()
+            )
+            ->create();
+                
+        $this->searchCriteria->setFilterGroups([$filterGroup]);
+                
+        $images = $this->imageSyncRepository
+            ->getList($this->searchCriteria)
+            ->getItems();
+        
+        $imagesUrls = [];
+        
+        foreach ($images as $image) {
+            if (!isset($imagesUrls[$image->getImageId()])) {
+                $product = $this->productRepository->getById($image->getProductId());
+                
+                foreach ($product->getMediaGalleryImages() as $productGalleryImage) {
+                    $imagesUrls[$productGalleryImage->getId()] = $productGalleryImage->getUrl();
+                }
+            }
+            
+            $model = $this->imageSyncFactory->create()->load($image->getId());
+            $model->setImageUrl($imagesUrls[$productGalleryImage->getId()]);
+            
+            $this->imageSyncRepository->save($model);
+        }
     }
 }
