@@ -234,105 +234,106 @@ class SyncImages
                 $images = $this->imageSyncRepository->getList($this->searchCriteria)->getItems();
 
                 $productsIds = [];
+                $urls = [];
                 foreach ($images as $image) {
                     $productsIds[] = $image->getProductId();
+                    $urls[] = $image->getImageUrl();
                 }
 
-                $productCollection = $this->productCollectionFactory->create();
-                $productCollection->addAttributeToSelect('walkthechat_id')
-                    ->addFieldToFilter('entity_id', ['in' => $productsIds]);
-
-                $products = [];
-                foreach ($productCollection as $product) {
-                    $products[$product->getId()] = [
-                        'sku'               => $product->getSku(),
-                        'type_id'           => $product->getTypeId(),
-                        'walkthechat_id'    => $product->getWalkthechatId()
-                    ];
-                }
-
-                unset($filterGroup, $productsIds, $productCollection);
-
-                foreach ($images as $image) {
-                    try {
-                        $response = $this->imageService->addImage($products[$image->getProductId()]['sku'], $image->getImageId());
-                    } catch (\Exception $exception) {
-                        $this->logger->error("WalkTheChat | Sync Image Error (#{$image->getImageId()}): {$exception->getMessage()}");
-                        continue;
+                if (count($urls)) {
+                    $productCollection = $this->productCollectionFactory->create();
+                    $productCollection->addAttributeToSelect('walkthechat_id')
+                        ->addFieldToFilter('entity_id', ['in' => $productsIds]);
+                    
+                    $products = [];
+                    foreach ($productCollection as $product) {
+                        $products[$product->getId()] = [
+                            'sku'               => $product->getSku(),
+                            'type_id'           => $product->getTypeId(),
+                            'walkthechat_id'    => $product->getWalkthechatId()
+                        ];
                     }
-
-                    if ($response) {
-                        $model = $this->imageSyncFactory->create()->load($image->getId());
-                        $model->setImageData(json_encode($response));
-
-                        $this->imageSyncRepository->save($model);
-
-                        unset($model, $response);
-
-                        $ids = [$image->getProductId()];
-
-                        if ($products[$image->getProductId()]['type_id'] === \Magento\ConfigurableProduct\Model\Product\Type\Configurable::TYPE_CODE) {
-                            $children = $this->configurable->getChildrenIds($image->getProductId());
-                            $ids = array_merge($ids, $children[0]);
-
-                            unset($children);
-                        } else {
-                            $parents = $this->configurable->getParentIdsByChild($image->getProductId());
-
-                            foreach ($parents as $parentId) {
-                                $children = $this->configurable->getChildrenIds($parentId);
-                                $children[0][] = $parentId;
+                    
+                    unset($filterGroup, $productsIds, $productCollection);
+                    
+                    $serviceData = $this->imageService->addImages($urls);
+                    
+                    foreach ($images as $image) {
+                        $i = array_search($image->getImageUrl(), $urls);
+                        
+                        if ($i !== false && isset($serviceData[$i])) {
+                            $model = $this->imageSyncFactory->create()->load($image->getId());
+                            $model->setImageData(json_encode($serviceData[$i]));
+                            
+                            $this->imageSyncRepository->save($model);
+                            
+                            unset($model);
+                            
+                            $ids = [$image->getProductId()];
+                            
+                            if ($products[$image->getProductId()]['type_id'] === \Magento\ConfigurableProduct\Model\Product\Type\Configurable::TYPE_CODE) {
+                                $children = $this->configurable->getChildrenIds($image->getProductId());
                                 $ids = array_merge($ids, $children[0]);
-
+                                
                                 unset($children);
-                            }
-
-                            unset($parents);
-                        }
-
-                        $filterGroup1 = $this->filterGroupBuilder
-                            ->addFilter(
-                                $this->filterBuilder
-                                    ->setField('image_data')
-                                    ->setConditionType('eq')
-                                    ->setValue('')
-                                    ->create()
-                            )
-                            ->create();
-
-                        $filterGroup2 = $this->filterGroupBuilder
-                            ->addFilter(
-                                $this->filterBuilder
-                                    ->setField('product_id')
-                                    ->setConditionType('in')
-                                    ->setValue($ids)
-                                    ->create()
-                            )
-                            ->create();
-
-                        $this->searchCriteria->setFilterGroups([$filterGroup1, $filterGroup2]);
-
-                        if (!$this->imageSyncRepository->getList($this->searchCriteria)->getTotalCount()) {
-                            if ($products[$image->getProductId()]['walkthechat_id']) {
-                                $this->addProductToQueue($image->getProductId(), $products[$image->getProductId()]['walkthechat_id']);
                             } else {
                                 $parents = $this->configurable->getParentIdsByChild($image->getProductId());
-
+                                
                                 foreach ($parents as $parentId) {
-                                    $parentWalkTheChatId = $this->resourceProduct->create()->getAttributeRawValue($parentId, 'walkthechat_id', $store);
-
-                                    if ($parentWalkTheChatId) {
-                                        $this->addProductToQueue($parentId, $parentWalkTheChatId);
-                                    }
-
-                                    unset($parentWalkTheChatId);
+                                    $children = $this->configurable->getChildrenIds($parentId);
+                                    $children[0][] = $parentId;
+                                    $ids = array_merge($ids, $children[0]);
+                                    
+                                    unset($children);
                                 }
-
+                                
                                 unset($parents);
                             }
+                            
+                            $filterGroup1 = $this->filterGroupBuilder
+                                ->addFilter(
+                                    $this->filterBuilder
+                                        ->setField('image_data')
+                                        ->setConditionType('eq')
+                                        ->setValue('')
+                                        ->create()
+                                )
+                                ->create();
+                            
+                            $filterGroup2 = $this->filterGroupBuilder
+                                ->addFilter(
+                                    $this->filterBuilder
+                                        ->setField('product_id')
+                                        ->setConditionType('in')
+                                        ->setValue($ids)
+                                        ->create()
+                                )
+                                ->create();
+                            
+                            $this->searchCriteria->setFilterGroups([$filterGroup1, $filterGroup2]);
+                            
+                            if (!$this->imageSyncRepository->getList($this->searchCriteria)->getTotalCount()) {
+                                if ($products[$image->getProductId()]['walkthechat_id']) {
+                                    $this->addProductToQueue($image->getProductId(), $products[$image->getProductId()]['walkthechat_id']);
+                                } else {
+                                    $parents = $this->configurable->getParentIdsByChild($image->getProductId());
+                                    
+                                    foreach ($parents as $parentId) {
+                                        $parentWalkTheChatId = $this->resourceProduct->create()->getAttributeRawValue($parentId, 'walkthechat_id', $store);
+                                        
+                                        if ($parentWalkTheChatId) {
+                                            $this->addProductToQueue($parentId, $parentWalkTheChatId);
+                                        }
+                                        
+                                        unset($parentWalkTheChatId);
+                                    }
+                                    
+                                    unset($parents);
+                                }
+                            }
+                            
+                            unset($filterGroup1, $filterGroup2);
                         }
-
-                        unset($filterGroup1, $filterGroup2);
                     }
                 }
             }

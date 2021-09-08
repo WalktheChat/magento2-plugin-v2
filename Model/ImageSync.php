@@ -73,4 +73,20 @@ class ImageSync extends \Magento\Framework\Model\AbstractModel
     {
         return $this->setData(self::IMAGE_DATA, $imageData);
     }
+    
+    /**
+     * @inheritdoc}
+     */
+    public function getImageUrl()
+    {
+        return $this->getData(self::IMAGE_URL);
+    }
+    
+    /**
+     * @inheritdoc}
+     */
+    public function setImageUrl($imageUrl)
+    {
+        return $this->setData(self::IMAGE_URL, $imageUrl);
+    }
 }
