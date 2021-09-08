@@ -77,6 +77,10 @@ class UpgradeSchema implements \Magento\Framework\Setup\UpgradeSchemaInterface
         if (version_compare($context->getVersion(), '1.7.2', '<')) {
             $this->addVisibilityToInventoryTable($installer);
         }
+        
+        if (version_compare($context->getVersion(), '1.7.3', '<')) {
+            $this->addVariantVisibilityToInventoryTable($installer);
+        }
     }
 
     /**
@@ -692,6 +696,32 @@ class UpgradeSchema implements \Magento\Framework\Setup\UpgradeSchemaInterface
                     'comment'  => 'Visibility',
                 ]
             );
+        }
+    }
+    
+    /**
+     * Add variant visibility to inventory table
+     *
+     * @param \Magento\Framework\Setup\SchemaSetupInterface $installer
+     *
+     * @return $this
+     * @throws \Zend_Db_Exception
+     */
+    public function addVariantVisibilityToInventoryTable(\Magento\Framework\Setup\SchemaSetupInterface $installer)
+    {
+        $connection = $installer->getConnection();
+        
+        if (!$connection->tableColumnExists($installer->getTable(\Walkthechat\Walkthechat\Model\ResourceModel\Inventory::TABLE_NAME), \Walkthechat\Walkthechat\Api\Data\InventoryInterface::VARIANT_VISIBILITY)) {
+            $connection->addColumn(
+                $installer->getTable(\Walkthechat\Walkthechat\Model\ResourceModel\Inventory::TABLE_NAME),
+                \Walkthechat\Walkthechat\Api\Data\InventoryInterface::VARIANT_VISIBILITY,
+                [
+                    'type'     => \Magento\Framework\DB\Ddl\Table::TYPE_INTEGER,
+                    'nullable' => false,
+                    'unsigned' => true,
+                    'comment'  => 'Visibility',
+                ]
+                );
         }
     }
 }

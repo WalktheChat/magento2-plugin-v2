@@ -480,7 +480,8 @@ class ProductService
                         'product_id' => $child->getId(),
                         'walkthechat_id' => $walkthechatId,
                         'qty' => $this->stockItem->getStockQty($child->getId()),
-                        'visibility' => $child->isDisabled() ? false : true
+                        'visibility' => $product->getVisibility() != \Magento\Catalog\Model\Product\Visibility::VISIBILITY_NOT_VISIBLE && !$product->isDisabled(),
+                        'variant_visibility' => $child->isDisabled() ? false : true
                     ];
                 }
             } else {
@@ -488,8 +489,8 @@ class ProductService
                     'product_id' => $product->getId(),
                     'walkthechat_id' => $walkthechatId,
                     'qty' => $this->stockItem->getStockQty($product->getId()),
-                    'visibility' => $product->getVisibility() != \Magento\Catalog\Model\Product\Visibility::VISIBILITY_NOT_VISIBLE
-                    && !$product->isDisabled()
+                    'visibility' => $product->getVisibility() != \Magento\Catalog\Model\Product\Visibility::VISIBILITY_NOT_VISIBLE && !$product->isDisabled(),
+                    'variant_visibility' => $product->getVisibility() != \Magento\Catalog\Model\Product\Visibility::VISIBILITY_NOT_VISIBLE && !$product->isDisabled()
                 ];
             }
         }
