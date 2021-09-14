@@ -22,6 +22,8 @@ interface InventoryInterface
     const PRODUCT_ID        = 'product_id';
     const WALKTHECHAT_ID    = 'walkthechat_id';
     const QTY               = 'qty';
+    const VISIBILITY        = 'visibility';
+    const VARIANT_VISIBILITY = 'variant_visibility';
     /**@#- */
 
     /**@#+
@@ -95,4 +97,36 @@ interface InventoryInterface
      * @return \Walkthechat\Walkthechat\Api\Data\InventoryInterface
      */
     public function setQty($qty);
+    
+    /**
+     * Return visibility
+     *
+     * @return int
+     */
+    public function getVisibility();
+    
+    /**
+     * Set visibility
+     *
+     * @param int $visibility
+     *
+     * @return \Walkthechat\Walkthechat\Api\Data\InventoryInterface
+     */
+    public function setVisibility($visibility);
+    
+    /**
+     * Return variant_visibility
+     *
+     * @return int
+     */
+    public function getVariantVisibility();
+    
+    /**
+     * Set variant_visibility
+     *
+     * @param int $visibility
+     *
+     * @return \Walkthechat\Walkthechat\Api\Data\InventoryInterface
+     */
+    public function setVariantVisibility($visibility);
 }

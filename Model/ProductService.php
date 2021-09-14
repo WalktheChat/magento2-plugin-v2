@@ -469,28 +469,32 @@ class ProductService
     {
         $data = [];
         $products = $this->getSyncedProducts();
-
+        
         foreach ($products->getItems() as $product) {
             $walkthechatId = $this->helper->getWalkTheChatAttributeValue($product);
-
+            
             if ($product->getTypeId() === \Magento\ConfigurableProduct\Model\Product\Type\Configurable::TYPE_CODE) {
-                $children = $this->configurable->getChildrenIds($product->getId());
-                foreach ($children[0] as $id) {
+                $children = $product->getTypeInstance()->getUsedProducts($product);
+                foreach ($children as $child) {
                     $data[] = [
-                        'product_id' => $id,
+                        'product_id' => $child->getId(),
                         'walkthechat_id' => $walkthechatId,
-                        'qty' => $this->stockItem->getStockQty($id)
+                        'qty' => $this->stockItem->getStockQty($child->getId()),
+                        'visibility' => $product->getVisibility() != \Magento\Catalog\Model\Product\Visibility::VISIBILITY_NOT_VISIBLE && !$product->isDisabled(),
+                        'variant_visibility' => $child->isDisabled() ? false : true
                     ];
                 }
             } else {
                 $data[] = [
                     'product_id' => $product->getId(),
                     'walkthechat_id' => $walkthechatId,
-                    'qty' => $this->stockItem->getStockQty($product->getId())
+                    'qty' => $this->stockItem->getStockQty($product->getId()),
+                    'visibility' => $product->getVisibility() != \Magento\Catalog\Model\Product\Visibility::VISIBILITY_NOT_VISIBLE && !$product->isDisabled(),
+                    'variant_visibility' => $product->getVisibility() != \Magento\Catalog\Model\Product\Visibility::VISIBILITY_NOT_VISIBLE && !$product->isDisabled()
                 ];
             }
         }
-
+        
         return $data;
     }
 }

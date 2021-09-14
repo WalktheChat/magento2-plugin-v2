@@ -73,6 +73,14 @@ class UpgradeSchema implements \Magento\Framework\Setup\UpgradeSchemaInterface
         if (version_compare($context->getVersion(), '1.7.1', '<')) {
             $this->addUrlToImageSyncTable($installer);
         }
+
+        if (version_compare($context->getVersion(), '1.7.2', '<')) {
+            $this->addVisibilityToInventoryTable($installer);
+        }
+        
+        if (version_compare($context->getVersion(), '1.7.3', '<')) {
+            $this->addVariantVisibilityToInventoryTable($installer);
+        }
     }
 
     /**
@@ -637,15 +645,15 @@ class UpgradeSchema implements \Magento\Framework\Setup\UpgradeSchemaInterface
 
         return $this;
     }
-    
+
     /**
-     * Add image URL to image sync table
-     *
-     * @param \Magento\Framework\Setup\SchemaSetupInterface $installer
-     *
-     * @return $this
-     * @throws \Zend_Db_Exception
-     */
+      * Add image URL to image sync table
+      *
+      * @param \Magento\Framework\Setup\SchemaSetupInterface $installer
+      *
+      * @return $this
+      * @throws \Zend_Db_Exception
+      */
     protected function addUrlToImageSyncTable(\Magento\Framework\Setup\SchemaSetupInterface $installer)
     {
         $connection = $installer->getConnection();
@@ -662,6 +670,58 @@ class UpgradeSchema implements \Magento\Framework\Setup\UpgradeSchemaInterface
                     'comment'  => 'Image URL',
                 ]
             );
+        }
+    }
+
+    /**
+     * Add visibility to inventory table
+     *
+     * @param \Magento\Framework\Setup\SchemaSetupInterface $installer
+     *
+     * @return $this
+     * @throws \Zend_Db_Exception
+     */
+    public function addVisibilityToInventoryTable(\Magento\Framework\Setup\SchemaSetupInterface $installer)
+    {
+        $connection = $installer->getConnection();
+        
+        if (!$connection->tableColumnExists($installer->getTable(\Walkthechat\Walkthechat\Model\ResourceModel\Inventory::TABLE_NAME), \Walkthechat\Walkthechat\Api\Data\InventoryInterface::VISIBILITY)) {
+            $connection->addColumn(
+                $installer->getTable(\Walkthechat\Walkthechat\Model\ResourceModel\Inventory::TABLE_NAME),
+                \Walkthechat\Walkthechat\Api\Data\InventoryInterface::VISIBILITY,
+                [
+                    'type'     => \Magento\Framework\DB\Ddl\Table::TYPE_INTEGER,
+                    'nullable' => false,
+                    'unsigned' => true,
+                    'comment'  => 'Visibility',
+                ]
+            );
+        }
+    }
+    
+    /**
+     * Add variant visibility to inventory table
+     *
+     * @param \Magento\Framework\Setup\SchemaSetupInterface $installer
+     *
+     * @return $this
+     * @throws \Zend_Db_Exception
+     */
+    public function addVariantVisibilityToInventoryTable(\Magento\Framework\Setup\SchemaSetupInterface $installer)
+    {
+        $connection = $installer->getConnection();
+        
+        if (!$connection->tableColumnExists($installer->getTable(\Walkthechat\Walkthechat\Model\ResourceModel\Inventory::TABLE_NAME), \Walkthechat\Walkthechat\Api\Data\InventoryInterface::VARIANT_VISIBILITY)) {
+            $connection->addColumn(
+                $installer->getTable(\Walkthechat\Walkthechat\Model\ResourceModel\Inventory::TABLE_NAME),
+                \Walkthechat\Walkthechat\Api\Data\InventoryInterface::VARIANT_VISIBILITY,
+                [
+                    'type'     => \Magento\Framework\DB\Ddl\Table::TYPE_INTEGER,
+                    'nullable' => false,
+                    'unsigned' => true,
+                    'comment'  => 'Visibility',
+                ]
+                );
         }
     }
 }

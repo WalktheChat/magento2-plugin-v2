@@ -154,17 +154,22 @@ class SyncInventory
 
                         foreach ($this->inventoryRepository->getList($searchCriteria)->getItems() as $item) {
                             $ids[] = $item->getId();
-                            $data[$item->getWalkthechatId()][] = [
+                            if (!isset($data[$item->getWalkthechatId()]['visibility'])) {
+                                $data[$item->getWalkthechatId()]['visibility'] = (bool)$item->getVisibility();
+                            }
+                            $data[$item->getWalkthechatId()]['variants'][] = [
                                 'id' => $item->getProductId(),
-                                'inventoryQuantity' => $item->getQty()
+                                'inventoryQuantity' => $item->getQty(),
+                                'visibility' => (bool)$item->getVariantVisibility()
                             ];
                         }
 
                         $batch = [];
-                        foreach ($data as $id => $variants) {
+                        foreach ($data as $id => $product) {
                             $batch[] = [
                                 'id' => $id,
-                                'variants' => $variants
+                                'visibility' => $product['visibility'],
+                                'variants' => $product['variants']
                             ];
                         }
 
