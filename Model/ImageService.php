@@ -436,7 +436,12 @@ class ImageService
         
         foreach ($images as $image) {
             if (!isset($imagesUrls[$image->getImageId()])) {
-                $product = $this->productRepository->getById($image->getProductId());
+                try {
+                    $product = $this->productRepository->getById($image->getProductId());
+                } catch (\Magento\Framework\Exception\NoSuchEntityException $e) {
+                    $this->imageSyncRepository->deleteByProductIds([$image->getProductId()]);
+                    continue;
+                }
                 
                 foreach ($product->getMediaGalleryImages() as $productGalleryImage) {
                     $imagesUrls[$productGalleryImage->getId()] = $productGalleryImage->getUrl();
