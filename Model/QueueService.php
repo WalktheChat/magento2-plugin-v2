@@ -243,6 +243,8 @@ class QueueService
             $this->logger->error(
                 "WalkTheChat | Bad response when trying to proceed the queue item with ID: #{$item->getId()}. Please check logs in admin panel (WalkTheChat -> Logs) for more details."
             );
+        } catch (\Magento\Framework\Exception\CouldNotSaveException $exception) {
+            $item->setStatus(\Walkthechat\Walkthechat\Api\Data\QueueInterface::INTERNAL_ERROR_STATUS);
         } catch (\Exception $exception) {
             $item->setStatus(\Walkthechat\Walkthechat\Api\Data\QueueInterface::INTERNAL_ERROR_STATUS);
 
