@@ -115,7 +115,11 @@ class Add extends \Walkthechat\Walkthechat\Model\Action\AbstractAction
     {
         $product = $this->productRepository->getById($queueItem->getProductId(), false, $this->helper->getStore()->getId());
 
-        $this->productRepository->save($product);
+        try {
+            $this->productRepository->save($product);
+        } catch (\Magento\Framework\Exception\LocalizedException $e) {
+            throw new \Magento\Framework\Exception\CouldNotSaveException(__($e->getMessage()), $e);
+        }
 
         $imagesData         = $this->imageService->prepareImages($product);
         $contentMediaData   = $this->imageService->addContentMedia($product);
