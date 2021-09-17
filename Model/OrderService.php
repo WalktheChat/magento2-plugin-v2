@@ -422,7 +422,9 @@ class OrderService
         );
 
         // make walkthechat payment and shipping available
-        $this->registry->register('walkthechat_payment_and_shipping_available', true);
+        if (is_null($this->registry->registry('walkthechat_payment_and_shipping_available'))) {
+            $this->registry->register('walkthechat_payment_and_shipping_available', true);
+        }
 
         return $quote;
     }
