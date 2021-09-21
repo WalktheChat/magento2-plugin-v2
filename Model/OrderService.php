@@ -443,8 +443,14 @@ class OrderService
         /** @var \Magento\Quote\Model\Quote $quote */
 
         $this->orderCurrencyCode = $data['total']['currency'];
-
-        foreach ($data['items']['products'] as $k => $item) {
+        
+        $products = $data['items']['products'];
+        
+        if (isset($data['items']['giftProducts']) && is_array($data['items']['giftProducts'])) {
+            $products = array_merge($products, $data['items']['giftProducts']);
+        }
+        
+        foreach ($products as $k => $item) {
             try {
                 $product = $this->productRepository->get($item['variant']['sku']);
 
