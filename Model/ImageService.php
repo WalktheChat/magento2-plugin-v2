@@ -86,6 +86,16 @@ class ImageService
     protected $imageSyncFactory;
     
     /**
+     * @var \Magento\ConfigurableProduct\Model\ResourceModel\Product\Type\Configurable
+     */
+    protected $configurableProductType;
+    
+    /**
+     * @var \Magento\ConfigurableProduct\Model\Product\Type\Configurable
+     */
+    protected $configurable;
+    
+    /**
      * ImageService constructor.
      * @param \Walkthechat\Walkthechat\Service\ImagesRepository $requestImagesRepository
      * @param \Walkthechat\Walkthechat\Api\ImageSyncRepositoryInterface $imageSyncRepository
@@ -101,6 +111,8 @@ class ImageService
      * @param \Walkthechat\Walkthechat\Model\ProductService $productService
      * @param \Magento\Catalog\Model\ProductRepository $productRepository
      * @param \Walkthechat\Walkthechat\Api\Data\ImageSyncInterfaceFactory $imageSyncFactory
+     * @param \Magento\ConfigurableProduct\Model\ResourceModel\Product\Type\Configurable $configurableProductType
+     * @param \Magento\ConfigurableProduct\Model\Product\Type\Configurable $configurable
      */
     public function __construct(
         \Walkthechat\Walkthechat\Service\ImagesRepository $requestImagesRepository,
@@ -116,7 +128,9 @@ class ImageService
         \Magento\Catalog\Model\Product\Media\Config $catalogProductMediaConfig,
         \Walkthechat\Walkthechat\Model\ProductService $productService,
         \Magento\Catalog\Model\ProductRepository $productRepository,
-        \Walkthechat\Walkthechat\Api\Data\ImageSyncInterfaceFactory $imageSyncFactory
+        \Walkthechat\Walkthechat\Api\Data\ImageSyncInterfaceFactory $imageSyncFactory,
+        \Magento\ConfigurableProduct\Model\ResourceModel\Product\Type\Configurable $configurableProductType,
+        \Magento\ConfigurableProduct\Model\Product\Type\Configurable $configurable
     ) {
         $this->requestImagesRepository = $requestImagesRepository;
         $this->imageSyncRepository     = $imageSyncRepository;
@@ -132,6 +146,8 @@ class ImageService
         $this->productService          = $productService;
         $this->productRepository       = $productRepository;
         $this->imageSyncFactory        = $imageSyncFactory;
+        $this->configurableProductType = $configurableProductType;
+        $this->configurable            = $configurable;
     }
 
     /**
@@ -450,6 +466,63 @@ class ImageService
             
             $model = $this->imageSyncFactory->create()->load($image->getId());
             $model->setImageUrl($imagesUrls[$productGalleryImage->getId()]);
+            
+            $this->imageSyncRepository->save($model);
+        }
+    }
+    
+    /**
+     * Reset product images data
+     *
+     * @param \Magento\Catalog\Api\Data\ProductInterface $product
+     *
+     * @return array
+     * @throws \Zend_Http_Client_Exception
+     */
+    public function resetImagesData(\Magento\Catalog\Api\Data\ProductInterface $product)
+    {
+        if (in_array($product->getTypeId(), [\Magento\Catalog\Model\Product\Type::TYPE_SIMPLE, \Magento\Catalog\Model\Product\Type::TYPE_VIRTUAL])) {
+            $isPartOfConfigurable = false;
+            
+            foreach ($this->configurableProductType->getParentIdsByChild($product->getId()) as $parentId) {
+                $isPartOfConfigurable = true;
+                
+                $parent = $this->productRepository->getById($parentId);
+                
+                $this->resetImagesData($parent);
+            }
+            
+            if (!$isPartOfConfigurable) {
+                $this->filterGroup->setFilters([
+                    $this->filterBuilder
+                    ->setField('product_id')
+                    ->setConditionType('eq')
+                    ->setValue($product->getId())
+                    ->create(),
+                ]);
+            } else {
+                return;
+            }
+        } elseif ($product->getTypeId() === \Magento\ConfigurableProduct\Model\Product\Type\Configurable::TYPE_CODE) {
+            $children = $this->configurable->getChildrenIds($product->getId());
+            $ids = array_merge([$product->getId()], $children[0]);
+            
+            $this->filterGroup->setFilters([
+                $this->filterBuilder
+                ->setField('product_id')
+                ->setConditionType('in')
+                ->setValue($ids)
+                ->create(),
+            ]);
+        }
+        
+        $this->searchCriteria->setFilterGroups([$this->filterGroup]);
+        
+        $images = $this->imageSyncRepository->getList($this->searchCriteria)->getItems();
+        
+        foreach ($images as $image) {
+            $model = $this->imageSyncFactory->create()->load($image->getId());
+            $model->setImageData('');
             
             $this->imageSyncRepository->save($model);
         }

@@ -24,4 +24,7 @@
     <event name="walkthechat_resync_inventory">
         <observer name="walkthechat_resync_inventory" instance="Walkthechat\Walkthechat\Observer\ResyncInventory" />
     </event>
+    <event name="walkthechat_reset_images">
+        <observer name="walkthechat_reset_images" instance="Walkthechat\Walkthechat\Observer\ResetImages" />
+    </event>
 </config>
