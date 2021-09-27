@@ -475,12 +475,15 @@ class OrderService
                 $quoteItem = $quote->addProduct($product, $qty);
 
                 $quoteItem->setOriginalPrice($price);
-
+                $quoteItem->setOriginalCustomPrice($price);
+                
                 if ($this->helper->isDifferentCurrency($this->orderCurrencyCode)) {
                     $quoteItem->setBaseOriginalPrice($this->helper->convertPrice($price, false));
+                    $quoteItem->setBaseCustomPrice($this->helper->convertPrice($price, false));
                 }
-
+                
                 $quoteItem->setPrice($price);
+                $quoteItem->setCustomPrice($price);
 
                 if ($this->helper->isDifferentCurrency($this->orderCurrencyCode)) {
                     $quoteItem->setBasePrice($this->helper->convertPrice($price, false));
