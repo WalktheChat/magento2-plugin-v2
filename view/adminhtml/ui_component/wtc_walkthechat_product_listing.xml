@@ -82,6 +82,13 @@
                     <label translate="true">Re-sync</label>
                 </settings>
             </action>
+            <action name="resyncImages">
+                <settings>
+                    <url path="*/*/resyncImages"/>
+                    <type>walkthechat_resync_images</type>
+                    <label translate="true">Re-sync Images</label>
+                </settings>
+            </action>
         </massaction>
         <paging name="listing_paging"/>
     </listingToolbar>
