@@ -443,8 +443,14 @@ class OrderService
         /** @var \Magento\Quote\Model\Quote $quote */
 
         $this->orderCurrencyCode = $data['total']['currency'];
-
-        foreach ($data['items']['products'] as $k => $item) {
+        
+        $products = $data['items']['products'];
+        
+        if (isset($data['items']['giftProducts']) && is_array($data['items']['giftProducts'])) {
+            $products = array_merge($products, $data['items']['giftProducts']);
+        }
+        
+        foreach ($products as $k => $item) {
             try {
                 $product = $this->productRepository->get($item['variant']['sku']);
 
@@ -469,12 +475,15 @@ class OrderService
                 $quoteItem = $quote->addProduct($product, $qty);
 
                 $quoteItem->setOriginalPrice($price);
-
+                $quoteItem->setOriginalCustomPrice($price);
+                
                 if ($this->helper->isDifferentCurrency($this->orderCurrencyCode)) {
                     $quoteItem->setBaseOriginalPrice($this->helper->convertPrice($price, false));
+                    $quoteItem->setBaseCustomPrice($this->helper->convertPrice($price, false));
                 }
-
+                
                 $quoteItem->setPrice($price);
+                $quoteItem->setCustomPrice($price);
 
                 if ($this->helper->isDifferentCurrency($this->orderCurrencyCode)) {
                     $quoteItem->setBasePrice($this->helper->convertPrice($price, false));
