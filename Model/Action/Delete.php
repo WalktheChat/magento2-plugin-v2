@@ -81,15 +81,16 @@ class Delete extends \Walkthechat\Walkthechat\Model\Action\AbstractAction
         );
 
         foreach ($deleteProductCollection as $product) {
-            $this->productRepository->save($product);
+            $product = $this->productRepository->getById($product->getId(), false);
+            $product->getResource()->validate($product);
         }
 
         $this->queueProductRepository->delete(['id' => $queueItem->getWalkthechatId()]);
 
         /** @var \Magento\Catalog\Api\Data\ProductInterface $product */
         foreach ($deleteProductCollection as $product) {
-            $product->setCustomAttribute(\Walkthechat\Walkthechat\Helper\Data::ATTRIBUTE_CODE, null);
-            $this->productRepository->save($product);
+            $product->setWalkthechatId(null);
+            $product->getResource()->saveAttribute($product, \Walkthechat\Walkthechat\Helper\Data::ATTRIBUTE_CODE);
         }
 
         return true;
