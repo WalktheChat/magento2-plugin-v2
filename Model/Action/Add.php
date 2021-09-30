@@ -116,7 +116,7 @@ class Add extends \Walkthechat\Walkthechat\Model\Action\AbstractAction
         $product = $this->productRepository->getById($queueItem->getProductId(), false, $this->helper->getStore()->getId());
 
         try {
-            $this->productRepository->save($product);
+            $product->getResource()->validate($product);
         } catch (\Magento\Framework\Exception\LocalizedException $e) {
             throw new \Magento\Framework\Exception\CouldNotSaveException(__($e->getMessage()), $e);
         }
@@ -132,9 +132,8 @@ class Add extends \Walkthechat\Walkthechat\Model\Action\AbstractAction
         }
 
         $product->setWalkthechatId($walkTheChatId);
-
-        $this->productRepository->save($product);
-
+        $product->getResource()->saveAttribute($product, \Walkthechat\Walkthechat\Helper\Data::ATTRIBUTE_CODE);
+        
         if ($imagesData['_syncImageData']) {
             $this->saveImagesToSyncTable($imagesData['_syncImageData']);
         }
