@@ -662,6 +662,10 @@ class OrderService
         $order->setTotalPaid($quote->getGrandTotal());
 
         foreach ($order->getItems() as $item) {
+            if (!isset($this->preparedQuoteItems[$item->getSku()])) {
+                continue;
+            }
+            
             $quoteItem = $this->preparedQuoteItems[$item->getSku()];
 
             $item->setOriginalPrice($quoteItem->getOriginalPrice());
