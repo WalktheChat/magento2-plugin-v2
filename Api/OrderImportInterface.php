@@ -34,6 +34,7 @@ interface OrderImportInterface
      * @param string $modified
      * @param string $sign
      * @param mixed  $payment
+     * @param mixed  $customerIdCard
      * @param mixed  $itemsToFulfill
      * @param mixed  $items
      * @param mixed  $deliveryAddress
@@ -61,6 +62,7 @@ interface OrderImportInterface
         $modified,
         $sign,
         $payment = [],
+        $customerIdCard = [],
         $itemsToFulfill,
         $items,
         $deliveryAddress,

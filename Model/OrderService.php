@@ -203,10 +203,7 @@ class OrderService
                 $order->getPayment()->setAdditionalInformation('merchant_reference', $data['payment']['details']['merchantReference']);
             }
 
-            $order
-                ->setWalkthechatId($data['id'])
-                ->setWalkthechatName($data['name'])
-                ->setEmailSent(0);
+            $order->setEmailSent(0);
 
             $this->orderRepository->save($order);
 
@@ -401,6 +398,14 @@ class OrderService
         }
 
         $quote = $this->cartRepository->get($cartId);
+        
+        $quote->setWalkthechatId($data['id']);
+        $quote->setWalkthechatName($data['name']);
+        
+        if (isset($data['customerIdCard']['number'])) {
+            $quote->setWalkthechatCustomerIdNumber($data['customerIdCard']['number']);
+            $quote->setWalkthechatCustomerIdName($data['customerIdCard']['name']);
+        }
 
         if (!$customer->getId()) {
             $quote->setCustomerEmail($data['id'].'@walkthechat.com');

@@ -4,5 +4,15 @@
         <th><?= $block->escapeHtml(__('WalkTheChat ID')) ?></th>
         <td><?= $block->escapeHtml($order->getWalkthechatName()) ?></td>
     </tr>
+    <?php if ($order->getWalkthechatCustomerIdNumber()): ?>
+        <tr>
+            <th><?= $block->escapeHtml(__('Customer ID Card Name')) ?></th>
+            <td><?= $block->escapeHtml($order->getWalkthechatCustomerIdName()) ?></td>
+        </tr>
+        <tr>
+            <th><?= $block->escapeHtml(__('Customer ID Card Number')) ?></th>
+            <td><?= $block->escapeHtml($order->getWalkthechatCustomerIdNumber()) ?></td>
+        </tr>
+    <?php endif ?>
 <?php endif ?>
 

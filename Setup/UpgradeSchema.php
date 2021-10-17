@@ -81,6 +81,11 @@ class UpgradeSchema implements \Magento\Framework\Setup\UpgradeSchemaInterface
         if (version_compare($context->getVersion(), '1.7.3', '<')) {
             $this->addVariantVisibilityToInventoryTable($installer);
         }
+        
+        if (version_compare($context->getVersion(), '1.8.0', '<')) {
+            $this->createWalkTheChatQuoteAttributes($installer);
+            $this->addCustomerIDAttributesToOrderAndQuote($installer);
+        }
     }
 
     /**
@@ -723,5 +728,85 @@ class UpgradeSchema implements \Magento\Framework\Setup\UpgradeSchemaInterface
                 ]
                 );
         }
+    }
+    
+    /**
+     * Add walkthechat attributes to the quote table
+     *
+     * @param \Magento\Framework\Setup\SchemaSetupInterface $installer
+     */
+    protected function createWalkTheChatQuoteAttributes(\Magento\Framework\Setup\SchemaSetupInterface $installer)
+    {
+        $connection = $installer->getConnection();
+        
+        $connection->addColumn(
+            $installer->getTable('quote'),
+            \Walkthechat\Walkthechat\Helper\Data::ATTRIBUTE_CODE,
+            [
+                'type'    => \Magento\Framework\DB\Ddl\Table::TYPE_TEXT,
+                'length'  => 255,
+                'comment' => 'WalkTheChat ID',
+            ]
+        );
+        
+        $connection->addColumn(
+            $installer->getTable('quote'),
+            \Walkthechat\Walkthechat\Helper\Data::ATTRIBUTE_NAME_CODE,
+            [
+                'type'    => \Magento\Framework\DB\Ddl\Table::TYPE_TEXT,
+                'length'  => 255,
+                'comment' => 'WalkTheChat Name',
+            ]
+        );
+    }
+    
+    /**
+     * Add walkthechat customer ID attributes to quote and order tables
+     *
+     * @param \Magento\Framework\Setup\SchemaSetupInterface $installer
+     */
+    protected function addCustomerIDAttributesToOrderAndQuote(\Magento\Framework\Setup\SchemaSetupInterface $installer)
+    {
+        $connection = $installer->getConnection();
+        
+        $connection->addColumn(
+            $installer->getTable('quote'),
+            'walkthechat_customer_id_number',
+            [
+                'type'    => \Magento\Framework\DB\Ddl\Table::TYPE_TEXT,
+                'length'  => 255,
+                'comment' => 'WalkTheChat Customer ID Number',
+            ]
+        );
+        
+        $connection->addColumn(
+            $installer->getTable('quote'),
+            'walkthechat_customer_id_name',
+            [
+                'type'    => \Magento\Framework\DB\Ddl\Table::TYPE_TEXT,
+                'length'  => 255,
+                'comment' => 'WalkTheChat Customer ID Name',
+            ]
+        );
+        
+        $connection->addColumn(
+            $installer->getTable('sales_order'),
+            'walkthechat_customer_id_number',
+            [
+                'type'    => \Magento\Framework\DB\Ddl\Table::TYPE_TEXT,
+                'length'  => 255,
+                'comment' => 'WalkTheChat Customer ID Number',
+            ]
+        );
+        
+        $connection->addColumn(
+            $installer->getTable('sales_order'),
+            'walkthechat_customer_id_name',
+            [
+                'type'    => \Magento\Framework\DB\Ddl\Table::TYPE_TEXT,
+                'length'  => 255,
+                'comment' => 'WalkTheChat Customer ID Name',
+            ]
+        );
     }
 }
