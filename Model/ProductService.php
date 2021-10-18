@@ -304,6 +304,14 @@ class ProductService
     public function prepareProductData($product, $isNew = true, array $imagesData = [], array $mediaContentData = [])
     {
         $rule =  $this->ruleFactory->create();
+        
+        if ($this->helper->isDifferentCurrency($this->helper->getStore()->getBaseCurrencyCode())) {
+            $baseProduct = $this->productRepository->getById($product->getId());
+            
+            if ($baseProduct->getPrice() == $product->getPrice()) {
+                throw new \Magento\Framework\Exception\NoSuchEntityException(__('Product price is not set in the WTC store view'));
+            }
+        }
 
         $mainPrice        = $this->helper->convertPrice($product->getPrice());
         $mainSpecialPrice = null;
