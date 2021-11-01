@@ -56,6 +56,11 @@ class ProductService
      * @var \Magento\ConfigurableProduct\Model\Product\Type\Configurable
      */
     protected $configurable;
+    
+    /**
+     * @var \Magento\Catalog\Model\Attribute\ScopeOverriddenValue
+     */
+    protected $scopeOverriddenValue;
 
     /**
      * ProductService constructor.
@@ -68,6 +73,7 @@ class ProductService
      * @param \Walkthechat\Walkthechat\Api\QueueRepositoryInterface         $queueRepository
      * @param \Magento\CatalogRule\Model\RuleFactory                        $ruleFactory
      * @param \Magento\ConfigurableProduct\Model\Product\Type\Configurable  $configurable
+     * @param \Magento\Catalog\Model\Attribute\ScopeOverriddenValue         $scopeOverriddenValue
      */
     public function __construct(
         \Magento\Catalog\Model\ProductRepository $productRepository,
@@ -77,7 +83,8 @@ class ProductService
         \Walkthechat\Walkthechat\Model\QueueService $queueService,
         \Walkthechat\Walkthechat\Api\QueueRepositoryInterface $queueRepository,
         \Magento\CatalogRule\Model\RuleFactory $ruleFactory,
-        \Magento\ConfigurableProduct\Model\Product\Type\Configurable $configurable
+        \Magento\ConfigurableProduct\Model\Product\Type\Configurable $configurable,
+        \Magento\Catalog\Model\Attribute\ScopeOverriddenValue $scopeOverriddenValue
     ) {
         $this->productRepository     = $productRepository;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
@@ -87,6 +94,7 @@ class ProductService
         $this->queueRepository       = $queueRepository;
         $this->ruleFactory           = $ruleFactory;
         $this->configurable          = $configurable;
+        $this->scopeOverriddenValue  = $scopeOverriddenValue;
     }
 
     /**
@@ -304,15 +312,18 @@ class ProductService
     public function prepareProductData($product, $isNew = true, array $imagesData = [], array $mediaContentData = [])
     {
         $rule =  $this->ruleFactory->create();
-        
+
         if ($this->helper->isDifferentCurrency($this->helper->getStore()->getBaseCurrencyCode())) {
-            $baseProduct = $this->productRepository->getById($product->getId());
-            
-            if ($baseProduct->getPrice() == $product->getPrice()) {
+            if (!$this->scopeOverriddenValue->containsValue(
+                \Magento\Catalog\Api\Data\ProductInterface::class, 
+                $product, 
+                'price', 
+                $this->helper->getStore()->getId())
+            ) {
                 throw new \Magento\Framework\Exception\NoSuchEntityException(__('Product price is not set in the WTC store view'));
             }
         }
-
+        
         $mainPrice        = $this->helper->convertPrice($product->getPrice());
         $mainSpecialPrice = null;
         if (!$product->getSpecialFromDate() && !$product->getSpecialToDate()) {
