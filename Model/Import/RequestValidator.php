@@ -49,6 +49,7 @@ class RequestValidator
      * @param string $modified
      * @param string $sign
      * @param mixed  $payment
+     * @param mixed  $customerIdCard
      * @param mixed  $itemsToFulfill
      * @param array  $items
      * @param array  $deliveryAddress
@@ -77,6 +78,7 @@ class RequestValidator
         $modified,
         $sign,
         $payment,
+        $customerIdCard,
         $itemsToFulfill,
         $items,
         $deliveryAddress,
@@ -103,6 +105,7 @@ class RequestValidator
             'name',
             'email',
             'payment',
+            'customerIdCard',
             'items',
             'itemsToFulfill',
             'deliveryAddress',

@@ -27,4 +27,7 @@
     <event name="walkthechat_reset_images">
         <observer name="walkthechat_reset_images" instance="Walkthechat\Walkthechat\Observer\ResetImages" />
     </event>
+    <event name="sales_model_service_quote_submit_before">
+	    <observer name="walkthechat_sales_model_service_quote_submit_before" instance="Walkthechat\Walkthechat\Observer\QuoteSubmitBefore" />
+    </event>
 </config>

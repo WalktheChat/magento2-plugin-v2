@@ -103,6 +103,7 @@ class Import extends \Magento\Backend\App\Action
                     $data['modified'],
                     '',
                     isset($data['payment']) ? $data['payment'] : [],
+                    isset($data['customerIdCard']) ? $data['customerIdCard'] : [],
                     $data['itemsToFulfill'],
                     $data['items'],
                     $data['deliveryAddress'],
