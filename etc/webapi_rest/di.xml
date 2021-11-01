@@ -3,4 +3,7 @@
     <type name="Magento\Quote\Model\QuoteRepository">
         <plugin name="accessControl" type="Walkthechat\Walkthechat\Plugin\AccessChangeQuoteControl" />
     </type>
+    <type name="Magento\Quote\Model\Quote\TotalsCollector">
+        <plugin name="Walkthechat_Quote_TotalsCollector" sortOrder="-1" type="Walkthechat\Walkthechat\Plugin\QuoteTotalsCollector"/>
+    </type>
 </config>
