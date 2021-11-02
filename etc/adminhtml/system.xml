@@ -60,6 +60,10 @@
                     <label>Inventory Batch</label>
                     <source_model>Walkthechat\Walkthechat\Model\Config\Source\QueueBatch</source_model>
                 </field>
+                <field id="description" translate="label" type="multiselect" sortOrder="60" showInDefault="1">
+                    <label>Additional Description Attributes</label>
+                    <source_model>Walkthechat\Walkthechat\Model\Config\Source\DescriptionAttributes</source_model>
+                </field>
             </group>
             <group id="currency" translate="label" sortOrder="30" showInDefault="1">
                 <label>Currency</label>

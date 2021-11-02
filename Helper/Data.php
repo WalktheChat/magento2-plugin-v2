@@ -61,6 +61,11 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
      * @var \Magento\Framework\App\Cache\TypeListInterface
      */
     protected $cacheTypeList;
+    
+    /**
+     * @var \Magento\Catalog\Api\ProductAttributeRepositoryInterface
+     */
+    protected $attributeRepository;
 
     /**
      * Constructor
@@ -72,6 +77,7 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
      * @param \Magento\Store\Model\StoreManagerInterface $storeManager
      * @param \Magento\Framework\App\Config\Storage\WriterInterface $configWriter
      * @param \Magento\Framework\App\Cache\TypeListInterface $cacheTypeList
+     * @param \Magento\Catalog\Api\ProductAttributeRepositoryInterface $attributeRepository
      */
     public function __construct(
         \Magento\Framework\App\Helper\Context $context,
@@ -80,7 +86,8 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
         \Magento\Directory\Model\RegionFactory $regionFactory,
         \Magento\Store\Model\StoreManagerInterface $storeManager,
         \Magento\Framework\App\Config\Storage\WriterInterface $configWriter,
-        \Magento\Framework\App\Cache\TypeListInterface $cacheTypeList
+        \Magento\Framework\App\Cache\TypeListInterface $cacheTypeList,
+        \Magento\Catalog\Api\ProductAttributeRepositoryInterface $attributeRepository
     ) {
         $this->scopeConfig       = $scopeConfig;
         $this->urlBackendBuilder = $urlBackendBuilder;
@@ -88,6 +95,7 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
         $this->storeManager      = $storeManager;
         $this->configWriter      = $configWriter;
         $this->cacheTypeList     = $cacheTypeList;
+        $this->attributeRepository = $attributeRepository;
 
         parent::__construct($context);
     }
@@ -156,6 +164,16 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     public function getAppKey()
     {
         return $this->scopeConfig->getValue('walkthechat_settings/general/app_key');
+    }
+    
+    /**
+     * Return additional description attributes from configuration
+     *
+     * @return array
+     */
+    public function getAdditionalDescriptionAttributes()
+    {
+        return explode(',', $this->scopeConfig->getValue('walkthechat_settings/sync/description'));
     }
 
     /**
@@ -495,5 +513,30 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     {
         $this->configWriter->save('walkthechat_settings/sync/inventory', $status);
         $this->cacheTypeList->cleanType(\Magento\Framework\App\Cache\Type\Config::TYPE_IDENTIFIER);
+    }
+    
+    /**
+     * Get product additional description
+     *
+     * @param $product
+     *
+     * @return string
+     */
+    public function getAdditionalDescription($product)
+    {
+        $html = '';
+        
+        foreach ($this->getAdditionalDescriptionAttributes() as $id) {
+            $attribute = $this->attributeRepository->get($id);
+            
+            $value = $product->getData($attribute->getAttributeCode());
+            
+            if ($value) {
+                $html .= '<h2>' . $attribute->getFrontendLabel() . '</h2>';
+                $html .= '<p>' . $value . '</p>';
+            }
+        }
+        
+        return $html;
     }
 }
