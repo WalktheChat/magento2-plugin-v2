@@ -470,15 +470,16 @@ class OrderService
                 $qty            = $item['quantity'];
                 $discountAmount = $qty * $item['variant']['discount'];
                 $price          = $item['variant']['price'];
+                $originalPrice  = isset($item['variant']['originalPrice']) ? $item['variant']['originalPrice'] : $price;
                 $rowTotal       = $qty * $price;
 
                 $quoteItem = $quote->addProduct($product, $qty);
 
-                $quoteItem->setOriginalPrice($price);
+                $quoteItem->setOriginalPrice($originalPrice);
                 $quoteItem->setOriginalCustomPrice($price);
                 
                 if ($this->helper->isDifferentCurrency($this->orderCurrencyCode)) {
-                    $quoteItem->setBaseOriginalPrice($this->helper->convertPrice($price, false));
+                    $quoteItem->setBaseOriginalPrice($this->helper->convertPrice($originalPrice, false));
                     $quoteItem->setBaseCustomPrice($this->helper->convertPrice($price, false));
                 }
                 
