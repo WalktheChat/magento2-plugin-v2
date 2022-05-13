@@ -230,11 +230,12 @@ class RequestValidator
     protected function validateDeliveryAddress($deliveryAddress)
     {
         if (
-            isset($deliveryAddress['name'])
-            && isset($deliveryAddress['address'])
-            && isset($deliveryAddress['district'])
-            && isset($deliveryAddress['city'])
+            isset($deliveryAddress['transliteration']['name'])
+            && isset($deliveryAddress['transliteration']['address'])
+            && isset($deliveryAddress['transliteration']['district'])
+            && isset($deliveryAddress['transliteration']['city'])
             && isset($deliveryAddress['countryCode'])
+            && isset($deliveryAddress['transliteration']['province'])
             && isset($deliveryAddress['province'])
             && isset($deliveryAddress['zipcode'])
             && isset($deliveryAddress['phone'])
