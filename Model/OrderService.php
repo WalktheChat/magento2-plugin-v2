@@ -698,13 +698,16 @@ class OrderService
     {
         $address = $data['deliveryAddress'];
 
+        $name = explode(' ', $address['transliteration']['name'], 2);
+        $lastName = $name[0];
+        $firstName = count($name) == 2 ? $name[1] : $name[0];
         return [
-            'firstname'            => mb_strlen($address['name']) == 1 ? $address['name'] : mb_substr($address['name'], 1),
-            'lastname'             => mb_substr($address['name'], 0, 1),
-            'street'               => $address['address'].', '.$address['district'],
-            'city'                 => $address['city'],
+            'firstname'            => $firstName,
+            'lastname'             => $lastName,
+            'street'               => $address['transliteration']['address'].', '.$address['transliteration']['district'],
+            'city'                 => $address['transliteration']['city'],
             'country_id'           => $address['countryCode'],
-            'region'               => $address['province'],
+            'region'               => $address['transliteration']['province'],
             'region_id'            => $this->helper->convertRegionNameToRegionId($address['province']),
             'postcode'             => $address['zipcode'],
             'telephone'            => $address['phone'],
