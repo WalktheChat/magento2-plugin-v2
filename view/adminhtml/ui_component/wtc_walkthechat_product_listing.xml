@@ -22,7 +22,7 @@
             </item>
             <item name="export_selected" xsi:type="array">
                 <item name="name" xsi:type="string">export_selected</item>
-                <item name="label" xsi:type="string" translate="true">Export Selected Products</item>
+                <item name="label" xsi:type="string" translate="true">Export New Products</item>
                 <item name="class" xsi:type="string">primary</item>
                 <item name="url" xsi:type="string">*/*/export</item>
                 <item name="sort_order" xsi:type="string">300</item>

@@ -248,6 +248,22 @@ class ImageService
 
         return false;
     }
+
+    /**
+     * Get image url using the SKU and ID in the gallery
+     *
+     * @param string $sku
+     * @param int $id
+     * @return string
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     */
+    public function getImageUrl(string $sku, int $id)
+    {
+        $galleryImage = $this->galleryManagement->get($sku, $id);
+        $directory = $this->filesystem->getDirectoryRead(\Magento\Framework\App\Filesystem\DirectoryList::MEDIA);
+
+        return $this->catalogProductMediaConfig->getMediaUrl($galleryImage->getFile());
+    }
     
     /**
      * Add images to wtc
@@ -523,7 +539,12 @@ class ImageService
         foreach ($images as $image) {
             $model = $this->imageSyncFactory->create()->load($image->getId());
             $model->setImageData('');
-            
+            try {
+                $model->setImageUrl($this->getImageUrl($product->getSku(), $image->getImageId()));
+            } catch (\Exception $e) {
+                /** @todo : some images can be deleted, log the execption. Bypassed at the moment */
+            }
+
             $this->imageSyncRepository->save($model);
         }
     }
