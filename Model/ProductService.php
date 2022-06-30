@@ -338,11 +338,13 @@ class ProductService
             $data['title'] = [
                 'en' => $product->getName(),
             ];
-
-            $data['bodyHtml'] = [
-                'en' => isset($mediaContentData['content']) && $mediaContentData['content'] ? $mediaContentData['content'] : $product->getDescription(),
-            ];
         }
+        
+        $description = isset($mediaContentData['content']) && $mediaContentData['content'] ? $mediaContentData['content'] : $product->getDescription();
+        
+        $data['bodyHtml'] = [
+            'en' => $description . $this->helper->getAdditionalDescription($product)
+        ];
 
         if ($product->getTypeId() === \Magento\ConfigurableProduct\Model\Product\Type\Configurable::TYPE_CODE) {
             $configurableOptions = $product->getTypeInstance()->getConfigurableOptions($product);
