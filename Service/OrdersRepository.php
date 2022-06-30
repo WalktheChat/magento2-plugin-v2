@@ -99,7 +99,7 @@ class OrdersRepository extends AbstractService
         $filter = ['where' => [
             'and' => [
                 ['draft' => false],
-                ['created' => [
+                ['modified' => [
                     'between' => [
                         $from,
                         $to
