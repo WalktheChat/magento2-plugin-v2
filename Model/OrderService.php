@@ -339,7 +339,7 @@ class OrderService
                 $amount = $creditMemo->getGrandTotal();
 
                 if ($this->helper->isDifferentCurrency($order->getOrderCurrencyCode())) {
-                    $amount = $this->helper->convertPrice($creditMemo->getBaseGrandTotal(), false);
+                    $amount = $this->helper->convertPrice($creditMemo->getBaseGrandTotal(), true, true);
                 }
 
                 $data[$creditMemo->getEntityId()]['data'] = [

@@ -333,14 +333,14 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
      *
      * @return float
      */
-    public function convertPrice($price, $export = true)
+    public function convertPrice($price, $export = true, $refund = false)
     {
         if ($this->isCurrencyConversionActive()) {
             $rate = $this->getCurrencyConversionRate();
 
             if ($price && $rate) {
                 if ($export) {
-                    if ($this->getCurrencyConversionMethod() == 2) {
+                    if ($this->getCurrencyConversionMethod() == 2 && !$refund) {
                         if ($price * $rate < 1) {
                             $price = round($price * $rate, 1) * 10;
                             $digit = (int)substr($price, -1);
