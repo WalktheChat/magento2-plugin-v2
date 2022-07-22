@@ -359,6 +359,8 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
                                 $price += 9;
                             }
                         }
+                    } else if ($refund){
+                        $price = round($price * $rate, 2);
                     } else {
                         $price = round($price * $rate);
                     }
