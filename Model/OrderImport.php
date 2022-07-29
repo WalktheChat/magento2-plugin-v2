@@ -200,7 +200,7 @@ class OrderImport implements \Walkthechat\Walkthechat\Api\OrderImportInterface
 
         if ($logError) {
             $this->logger->error('Error during the WalkTheChat order import | ' . $errorMessage);
-            $errorMessage = 'An error has been occurred. Please contact administrator for more information.';
+            $errorMessage = 'An error has been occurred. Please contact administrator for more information | ' . $errorMessage;
         }
 
         return json_encode(
