@@ -87,33 +87,35 @@ class SalesOrderCreditmemoRefund implements \Magento\Framework\Event\ObserverInt
 
             foreach ($order->getAllItems() as $item) {
                 $product       = $item->getProduct();
-                $walkTheChatId = $this->helper->getWalkTheChatAttributeValue($product);
+                if ($product) {
+                    $walkTheChatId = $this->helper->getWalkTheChatAttributeValue($product);
 
-                if (!$walkTheChatId) {
-                    $parentIds = $this->configurableProductType->getParentIdsByChild($product->getId());
+                    if (!$walkTheChatId) {
+                        $parentIds = $this->configurableProductType->getParentIdsByChild($product->getId());
 
-                    if (count($parentIds)) {
-                        $product = $this->productRepository->getById($parentIds[0]);
-                        $walkTheChatId = $this->helper->getWalkTheChatAttributeValue($product);
+                        if (count($parentIds)) {
+                            $product = $this->productRepository->getById($parentIds[0]);
+                            $walkTheChatId = $this->helper->getWalkTheChatAttributeValue($product);
+                        }
                     }
-                }
 
-                if (
-                    $walkTheChatId
-                    && !$this->queueService->isDuplicate(
-                        $product->getId(),
-                        \Walkthechat\Walkthechat\Model\Action\Update::ACTION,
-                        'product_id'
-                    )
-                ) {
-                    /** @var \Walkthechat\Walkthechat\Api\Data\QueueInterface $model */
-                    $model = $this->queueFactory->create();
+                    if (
+                        $walkTheChatId
+                        && !$this->queueService->isDuplicate(
+                            $product->getId(),
+                            \Walkthechat\Walkthechat\Model\Action\Update::ACTION,
+                            'product_id'
+                        )
+                    ) {
+                        /** @var \Walkthechat\Walkthechat\Api\Data\QueueInterface $model */
+                        $model = $this->queueFactory->create();
 
-                    $model->setProductId($product->getId());
-                    $model->setWalkthechatId($walkTheChatId);
-                    $model->setAction(\Walkthechat\Walkthechat\Model\Action\Update::ACTION);
+                        $model->setProductId($product->getId());
+                        $model->setWalkthechatId($walkTheChatId);
+                        $model->setAction(\Walkthechat\Walkthechat\Model\Action\Update::ACTION);
 
-                    $this->queueRepository->save($model);
+                        $this->queueRepository->save($model);
+                    }
                 }
             }
         }
