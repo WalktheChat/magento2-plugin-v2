@@ -139,7 +139,9 @@ class QueueService
      */
     public function getNotProcessed($pageSize = null)
     {
-        $this->searchCriteriaBuilder->addFilter('processed_at', true, 'null');
+        $this->searchCriteriaBuilder
+            ->addFilter('processed_at', true, 'null')
+            ->addFilter('status', \Walkthechat\Walkthechat\Api\Data\QueueInterface::INTERNAL_ERROR_STATUS, 'neq');
 
         /** @var \Magento\Framework\Api\SearchCriteriaInterface $searchCriteria */
         $searchCriteria = $this->searchCriteriaBuilder->create();
@@ -239,7 +241,6 @@ class QueueService
             }
         } catch (\Zend\Http\Client\Exception\RuntimeException $runtimeException) {
             $item->setStatus(\Walkthechat\Walkthechat\Api\Data\QueueInterface::API_ERROR_STATUS);
-
             $this->logger->error(
                 "WalkTheChat | Bad response when trying to proceed the queue item with ID: #{$item->getId()}. Please check logs in admin panel (WalkTheChat -> Logs) for more details."
             );
