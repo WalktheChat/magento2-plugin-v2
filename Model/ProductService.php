@@ -10,6 +10,8 @@
 
 namespace Walkthechat\Walkthechat\Model;
 
+use Magento\Catalog\Model\Product\Visibility;
+
 /**
  * Class ProductService
  *
@@ -58,16 +60,26 @@ class ProductService
     protected $configurable;
 
     /**
+     * @var \Magento\Catalog\Model\ResourceModel\Product\CollectionFactory
+     */
+    protected $collectionFactory;
+
+    /**
+     * @var Visibility
+     */
+    protected $catalogProductVisibility;
+
+    /**
      * ProductService constructor.
      *
-     * @param \Magento\Catalog\Model\ProductRepository                      $productRepository
-     * @param \Magento\Framework\Api\SearchCriteriaBuilder                  $searchCriteriaBuilder
-     * @param \Walkthechat\Walkthechat\Helper\Data                          $helper
-     * @param \Magento\CatalogInventory\Api\StockStateInterface             $stockItem
-     * @param \Walkthechat\Walkthechat\Model\QueueService                   $queueService
-     * @param \Walkthechat\Walkthechat\Api\QueueRepositoryInterface         $queueRepository
-     * @param \Magento\CatalogRule\Model\RuleFactory                        $ruleFactory
-     * @param \Magento\ConfigurableProduct\Model\Product\Type\Configurable  $configurable
+     * @param \Magento\Catalog\Model\ProductRepository $productRepository
+     * @param \Magento\Framework\Api\SearchCriteriaBuilder $searchCriteriaBuilder
+     * @param \Walkthechat\Walkthechat\Helper\Data $helper
+     * @param \Magento\CatalogInventory\Api\StockStateInterface $stockItem
+     * @param \Walkthechat\Walkthechat\Model\QueueService $queueService
+     * @param \Walkthechat\Walkthechat\Api\QueueRepositoryInterface $queueRepository
+     * @param \Magento\CatalogRule\Model\RuleFactory $ruleFactory
+     * @param \Magento\ConfigurableProduct\Model\Product\Type\Configurable $configurable
      */
     public function __construct(
         \Magento\Catalog\Model\ProductRepository $productRepository,
@@ -77,16 +89,20 @@ class ProductService
         \Walkthechat\Walkthechat\Model\QueueService $queueService,
         \Walkthechat\Walkthechat\Api\QueueRepositoryInterface $queueRepository,
         \Magento\CatalogRule\Model\RuleFactory $ruleFactory,
-        \Magento\ConfigurableProduct\Model\Product\Type\Configurable $configurable
+        \Magento\ConfigurableProduct\Model\Product\Type\Configurable $configurable,
+        \Magento\Catalog\Model\ResourceModel\Product\CollectionFactory $collectionFactory,
+        Visibility $catalogProductVisibility
     ) {
-        $this->productRepository     = $productRepository;
+        $this->productRepository = $productRepository;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
-        $this->stockItem             = $stockItem;
-        $this->helper                = $helper;
-        $this->queueService          = $queueService;
-        $this->queueRepository       = $queueRepository;
-        $this->ruleFactory           = $ruleFactory;
-        $this->configurable          = $configurable;
+        $this->stockItem = $stockItem;
+        $this->helper = $helper;
+        $this->queueService = $queueService;
+        $this->queueRepository = $queueRepository;
+        $this->ruleFactory = $ruleFactory;
+        $this->configurable = $configurable;
+        $this->collectionFactory = $collectionFactory;
+        $this->catalogProductVisibility = $catalogProductVisibility;
     }
 
     /**
@@ -96,15 +112,13 @@ class ProductService
      */
     public function getSyncedProducts()
     {
-        $searchCriteria = $this->searchCriteriaBuilder
-            ->addFilter(
-                \Walkthechat\Walkthechat\Helper\Data::ATTRIBUTE_CODE,
-                '',
-                'neq'
-            )
-            ->create();
+        /** @var \Magento\Catalog\Model\ResourceModel\Product\Collection $collection */
+        $collection = $this->collectionFactory->create();
+        $collection->addFieldToFilter(\Walkthechat\Walkthechat\Helper\Data::ATTRIBUTE_CODE, ['notnull' => true])
+            ->setVisibility($this->catalogProductVisibility->getVisibleInSiteIds())
+            ->addAttributeToSelect(['status', 'visibility']);
 
-        return $this->productRepository->getList($searchCriteria);
+        return $collection;
     }
 
     /**
@@ -152,7 +166,7 @@ class ProductService
     /**
      * Process passed products
      *
-     * @param \Magento\Catalog\Api\Data\ProductInterface[]     $products
+     * @param \Magento\Catalog\Api\Data\ProductInterface[] $products
      * @param \Magento\Framework\Message\ManagerInterface|null $messageManager
      *
      * @return array
@@ -162,7 +176,7 @@ class ProductService
         \Magento\Framework\Message\ManagerInterface $messageManager = null
     ) {
         $productsProceed = 0;
-        $bulkData        = [];
+        $bulkData = [];
 
         foreach ($products as $product) {
             $isSupportedProductType = in_array($product->getTypeId(), [
@@ -190,7 +204,7 @@ class ProductService
                     $bulkData[] = [
                         'product_id' => $product->getId(),
                         'walkthechat_id' => $walkTheChatAttributeValue,
-                        'action'     => \Walkthechat\Walkthechat\Model\Action\Update::ACTION,
+                        'action' => \Walkthechat\Walkthechat\Model\Action\Update::ACTION,
                     ];
                 }
             } else {
@@ -203,7 +217,7 @@ class ProductService
                 ) {
                     $bulkData[] = [
                         'product_id' => $product->getId(),
-                        'action'     => \Walkthechat\Walkthechat\Model\Action\Add::ACTION,
+                        'action' => \Walkthechat\Walkthechat\Model\Action\Add::ACTION,
                     ];
                 }
             }
@@ -234,7 +248,7 @@ class ProductService
     /**
      * Process product delete action
      *
-     * @param \Magento\Catalog\Api\Data\ProductInterface[]     $products
+     * @param \Magento\Catalog\Api\Data\ProductInterface[] $products
      * @param \Magento\Framework\Message\ManagerInterface|null $messageManager
      *
      * @return array
@@ -255,9 +269,9 @@ class ProductService
                     'product_id'
                 )) {
                 $bulkData[] = [
-                    'product_id'     => $product->getId(),
+                    'product_id' => $product->getId(),
                     'walkthechat_id' => $walkTheChatAttributeValue,
-                    'action'         => \Walkthechat\Walkthechat\Model\Action\Delete::ACTION,
+                    'action' => \Walkthechat\Walkthechat\Model\Action\Delete::ACTION,
                 ];
             }
         }
@@ -294,18 +308,18 @@ class ProductService
      * Prepare product data for API
      *
      * @param \Magento\Catalog\Model\Product $product
-     * @param bool                           $isNew
-     * @param array                          $imagesData
-     * @param array                          $mediaContentData
+     * @param bool $isNew
+     * @param array $imagesData
+     * @param array $mediaContentData
      *
      * @return array
      * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
     public function prepareProductData($product, $isNew = true, array $imagesData = [], array $mediaContentData = [])
     {
-        $rule =  $this->ruleFactory->create();
+        $rule = $this->ruleFactory->create();
 
-        $mainPrice        = $this->helper->convertPrice($product->getPrice());
+        $mainPrice = $this->helper->convertPrice($product->getPrice());
         $mainSpecialPrice = null;
         if (!$product->getSpecialFromDate() && !$product->getSpecialToDate()) {
             $mainSpecialPrice = $this->helper->convertPrice($product->getSpecialPrice());
@@ -325,12 +339,12 @@ class ProductService
             && !$product->isDisabled();
 
         $data = [
-            'manageInventory'       => true,
-            'visibility'            => $productVisibility,
-            'displayPrice'          => $mainSpecialPrice ? $mainSpecialPrice : $mainPrice,
+            'manageInventory' => true,
+            'visibility' => $productVisibility,
+            'displayPrice' => $mainSpecialPrice ? $mainSpecialPrice : $mainPrice,
             'displayCompareAtPrice' => $mainSpecialPrice ? $mainPrice : null,
-            'images'                => $imagesData['main'] ?? [],
-            'variants'              => []
+            'images' => $imagesData['main'] ?? [],
+            'variants' => []
         ];
 
         // if is "update" action - don't update the title and description
@@ -364,12 +378,13 @@ class ProductService
             if ($children) {
                 $k = 0;
                 foreach ($children as $child) {
-                    $childPrice			= $this->helper->convertPrice($child->getPrice());
+                    $childPrice = $this->helper->convertPrice($child->getPrice());
                     $childSpecialPrice = null;
                     if (!$child->getSpecialFromDate() && !$child->getSpecialToDate()) {
                         $childSpecialPrice = $this->helper->convertPrice($child->getSpecialPrice());
                     }
-                    $childRulePrice = $this->helper->convertPrice($rule->calcProductPriceRule($child, $child->getPrice()));
+                    $childRulePrice = $this->helper->convertPrice($rule->calcProductPriceRule($child,
+                        $child->getPrice()));
 
                     if (($childRulePrice && !$childSpecialPrice) || ($childRulePrice && $childRulePrice < $childSpecialPrice)) {
                         $childSpecialPrice = $childRulePrice;
@@ -380,15 +395,15 @@ class ProductService
                     }
 
                     $data['variants'][$k] = [
-                        'id'                => $child->getId(),
+                        'id' => $child->getId(),
                         'inventoryQuantity' => $this->stockItem->getStockQty($child->getId()),
-                        'weight'            => $child->getWeight(),
-                        'requiresShipping'  => true,
-                        'sku'               => $child->getSku(),
-                        'price'             => $childSpecialPrice ? $childSpecialPrice : $childPrice,
-                        'compareAtPrice'    => $childSpecialPrice ? $childPrice : null,
-                        'visibility'        => $child->isDisabled() ? false : true,
-                        'taxable'           => (bool)$child->getTaxClassId(),
+                        'weight' => $child->getWeight(),
+                        'requiresShipping' => true,
+                        'sku' => $child->getSku(),
+                        'price' => $childSpecialPrice ? $childSpecialPrice : $childPrice,
+                        'compareAtPrice' => $childSpecialPrice ? $childPrice : null,
+                        'visibility' => $child->isDisabled() ? false : true,
+                        'taxable' => (bool)$child->getTaxClassId(),
                     ];
 
                     $imageData = $imagesData['children'][$child->getId()] ?? [];
@@ -408,12 +423,12 @@ class ProductService
                     // add available options for current variant
                     foreach ($data['variantOptions'] as $n => $attributeCode) {
                         $data['variants'][$k]['options'][] = [
-                            'id'       => $attributeCode,
-                            'name'     => [
+                            'id' => $attributeCode,
+                            'name' => [
                                 'en' => $child->getResource()->getAttribute($attributeCode)->getFrontend()->getLabel($child),
                             ],
                             'position' => $n,
-                            'value'    => [
+                            'value' => [
                                 'en' => $child->getAttributeText($attributeCode),
                             ],
                         ];
@@ -424,15 +439,15 @@ class ProductService
             }
         } else {
             $variant = [
-                'id'                => $product->getId(),
+                'id' => $product->getId(),
                 'inventoryQuantity' => $this->stockItem->getStockQty($product->getId()),
-                'weight'            => $product->getWeight(),
-                'requiresShipping'  => true,
-                'sku'               => $product->getSku(),
-                'price'             => $mainSpecialPrice ? $mainSpecialPrice : $mainPrice,
-                'compareAtPrice'    => $mainSpecialPrice ? $mainPrice : null,
-                'visibility'        => $productVisibility,
-                'taxable'           => (bool)$product->getTaxClassId(),
+                'weight' => $product->getWeight(),
+                'requiresShipping' => true,
+                'sku' => $product->getSku(),
+                'price' => $mainSpecialPrice ? $mainSpecialPrice : $mainPrice,
+                'compareAtPrice' => $mainSpecialPrice ? $mainPrice : null,
+                'visibility' => $productVisibility,
+                'taxable' => (bool)$product->getTaxClassId(),
             ];
 
             if ($isNew) {
@@ -452,9 +467,9 @@ class ProductService
      */
     private function _getProductSaleableQty($productSku, $stockId)
     {
-        try{
+        try {
             $qty = $this->getProductSalableQty->execute($productSku, $stockId);
-        } catch(Exception $exception){
+        } catch (Exception $exception) {
             $qty = 0;
         }
         return $qty;
@@ -469,17 +484,17 @@ class ProductService
     {
         $data = [];
         $products = $this->getSyncedProducts();
-        
-        foreach ($products->getItems() as $product) {
+
+        foreach ($products as $product) {
             $walkthechatId = $this->helper->getWalkTheChatAttributeValue($product);
-            
             if ($product->getTypeId() === \Magento\ConfigurableProduct\Model\Product\Type\Configurable::TYPE_CODE) {
                 $children = $product->getTypeInstance()->getUsedProducts($product);
                 foreach ($children as $child) {
+                    $qty = $product->getVisibility() != \Magento\Catalog\Model\Product\Visibility::VISIBILITY_NOT_VISIBLE && !$product->isDisabled() ? $this->stockItem->getStockQty($child->getId()) : 0;
                     $data[] = [
                         'product_id' => $child->getId(),
                         'walkthechat_id' => $walkthechatId,
-                        'qty' => $this->stockItem->getStockQty($child->getId()),
+                        'qty' => $qty,
                         'visibility' => $product->getVisibility() != \Magento\Catalog\Model\Product\Visibility::VISIBILITY_NOT_VISIBLE && !$product->isDisabled(),
                         'variant_visibility' => $child->isDisabled() ? false : true
                     ];
@@ -493,8 +508,8 @@ class ProductService
                     'variant_visibility' => $product->getVisibility() != \Magento\Catalog\Model\Product\Visibility::VISIBILITY_NOT_VISIBLE && !$product->isDisabled()
                 ];
             }
+            unset($product, $children);
         }
-        
         return $data;
     }
 }
